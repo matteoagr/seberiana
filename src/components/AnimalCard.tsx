@@ -11,6 +11,7 @@ export function AnimalCard({
   animal: AnimalCardModel;
   showCta?: boolean;
 }) {
+  const href = `/annuaire/${animal.id}`;
   const canContact =
     showCta && (animal.status === "disponible" || animal.status === "reserve");
   const interest =
@@ -32,7 +33,7 @@ export function AnimalCard({
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-xl border border-line/60 bg-background-elevated/50 transition-[border-color,transform] duration-500 hover:border-gold/35">
-      <div className="relative aspect-[4/5] overflow-hidden">
+      <Link href={href} className="relative aspect-[4/5] overflow-hidden">
         <Image
           src={animal.image}
           alt={animal.name}
@@ -57,22 +58,32 @@ export function AnimalCard({
             {animal.name}
           </h3>
         </div>
-      </div>
+      </Link>
       <div className="flex flex-1 flex-col space-y-3 p-5">
         <p className="text-sm text-foreground-muted">{metaParts.join(" · ")}</p>
-        <p className="flex-1 text-sm leading-relaxed text-foreground/80">
-          {animal.description}
-        </p>
-        {canContact ? (
+        {animal.description ? (
+          <p className="flex-1 text-sm leading-relaxed text-foreground/80 line-clamp-3">
+            {animal.description}
+          </p>
+        ) : (
+          <div className="flex-1" />
+        )}
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-2">
           <Link
-            href={contactHref}
-            className="mt-2 inline-flex text-sm font-medium text-gold-soft transition-colors hover:text-gold"
+            href={href}
+            className="inline-flex text-sm font-medium text-gold-soft transition-colors hover:text-gold"
           >
-            {animal.status === "disponible"
-              ? "Nous contacter →"
-              : "Poser une question →"}
+            Voir le profil →
           </Link>
-        ) : null}
+          {canContact ? (
+            <Link
+              href={contactHref}
+              className="inline-flex text-sm text-foreground-muted transition-colors hover:text-gold-soft"
+            >
+              {animal.status === "disponible" ? "Nous contacter" : "Poser une question"}
+            </Link>
+          ) : null}
+        </div>
       </div>
     </article>
   );

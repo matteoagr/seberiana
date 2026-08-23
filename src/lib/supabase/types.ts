@@ -96,3 +96,7 @@ export type GalleryImage = {
   src: string;
   alt: string;
 };
+
+export type AnimalDetailModel = AnimalCardModel & {
+  photos: GalleryImage[];
+};

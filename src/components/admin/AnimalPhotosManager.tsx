@@ -36,7 +36,8 @@ export function AnimalPhotosManager({
         <h2 className="font-serif text-2xl text-foreground">Photos de {animalName}</h2>
         <p className="mt-1 text-sm text-foreground-muted">
           Ajoutez autant de photos que vous voulez. La photo « Couverture » s’affiche
-          sur l’annuaire et les cartes du site.
+          sur l’annuaire ; toutes les photos apparaissent sur la fiche publique de
+          l’animal.
         </p>
       </div>
 

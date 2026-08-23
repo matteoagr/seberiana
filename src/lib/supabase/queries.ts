@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { animalCoverUrl, litterCoverUrl, resolveMediaUrl } from "@/lib/supabase/storage";
 import type {
   AnimalCardModel,
+  AnimalDetailModel,
   AnimalRow,
   AnimalStatus,
   GalleryImage,
@@ -114,6 +115,76 @@ export async function getAvailableCount(): Promise<number> {
   } catch (error) {
     console.error("getAvailableCount", error);
     return 0;
+  }
+}
+
+export async function getPublicAnimalById(
+  id: string,
+): Promise<AnimalDetailModel | null> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("animals")
+      .select(animalSelect)
+      .eq("id", id)
+      .eq("published", true)
+      .eq("archived", false)
+      .maybeSingle();
+
+    if (error) {
+      console.error("getPublicAnimalById", error.message);
+      return null;
+    }
+    if (!data) return null;
+
+    const animal = mapAnimal(data as AnimalWithParents);
+
+    const { data: media, error: mediaError } = await supabase
+      .from("media")
+      .select("*")
+      .eq("animal_id", id)
+      .order("is_cover", { ascending: false })
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true });
+
+    if (mediaError) {
+      console.error("getPublicAnimalById media", mediaError.message);
+    }
+
+    const photosFromMedia = ((media as MediaRow[] | null) ?? []).map((row) => ({
+      src: resolveMediaUrl(row.storage_path, "animals"),
+      alt: row.alt_text || animal.name,
+    }));
+
+    const photos =
+      photosFromMedia.length > 0
+        ? photosFromMedia
+        : [{ src: animal.image, alt: animal.name }];
+
+    return { ...animal, photos };
+  } catch (error) {
+    console.error("getPublicAnimalById", error);
+    return null;
+  }
+}
+
+export async function getPublicAnimalIds(): Promise<string[]> {
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("animals")
+      .select("id")
+      .eq("published", true)
+      .eq("archived", false);
+
+    if (error) {
+      console.error("getPublicAnimalIds", error.message);
+      return [];
+    }
+    return (data ?? []).map((row) => row.id as string);
+  } catch (error) {
+    console.error("getPublicAnimalIds", error);
+    return [];
   }
 }
 
