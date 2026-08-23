@@ -11,6 +11,23 @@ export function Footer() {
             Un élevage familial où chiens et chats grandissent entourés de soin
             et de transparence.
           </p>
+          <p className="text-sm text-foreground-muted">
+            <a
+              href="mailto:elevagesiberania@gmail.com"
+              className="transition-colors hover:text-gold-soft"
+            >
+              elevagesiberania@gmail.com
+            </a>
+            <span className="mx-2 text-line" aria-hidden>
+              ·
+            </span>
+            <a
+              href="tel:+33606524948"
+              className="transition-colors hover:text-gold-soft"
+            >
+              06 06 52 49 48
+            </a>
+          </p>
         </div>
 
         <div>

@@ -30,23 +30,35 @@ export default function ContactPage() {
           />
           <dl className="mt-10 space-y-6 text-sm">
             <div>
-              <dt className="font-serif text-gold/90">
-                Courriel
-              </dt>
-              <dd className="mt-2 text-foreground-muted">contact@siberiana.fr</dd>
+              <dt className="font-serif text-gold/90">Courriel</dt>
+              <dd className="mt-2">
+                <a
+                  href="mailto:elevagesiberania@gmail.com"
+                  className="text-foreground-muted transition-colors hover:text-gold-soft"
+                >
+                  elevagesiberania@gmail.com
+                </a>
+              </dd>
             </div>
             <div>
-              <dt className="font-serif text-gold/90">
-                Visites
-              </dt>
+              <dt className="font-serif text-gold/90">Téléphone</dt>
+              <dd className="mt-2">
+                <a
+                  href="tel:+33606524948"
+                  className="text-foreground-muted transition-colors hover:text-gold-soft"
+                >
+                  06 06 52 49 48
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="font-serif text-gold/90">Visites</dt>
               <dd className="mt-2 text-foreground-muted">
                 Sur rendez-vous, pour le calme des portées.
               </dd>
             </div>
             <div>
-              <dt className="font-serif text-gold/90">
-                Délai de réponse
-              </dt>
+              <dt className="font-serif text-gold/90">Délai de réponse</dt>
               <dd className="mt-2 text-foreground-muted">
                 Sous 48 à 72 h ouvrées, en général.
               </dd>
