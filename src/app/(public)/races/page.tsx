@@ -1,23 +1,16 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { buildPageMetadata } from "@/lib/seo";
+import { BreedTeaser } from "@/components/BreedTeaser";
 import { PageHero } from "@/components/PageHero";
+import { SectionHeading } from "@/components/SectionHeading";
 import { breedProfiles } from "@/data/breeds";
-import { speciesLabels } from "@/lib/labels";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildPageMetadata({
   title: "Fiches races — Pomsky, Shiba Inu, Teckel, Maine Coon",
   description:
-    "Découvrez les races élevées au Domaine Sibérania : caractère, entretien, taille et informations LOF/LOOF pour chaque race.",
-  alternates: {
-    canonical: "/races",
-  },
-  openGraph: {
-    title: "Fiches races | Domaine Sibérania",
-    description:
-      "Caractéristiques complètes des races Pomsky, Shiba Inu, Teckel et Maine Coon élevées en famille.",
-    url: "/races",
-  },
-};
+    "Fiches races du Domaine Sibérania : caractère, entretien, taille et informations LOF/LOOF pour Pomsky, Shiba Inu, Teckel et Maine Coon.",
+  path: "/races",
+});
 
 export default function RacesIndexPage() {
   const canin = breedProfiles.filter((b) => b.species === "canin");
@@ -26,80 +19,51 @@ export default function RacesIndexPage() {
   return (
     <>
       <PageHero
+        compact
         eyebrow="Nos races"
         title="Fiches races"
-        description="Caractéristiques, tempérament et élevage pour chaque race présente au Domaine Sibérania."
+        description="Caractéristiques, tempérament et élevage pour chaque race présente au Domaine Sibérania — avec un exemple photo pour visualiser."
         image="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=2000&q=80"
         imageAlt="Chiens et chats au domaine"
       />
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8">
-        <p className="reveal max-w-3xl text-base leading-relaxed text-foreground/85 sm:text-lg">
-          Chaque fiche détaille l&apos;origine, le caractère, les besoins et la
-          situation LOF/LOOF au sein de notre élevage familial. Retrouvez aussi les
-          jeunes disponibles dans l&apos;annuaire.
+      <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
+        <p className="max-w-3xl text-base leading-relaxed text-foreground/85 sm:text-lg">
+          Chaque fiche détaille l’origine, le caractère, les besoins et la situation LOF/LOOF
+          au sein de notre élevage familial. Retrouvez aussi les jeunes disponibles dans
+          l’annuaire.
         </p>
 
-        <div className="mt-14 grid gap-12 lg:grid-cols-2">
-          <div>
-            <h2 className="reveal font-serif text-2xl text-gold-soft">
-              Races canines
-            </h2>
-            <ul className="mt-6 space-y-4">
-              {canin.map((breed) => (
-                <li key={breed.slug}>
-                  <Link
-                    href={`/races/${breed.slug}`}
-                    className="reveal group block rounded-2xl border border-line bg-background-elevated/50 p-5 transition-colors hover:border-gold/30"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <h3 className="font-serif text-xl text-foreground group-hover:text-gold-soft">
-                          {breed.name}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
-                          {breed.heroDescription}
-                        </p>
-                      </div>
-                      <span className="shrink-0 text-xs uppercase tracking-wide text-gold/70">
-                        {breed.lofAtKennel === "lof" ? "LOF" : "Non LOF"}
-                      </span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="mt-14">
+          <SectionHeading
+            size="section"
+            eyebrow="Canin"
+            title="Nos races de chiens"
+            description="Pomsky (race principale), Shiba Inu et Teckel."
+          />
+          <ul className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {canin.map((breed, index) => (
+              <li key={breed.slug}>
+                <BreedTeaser breed={breed} priority={index === 0} />
+              </li>
+            ))}
+          </ul>
+        </div>
 
-          <div>
-            <h2 className="reveal font-serif text-2xl text-gold-soft">
-              Races félines
-            </h2>
-            <ul className="mt-6 space-y-4">
-              {felin.map((breed) => (
-                <li key={breed.slug}>
-                  <Link
-                    href={`/races/${breed.slug}`}
-                    className="reveal group block rounded-2xl border border-line bg-background-elevated/50 p-5 transition-colors hover:border-gold/30"
-                  >
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <h3 className="font-serif text-xl text-foreground group-hover:text-gold-soft">
-                          {breed.name}
-                        </h3>
-                        <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
-                          {breed.heroDescription}
-                        </p>
-                      </div>
-                      <span className="shrink-0 text-xs uppercase tracking-wide text-gold/70">
-                        {speciesLabels[breed.species]}
-                      </span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="mt-16 border-t border-line pt-14">
+          <SectionHeading
+            size="section"
+            eyebrow="Félin"
+            title="Notre race de chats"
+            description="Maine Coon — le gentle giant du domaine."
+          />
+          <ul className="mt-10 grid max-w-md gap-10 sm:grid-cols-1">
+            {felin.map((breed) => (
+              <li key={breed.slug}>
+                <BreedTeaser breed={breed} />
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </>

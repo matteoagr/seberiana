@@ -1,14 +1,58 @@
+import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { BreedTeaser } from "@/components/BreedTeaser";
 import { ButtonLink } from "@/components/ButtonLink";
+import { GalleryGrid } from "@/components/GalleryGrid";
+import { FaqJsonLd, SiteJsonLd } from "@/components/JsonLd";
 import { Logo } from "@/components/Logo";
 import { SectionHeading } from "@/components/SectionHeading";
-import { getAvailableCount } from "@/lib/supabase/queries";
+import { breedProfiles } from "@/data/breeds";
+import { buildPageMetadata } from "@/lib/seo";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import { getAvailableCount, getHomeGalleryImages } from "@/lib/supabase/queries";
+
+export const metadata: Metadata = buildPageMetadata({
+  title: `${SITE_NAME} — Élevage familial Pomsky, Shiba, Teckel & Maine Coon`,
+  description: SITE_DESCRIPTION,
+  path: "/",
+  absoluteTitle: true,
+});
+
+const HOME_FAQ = [
+  {
+    question: "Quelles races sont élevées au Domaine Sibérania ?",
+    answer:
+      "Nous élevons des Pomsky, Shiba Inu et Teckel côté canin, ainsi que des Maine Coon côté félin. Le Pomsky est notre race principale. Les conditions LOF/LOOF varient selon la race : consultez chaque fiche race pour le détail.",
+  },
+  {
+    question: "Comment savoir si un chiot ou un chaton est disponible ?",
+    answer:
+      "L’annuaire liste tous les profils publiés avec leur statut (disponible, réservé ou adopté). Les portées regroupent les petits d’une même naissance avec leurs parents.",
+  },
+  {
+    question: "Comment se déroule une adoption ?",
+    answer:
+      "Vous consultez l’annuaire ou les portées, puis vous nous contactez. Nous échangeons sur votre projet, le profil de l’animal et le suivi. Chaque départ est préparé avec transparence.",
+  },
+  {
+    question: "Où se trouve l’élevage ?",
+    answer:
+      "Le Domaine Sibérania est un élevage familial en France. Contactez-nous pour organiser une visite ou en savoir plus sur les prochaines portées.",
+  },
+] as const;
 
 export default async function HomePage() {
-  const availableCount = await getAvailableCount();
+  const [availableCount, gallery] = await Promise.all([
+    getAvailableCount(),
+    getHomeGalleryImages(),
+  ]);
 
   return (
     <>
+      <SiteJsonLd />
+      <FaqJsonLd items={[...HOME_FAQ]} />
+
       <section className="relative isolate flex min-h-[100svh] items-end overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <Image
@@ -70,7 +114,7 @@ export default async function HomePage() {
           <div className="relative min-h-[340px] lg:min-h-[480px]">
             <Image
               src="https://images.unsplash.com/photo-1605568427561-40dd23c2acea?auto=format&fit=crop&w=1400&q=80"
-              alt="Élevage canin Sibérania"
+              alt="Élevage canin Sibérania — Pomsky, Shiba Inu et Teckel"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -85,8 +129,10 @@ export default async function HomePage() {
                 Nos chiots grandissent ici, entourés de soin et de jeu.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <ButtonLink href="/annuaire?espece=canin">Annuaire chiens</ButtonLink>
-                <ButtonLink href="/elevage-canin" variant="ghost">
+                <ButtonLink href="/annuaire?espece=canin" onMedia>
+                  Annuaire chiens
+                </ButtonLink>
+                <ButtonLink href="/elevage-canin" variant="ghost" onMedia>
                   En savoir plus
                 </ButtonLink>
               </div>
@@ -96,7 +142,7 @@ export default async function HomePage() {
           <div className="relative min-h-[340px] lg:min-h-[480px]">
             <Image
               src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=1400&q=80"
-              alt="Élevage félin Sibérania"
+              alt="Élevage félin Sibérania — Maine Coon"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -111,13 +157,216 @@ export default async function HomePage() {
                 Des chatons doux et curieux, dans un cadre calme et familial.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <ButtonLink href="/annuaire?espece=felin">Annuaire chats</ButtonLink>
-                <ButtonLink href="/elevage-felin" variant="ghost">
+                <ButtonLink href="/annuaire?espece=felin" onMedia>
+                  Annuaire chats
+                </ButtonLink>
+                <ButtonLink href="/elevage-felin" variant="ghost" onMedia>
                   En savoir plus
                 </ButtonLink>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {gallery.length > 0 ? (
+        <section className="border-b border-line bg-background-elevated/30">
+          <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+            <SectionHeading
+              eyebrow="La vie au domaine"
+              title="Au fil des jours"
+              description="Quelques images du quotidien : chiots, chatons, parents et moments partagés — pour mieux sentir l’ambiance de l’élevage."
+            />
+            <div className="mt-12">
+              <GalleryGrid images={gallery} limit={4} variant="preview" />
+            </div>
+            <div className="mt-10">
+              <ButtonLink href="/galerie" variant="ghost">
+                Voir toute la galerie
+              </ButtonLink>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-2 lg:gap-14">
+          <div className="relative min-h-[280px] overflow-hidden sm:min-h-[360px]">
+            <Image
+              src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80"
+              alt="Chiots socialisés au Domaine Sibérania"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
+          <div>
+            <SectionHeading
+              eyebrow="Notre approche"
+              title="Un élevage familial, transparent"
+              description="Au Domaine Sibérania, chiens et chats grandissent dans un cadre de vie réel — pas en batterie, pas en vitrine."
+            />
+            <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/85">
+              <p>
+                Nous élevons des <strong className="font-medium text-foreground">Pomsky</strong>,{" "}
+                <strong className="font-medium text-foreground">Shiba Inu</strong>,{" "}
+                <strong className="font-medium text-foreground">Teckel</strong> et{" "}
+                <strong className="font-medium text-foreground">Maine Coon</strong> avec un suivi
+                vétérinaire, une socialisation progressive et une sélection attentive des familles.
+              </p>
+              <p>
+                Chaque profil publié dans l’annuaire indique clairement le statut — disponible,
+                réservé ou adopté — ainsi que les parents et la portée lorsque l’information est
+                connue. Notre objectif : vous donner les éléments pour choisir en confiance.
+              </p>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/elevage-canin">Élevage canin</ButtonLink>
+              <ButtonLink href="/elevage-felin" variant="ghost">
+                Élevage félin
+              </ButtonLink>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-background-elevated/30">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <SectionHeading
+            eyebrow="Guides races"
+            title="Mieux connaître nos races"
+            description="Tempérament, entretien, taille et statut LOF/LOOF au sein du domaine — une photo d’exemple et l’essentiel pour chaque race."
+          />
+          <ul className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {breedProfiles.map((breed, index) => (
+              <li key={breed.slug}>
+                <BreedTeaser breed={breed} priority={index < 2} />
+              </li>
+            ))}
+          </ul>
+          <div className="mt-12">
+            <ButtonLink href="/races" variant="ghost">
+              Toutes les fiches races
+            </ButtonLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl items-start gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+          <div>
+            <SectionHeading
+              eyebrow="Adoption"
+              title="Comment ça se passe ?"
+              description="Un parcours simple, sans précipitation — pour bien matcher famille et animal."
+            />
+            <ol className="mt-12 max-w-3xl space-y-8">
+            <li className="flex gap-5">
+              <span className="font-serif text-2xl text-gold/80" aria-hidden>
+                1
+              </span>
+              <div>
+                <h3 className="font-serif text-xl text-foreground">Parcourir les profils</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  Consultez l’
+                  <Link href="/annuaire" className="text-gold-soft hover:underline">
+                    annuaire
+                  </Link>{" "}
+                  et les{" "}
+                  <Link href="/portees" className="text-gold-soft hover:underline">
+                    portées
+                  </Link>{" "}
+                  pour voir les disponibilités, les parents et l’histoire de chaque jeune.
+                </p>
+              </div>
+            </li>
+            <li className="flex gap-5">
+              <span className="font-serif text-2xl text-gold/80" aria-hidden>
+                2
+              </span>
+              <div>
+                <h3 className="font-serif text-xl text-foreground">Nous écrire</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  Via la page{" "}
+                  <Link href="/contact" className="text-gold-soft hover:underline">
+                    contact
+                  </Link>
+                  , présentez votre foyer et ce que vous recherchez. Nous répondons avec soin.
+                </p>
+              </div>
+            </li>
+            <li className="flex gap-5">
+              <span className="font-serif text-2xl text-gold/80" aria-hidden>
+                3
+              </span>
+              <div>
+                <h3 className="font-serif text-xl text-foreground">Préparer l’arrivée</h3>
+                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                  Échanges, conseils et organisation du départ : chaque adoption est suivie jusqu’à
+                  l’installation dans votre famille.
+                </p>
+              </div>
+            </li>
+          </ol>
+          </div>
+          <div className="relative min-h-[320px] overflow-hidden lg:min-h-full lg:sticky lg:top-28">
+            <Image
+              src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=80"
+              alt="Jeune compagnon prêt à rejoindre sa famille"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-background-elevated/30">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <SectionHeading
+            eyebrow="Questions fréquentes"
+            title="Avant de nous écrire"
+            description="Quelques réponses utiles pour mieux comprendre l’élevage et le parcours d’adoption."
+          />
+          <div className="mt-10 max-w-3xl divide-y divide-line/60">
+            {HOME_FAQ.map((item) => (
+              <details key={item.question} className="group py-5">
+                <summary className="cursor-pointer list-none font-serif text-lg text-foreground marker:content-none [&::-webkit-details-marker]:hidden">
+                  <span className="flex items-start justify-between gap-4">
+                    {item.question}
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 16 16"
+                      className="mt-1 h-4 w-4 shrink-0 text-gold/70 transition-transform duration-200 group-open:rotate-90"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    >
+                      <path
+                        d="M6 4l4 4-4 4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
+                  {item.answer}
+                </p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-16 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-20">
+          <SectionHeading
+            eyebrow="Contact"
+            title="Parlons de votre projet"
+            description="Une question sur une race, une portée ou un profil ? Écrivez-nous — on lit chaque message."
+          />
+          <ButtonLink href="/contact">Nous contacter</ButtonLink>
         </div>
       </section>
     </>

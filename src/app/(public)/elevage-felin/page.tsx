@@ -1,76 +1,108 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import { buildPageMetadata } from "@/lib/seo";
 import { AnimalCard } from "@/components/AnimalCard";
-import { BreedCardLink } from "@/components/BreedCardLink";
+import { BreedSectionVisual } from "@/components/BreedSectionVisual";
 import { ButtonLink } from "@/components/ButtonLink";
-import { GalleryGrid } from "@/components/GalleryGrid";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getBreedBySlug } from "@/data/breeds";
-import { getBreeders, getGalleryImages } from "@/lib/supabase/queries";
+import { getBreeders } from "@/lib/supabase/queries";
 
-export const metadata: Metadata = {
-  title: "Élevage Félin",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Élevage félin Maine Coon",
   description:
-    "Maine Coon du Domaine Sibérania — élevage familial, bien-être et chatons suivis de près.",
-};
+    "Élevage félin familial de Maine Coon au Domaine Sibérania : bien-être, socialisation et chatons suivis jusqu’à l’adoption.",
+  path: "/elevage-felin",
+});
 
 export default async function ElevageFelinPage() {
-  const [founders, gallery] = await Promise.all([
-    getBreeders("felin"),
-    getGalleryImages("elevage_felin"),
-  ]);
-
+  const founders = await getBreeders("felin");
   const maineCoonBreed = getBreedBySlug("maine-coon")!;
 
   return (
     <>
       <PageHero
+        compact
         eyebrow="Nos chats"
         title="Maine Coon"
         description="Des chatons au tempérament doux, élevés dans un cadre calme et familial."
-        image="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?auto=format&fit=crop&w=2000&q=80"
-        imageAlt="Maine Coon dans son environnement"
+        image={maineCoonBreed.heroImage}
+        imageAlt="Maine Coon — exemple de la race au Domaine Sibérania"
       />
 
       <section className="border-b border-line bg-background-elevated/35">
-        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p className="max-w-xl text-sm leading-relaxed text-foreground-muted">
-            Chatons disponibles ou réservés ? L’annuaire vous dit tout, statut compris.
-          </p>
+        <div className="mx-auto flex max-w-6xl flex-col gap-5 px-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-12">
+          <div className="max-w-xl">
+            <p className="text-xs font-medium uppercase tracking-[0.14em] text-gold/85">
+              Adopter un chaton
+            </p>
+            <p className="mt-2 text-base leading-relaxed text-foreground/90">
+              Chatons disponibles ou réservés ? L’annuaire vous dit tout, statut compris.
+            </p>
+          </div>
           <ButtonLink href="/annuaire?espece=felin">Annuaire chats</ButtonLink>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
-        <SectionHeading
-          eyebrow="Le quotidien"
-          title="Un espace pensé pour eux"
-          description="Hauteur, jeux, coins repos — tout est aménagé pour le bien-être de nos Maine Coon."
-        />
-        <div className="mt-12">
-          {gallery.length > 0 ? (
-            <GalleryGrid images={gallery} />
-          ) : (
-            <p className="text-sm text-foreground-muted">Galerie bientôt enrichie.</p>
-          )}
+      <section className="border-b border-line">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-14">
+          <div className="relative min-h-[260px] overflow-hidden sm:min-h-[340px]">
+            <Image
+              src="https://images.unsplash.com/photo-1573865526731-10659f70035b?auto=format&fit=crop&w=1400&q=80"
+              alt="Chaton Maine Coon dans un intérieur calme"
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
+          <div>
+            <SectionHeading
+              size="page"
+              eyebrow="Élevage félin"
+              title="Maine Coon élevés en famille"
+              description="Nos Maine Coon grandissent dans un environnement calme, avec beaucoup de contact humain et un suivi attentif."
+            />
+            <div className="mt-6 max-w-xl space-y-4 text-[15px] leading-7 text-foreground/85 sm:text-base">
+              <p>
+                Le <strong className="font-medium text-foreground">Maine Coon</strong> est la race
+                féline du Domaine Sibérania. Nous privilégions le tempérament, la santé et une
+                socialisation douce dès les premières semaines — pour des chatons prêts à rejoindre
+                un foyer.
+              </p>
+              <p>
+                Découvrez les caractéristiques de la race sur notre{" "}
+                <a href="/races/maine-coon" className="text-gold-soft hover:underline">
+                  fiche Maine Coon
+                </a>{" "}
+                et les disponibilités dans l’
+                <a href="/annuaire?espece=felin" className="text-gold-soft hover:underline">
+                  annuaire chats
+                </a>
+                .
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 pb-16 sm:px-8 sm:pb-24">
-        <SectionHeading eyebrow="Maine Coon" title="Nos reproducteurs" />
-        <BreedCardLink breed={maineCoonBreed} />
+      <BreedSectionVisual
+        breed={maineCoonBreed}
+        title="Nos reproducteurs"
+        description="Les parents de nos portées, visibles dans l’annuaire lorsqu’ils sont publiés."
+      >
         {founders.length > 0 ? (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          <div className="grid gap-6 sm:grid-cols-2">
             {founders.map((animal) => (
               <AnimalCard key={animal.id} animal={animal} />
             ))}
           </div>
         ) : (
-          <p className="mt-8 text-sm text-foreground-muted">
+          <p className="text-sm text-foreground-muted">
             Aucun reproducteur publié pour le moment.
           </p>
         )}
-      </section>
+      </BreedSectionVisual>
     </>
   );
 }

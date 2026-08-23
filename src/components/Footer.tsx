@@ -1,4 +1,9 @@
 import Link from "next/link";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_TEL,
+} from "@/lib/site";
 import { Logo } from "./Logo";
 
 export function Footer() {
@@ -13,19 +18,19 @@ export function Footer() {
           </p>
           <p className="text-sm text-foreground-muted">
             <a
-              href="mailto:elevagesiberania@gmail.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="transition-colors hover:text-gold-soft"
             >
-              elevagesiberania@gmail.com
+              {CONTACT_EMAIL}
             </a>
             <span className="mx-2 text-line" aria-hidden>
               ·
             </span>
             <a
-              href="tel:+33606524948"
+              href={`tel:${CONTACT_PHONE_TEL}`}
               className="transition-colors hover:text-gold-soft"
             >
-              06 06 52 49 48
+              {CONTACT_PHONE_DISPLAY}
             </a>
           </p>
         </div>
@@ -43,6 +48,11 @@ export function Footer() {
             <li>
               <Link href="/portees" className="transition-colors hover:text-gold-soft">
                 Portées
+              </Link>
+            </li>
+            <li>
+              <Link href="/galerie" className="transition-colors hover:text-gold-soft">
+                Galerie
               </Link>
             </li>
             <li>

@@ -9,6 +9,7 @@ const links = [
   { href: "/", label: "Accueil" },
   { href: "/annuaire", label: "Annuaire" },
   { href: "/portees", label: "Portées" },
+  { href: "/galerie", label: "Galerie" },
   { href: "/elevage-canin", label: "Chiens" },
   { href: "/elevage-felin", label: "Chats" },
   { href: "/contact", label: "Contact" },

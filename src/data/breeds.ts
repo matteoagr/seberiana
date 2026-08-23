@@ -37,7 +37,7 @@ export const breedProfiles: BreedProfile[] = [
     heroDescription:
       "Un compagnon compact et expressif, né du croisement Husky et Spitz — notre race de cœur au domaine.",
     heroImage:
-      "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=2000&q=80",
+      "https://images.unsplash.com/photo-1568572933382-74d440642117?auto=format&fit=crop&w=2000&q=80",
     lofAtKennel: "non-lof",
     lofLabel: "Non inscrit LOF (race de croisement)",
     intro:
@@ -95,7 +95,7 @@ export const breedProfiles: BreedProfile[] = [
     heroDescription:
       "Un chien japonais au caractère affirmé, élégant et fidèle — élevé au domaine avec des reproducteurs inscrits LOF.",
     heroImage:
-      "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=2000&q=80",
+      "https://images.unsplash.com/photo-1611250282006-4484dd3fba6f?auto=format&fit=crop&w=2000&q=80",
     lofAtKennel: "lof",
     lofLabel: "Reproducteurs inscrits LOF",
     intro:
@@ -153,7 +153,7 @@ export const breedProfiles: BreedProfile[] = [
     heroDescription:
       "Un compagnon courageux et affectueux, au corps allongé unique — présent au domaine en lignée non LOF.",
     heroImage:
-      "https://images.unsplash.com/photo-1611003228941-98852ba62227?auto=format&fit=crop&w=2000&q=80",
+      "https://images.unsplash.com/photo-1612536057832-2ff7ead58194?auto=format&fit=crop&w=2000&q=80",
     lofAtKennel: "non-lof",
     lofLabel: "Non inscrit LOF au domaine",
     intro:
@@ -211,7 +211,7 @@ export const breedProfiles: BreedProfile[] = [
     heroDescription:
       "Le « gentle giant » du monde félin — un chat imposant, doux et sociable, élevé au rythme du domaine.",
     heroImage:
-      "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=2000&q=80",
+      "https://images.unsplash.com/photo-1615789591457-74a63395c990?auto=format&fit=crop&w=2000&q=80",
     lofAtKennel: "non-lof",
     lofLabel: "Non inscrit LOOF au domaine",
     intro:
