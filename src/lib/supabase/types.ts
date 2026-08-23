@@ -97,6 +97,16 @@ export type GalleryImage = {
   alt: string;
 };
 
+export type ParentPreview = {
+  id: string;
+  name: string;
+  breed: string;
+  image: string;
+  published: boolean;
+};
+
 export type AnimalDetailModel = AnimalCardModel & {
   photos: GalleryImage[];
+  sire: ParentPreview | null;
+  dam: ParentPreview | null;
 };

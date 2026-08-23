@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AnimalGallery } from "@/components/AnimalGallery";
@@ -10,6 +11,7 @@ import {
   speciesLabels,
 } from "@/lib/labels";
 import { getPublicAnimalById } from "@/lib/supabase/queries";
+import type { ParentPreview } from "@/lib/supabase/types";
 
 type PageProps = {
   params: Promise<{ id: string }>;
@@ -40,6 +42,55 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [{ url: animal.photos[0]?.src || animal.image, alt: animal.name }],
     },
   };
+}
+
+function ParentCard({
+  parent,
+  role,
+}: {
+  parent: ParentPreview;
+  role: "Père" | "Mère";
+}) {
+  const inner = (
+    <>
+      <div className="relative aspect-[4/5] overflow-hidden">
+        <Image
+          src={parent.image}
+          alt={`${role} : ${parent.name}`}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          sizes="(max-width: 768px) 45vw, 220px"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
+        <p className="absolute top-3 left-3 rounded-full bg-[#14110e]/90 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/35">
+          {role}
+        </p>
+        <div className="absolute inset-x-0 bottom-0 p-4">
+          <p className="font-serif text-lg text-foreground">{parent.name}</p>
+          {parent.breed ? (
+            <p className="mt-0.5 text-xs text-foreground-muted">{parent.breed}</p>
+          ) : null}
+        </div>
+      </div>
+    </>
+  );
+
+  if (parent.published) {
+    return (
+      <Link
+        href={`/annuaire/${parent.id}`}
+        className="group overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40 transition-colors hover:border-gold/35"
+      >
+        {inner}
+      </Link>
+    );
+  }
+
+  return (
+    <div className="overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40">
+      {inner}
+    </div>
+  );
 }
 
 export default async function AnimalDetailPage({ params }: PageProps) {
@@ -74,11 +125,9 @@ export default async function AnimalDetailPage({ params }: PageProps) {
       label: "LOF / LOOF",
       value: animal.isLof ? "Oui" : "Non",
     },
-    {
-      label: "Parents",
-      value: animal.parentsLabel || animal.lineage || "—",
-    },
   ];
+
+  const hasParents = Boolean(animal.sire || animal.dam);
 
   return (
     <article className="pb-20">
@@ -155,6 +204,23 @@ export default async function AnimalDetailPage({ params }: PageProps) {
           </div>
         </div>
       </section>
+
+      {hasParents ? (
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:px-8">
+          <h2 className="font-serif text-2xl text-foreground sm:text-3xl">
+            Les parents
+          </h2>
+          <p className="mt-2 max-w-xl text-sm text-foreground-muted">
+            {animal.parentsLabel
+              ? `Lignée ${animal.parentsLabel}.`
+              : "Père et mère de cette portée."}
+          </p>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:max-w-2xl">
+            {animal.sire ? <ParentCard parent={animal.sire} role="Père" /> : null}
+            {animal.dam ? <ParentCard parent={animal.dam} role="Mère" /> : null}
+          </div>
+        </section>
+      ) : null}
     </article>
   );
 }

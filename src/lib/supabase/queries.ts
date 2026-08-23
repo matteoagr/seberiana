@@ -15,9 +15,19 @@ import type {
   Species,
 } from "@/lib/supabase/types";
 
+type ParentJoin = {
+  id: string;
+  name: string;
+  breed?: string;
+  cover_image_path?: string | null;
+  cover_url?: string | null;
+  published?: boolean;
+  archived?: boolean;
+};
+
 type AnimalWithParents = AnimalRow & {
-  sire: { id: string; name: string } | null;
-  dam: { id: string; name: string } | null;
+  sire: ParentJoin | null;
+  dam: ParentJoin | null;
 };
 
 function mapAnimal(row: AnimalWithParents): AnimalCardModel {
@@ -62,6 +72,24 @@ const animalSelect = `
   sire:animals!sire_id(id, name),
   dam:animals!dam_id(id, name)
 `;
+
+const animalDetailSelect = `
+  *,
+  sire:animals!sire_id(id, name, breed, cover_image_path, cover_url, published, archived),
+  dam:animals!dam_id(id, name, breed, cover_image_path, cover_url, published, archived)
+`;
+
+function mapParent(parent: ParentJoin | null | undefined): import("@/lib/supabase/types").ParentPreview | null {
+  if (!parent?.id || !parent.name) return null;
+  if (parent.archived) return null;
+  return {
+    id: parent.id,
+    name: parent.name,
+    breed: parent.breed || "",
+    image: animalCoverUrl(parent),
+    published: Boolean(parent.published),
+  };
+}
 
 export async function getAnimals(filters?: {
   species?: Species;
@@ -125,7 +153,7 @@ export async function getPublicAnimalById(
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("animals")
-      .select(animalSelect)
+      .select(animalDetailSelect)
       .eq("id", id)
       .eq("published", true)
       .eq("archived", false)
@@ -137,7 +165,8 @@ export async function getPublicAnimalById(
     }
     if (!data) return null;
 
-    const animal = mapAnimal(data as AnimalWithParents);
+    const row = data as AnimalWithParents;
+    const animal = mapAnimal(row);
 
     const { data: media, error: mediaError } = await supabase
       .from("media")
@@ -151,9 +180,9 @@ export async function getPublicAnimalById(
       console.error("getPublicAnimalById media", mediaError.message);
     }
 
-    const photosFromMedia = ((media as MediaRow[] | null) ?? []).map((row) => ({
-      src: resolveMediaUrl(row.storage_path, "animals"),
-      alt: row.alt_text || animal.name,
+    const photosFromMedia = ((media as MediaRow[] | null) ?? []).map((rowMedia) => ({
+      src: resolveMediaUrl(rowMedia.storage_path, "animals"),
+      alt: rowMedia.alt_text || animal.name,
     }));
 
     const photos =
@@ -161,7 +190,12 @@ export async function getPublicAnimalById(
         ? photosFromMedia
         : [{ src: animal.image, alt: animal.name }];
 
-    return { ...animal, photos };
+    return {
+      ...animal,
+      photos,
+      sire: mapParent(row.sire),
+      dam: mapParent(row.dam),
+    };
   } catch (error) {
     console.error("getPublicAnimalById", error);
     return null;
