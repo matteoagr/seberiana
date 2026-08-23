@@ -40,8 +40,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${display.variable} ${body.variable} h-full`}>
-      <body className="bg-domaine grain min-h-full flex flex-col antialiased">
+    <html
+      lang="fr"
+      className={`${display.variable} ${body.variable} h-full`}
+      suppressHydrationWarning
+    >
+      <body
+        className="bg-domaine grain min-h-full flex flex-col antialiased"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

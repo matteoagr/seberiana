@@ -67,28 +67,119 @@ function sortByAvailability(animals: AnimalCardModel[]): AnimalCardModel[] {
   });
 }
 
-const animalSelect = `
-  *,
-  sire:animals!sire_id(id, name),
-  dam:animals!dam_id(id, name)
-`;
+const animalSelect = "*";
 
-const animalDetailSelect = `
-  *,
-  sire:animals!sire_id(id, name, breed, cover_image_path, cover_url, published, archived),
-  dam:animals!dam_id(id, name, breed, cover_image_path, cover_url, published, archived)
-`;
+const parentFields =
+  "id, name, breed, cover_image_path, cover_url, published, archived";
 
-function mapParent(parent: ParentJoin | null | undefined): import("@/lib/supabase/types").ParentPreview | null {
-  if (!parent?.id || !parent.name) return null;
-  if (parent.archived) return null;
+function mapParent(
+  parent: ParentJoin | ParentJoin[] | null | undefined,
+): import("@/lib/supabase/types").ParentPreview | null {
+  const row = Array.isArray(parent) ? parent[0] : parent;
+  if (!row?.id || !row.name) return null;
+  if (row.archived) return null;
   return {
-    id: parent.id,
-    name: parent.name,
-    breed: parent.breed || "",
-    image: animalCoverUrl(parent),
-    published: Boolean(parent.published),
+    id: row.id,
+    name: row.name,
+    breed: row.breed || "",
+    image: animalCoverUrl(row),
+    published: Boolean(row.published),
   };
+}
+
+/** PostgREST self-joins on animals return [] — load parents by id instead. */
+async function fetchParentsByIds(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  sireId: string | null,
+  damId: string | null,
+): Promise<{ sire: ParentJoin | null; dam: ParentJoin | null }> {
+  const ids = [sireId, damId].filter((id): id is string => Boolean(id));
+  if (ids.length === 0) return { sire: null, dam: null };
+
+  const { data, error } = await supabase
+    .from("animals")
+    .select(parentFields)
+    .in("id", ids)
+    .eq("archived", false);
+
+  if (error) {
+    console.error("fetchParentsByIds", error.message);
+    return { sire: null, dam: null };
+  }
+
+  const byId = new Map(
+    ((data as ParentJoin[] | null) ?? []).map((parent) => [parent.id, parent]),
+  );
+
+  return {
+    sire: sireId ? byId.get(sireId) ?? null : null,
+    dam: damId ? byId.get(damId) ?? null : null,
+  };
+}
+
+/** Enfants publiés (père ou mère = animal courant). */
+async function fetchOffspringByParentId(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  parentId: string,
+): Promise<ParentJoin[]> {
+  const { data, error } = await supabase
+    .from("animals")
+    .select(parentFields)
+    .or(`sire_id.eq.${parentId},dam_id.eq.${parentId}`)
+    .eq("archived", false)
+    .eq("published", true)
+    .order("birth_date", { ascending: false, nullsFirst: false })
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("fetchOffspringByParentId", error.message);
+    return [];
+  }
+
+  return (data as ParentJoin[] | null) ?? [];
+}
+
+
+/** Frères/sœurs publiés de la même portée (hors animal courant). */
+async function fetchSiblingsByLitterId(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  litterId: string | null,
+  animalId: string,
+): Promise<{ siblings: ParentJoin[]; litterTitle: string | null }> {
+  if (!litterId) return { siblings: [], litterTitle: null };
+
+  const [sibRes, litterRes] = await Promise.all([
+    supabase
+      .from("animals")
+      .select(parentFields)
+      .eq("litter_id", litterId)
+      .neq("id", animalId)
+      .eq("archived", false)
+      .eq("published", true)
+      .order("name", { ascending: true }),
+    supabase
+      .from("litters")
+      .select("title")
+      .eq("id", litterId)
+      .maybeSingle(),
+  ]);
+
+  if (sibRes.error) {
+    console.error("fetchSiblingsByLitterId", sibRes.error.message);
+  }
+  if (litterRes.error) {
+    console.error("fetchSiblingsByLitterId litter", litterRes.error.message);
+  }
+
+  return {
+    siblings: (sibRes.data as ParentJoin[] | null) ?? [],
+    litterTitle: (litterRes.data as { title: string } | null)?.title ?? null,
+  };
+}
+
+/** Profil public : jeunes publiés, ou reproducteurs (même non listés dans l’annuaire). */
+function isPublicProfileVisible(animal: Pick<AnimalRow, "published" | "role">): boolean {
+  return animal.published || animal.role === "reproducteur";
 }
 
 export async function getAnimals(filters?: {
@@ -153,9 +244,8 @@ export async function getPublicAnimalById(
     const supabase = await createClient();
     const { data, error } = await supabase
       .from("animals")
-      .select(animalDetailSelect)
+      .select("*")
       .eq("id", id)
-      .eq("published", true)
       .eq("archived", false)
       .maybeSingle();
 
@@ -165,7 +255,15 @@ export async function getPublicAnimalById(
     }
     if (!data) return null;
 
-    const row = data as AnimalWithParents;
+    const base = data as AnimalRow;
+    if (!isPublicProfileVisible(base)) return null;
+
+    const [parents, offspringRows, siblingData] = await Promise.all([
+      fetchParentsByIds(supabase, base.sire_id, base.dam_id),
+      fetchOffspringByParentId(supabase, base.id),
+      fetchSiblingsByLitterId(supabase, base.litter_id, base.id),
+    ]);
+    const row: AnimalWithParents = { ...base, ...parents };
     const animal = mapAnimal(row);
 
     const { data: media, error: mediaError } = await supabase
@@ -193,8 +291,15 @@ export async function getPublicAnimalById(
     return {
       ...animal,
       photos,
-      sire: mapParent(row.sire),
-      dam: mapParent(row.dam),
+      sire: mapParent(parents.sire),
+      dam: mapParent(parents.dam),
+      offspring: offspringRows
+        .map((child) => mapParent(child))
+        .filter((child): child is NonNullable<typeof child> => child !== null),
+      siblings: siblingData.siblings
+        .map((sib) => mapParent(sib))
+        .filter((sib): sib is NonNullable<typeof sib> => sib !== null),
+      litterTitle: siblingData.litterTitle,
     };
   } catch (error) {
     console.error("getPublicAnimalById", error);

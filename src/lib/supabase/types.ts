@@ -109,4 +109,7 @@ export type AnimalDetailModel = AnimalCardModel & {
   photos: GalleryImage[];
   sire: ParentPreview | null;
   dam: ParentPreview | null;
+  offspring: ParentPreview[];
+  siblings: ParentPreview[];
+  litterTitle: string | null;
 };

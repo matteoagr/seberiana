@@ -44,52 +44,40 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function ParentCard({
-  parent,
-  role,
+function RelatedAnimalCard({
+  animal,
+  badge,
 }: {
-  parent: ParentPreview;
-  role: "Père" | "Mère";
+  animal: ParentPreview;
+  badge?: string;
 }) {
-  const inner = (
-    <>
+  return (
+    <Link
+      href={`/annuaire/${animal.id}`}
+      className="group overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40 transition-colors hover:border-gold/35"
+    >
       <div className="relative aspect-[4/5] overflow-hidden">
         <Image
-          src={parent.image}
-          alt={`${role} : ${parent.name}`}
+          src={animal.image}
+          alt={badge ? `${badge} : ${animal.name}` : animal.name}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           sizes="(max-width: 768px) 45vw, 220px"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
-        <p className="absolute top-3 left-3 rounded-full bg-[#14110e]/90 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/35">
-          {role}
-        </p>
+        {badge ? (
+          <p className="absolute top-3 left-3 rounded-full bg-[#14110e]/90 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/35">
+            {badge}
+          </p>
+        ) : null}
         <div className="absolute inset-x-0 bottom-0 p-4">
-          <p className="font-serif text-lg text-foreground">{parent.name}</p>
-          {parent.breed ? (
-            <p className="mt-0.5 text-xs text-foreground-muted">{parent.breed}</p>
+          <p className="font-serif text-lg text-foreground">{animal.name}</p>
+          {animal.breed ? (
+            <p className="mt-0.5 text-xs text-foreground-muted">{animal.breed}</p>
           ) : null}
         </div>
       </div>
-    </>
-  );
-
-  if (parent.published) {
-    return (
-      <Link
-        href={`/annuaire/${parent.id}`}
-        className="group overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40 transition-colors hover:border-gold/35"
-      >
-        {inner}
-      </Link>
-    );
-  }
-
-  return (
-    <div className="overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40">
-      {inner}
-    </div>
+    </Link>
   );
 }
 
@@ -128,6 +116,8 @@ export default async function AnimalDetailPage({ params }: PageProps) {
   ];
 
   const hasParents = Boolean(animal.sire || animal.dam);
+  const hasOffspring = animal.offspring.length > 0;
+  const hasSiblings = animal.siblings.length > 0;
 
   return (
     <article className="pb-20">
@@ -216,8 +206,46 @@ export default async function AnimalDetailPage({ params }: PageProps) {
               : "Père et mère de cette portée."}
           </p>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:max-w-2xl">
-            {animal.sire ? <ParentCard parent={animal.sire} role="Père" /> : null}
-            {animal.dam ? <ParentCard parent={animal.dam} role="Mère" /> : null}
+            {animal.sire ? (
+              <RelatedAnimalCard animal={animal.sire} badge="Père" />
+            ) : null}
+            {animal.dam ? (
+              <RelatedAnimalCard animal={animal.dam} badge="Mère" />
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {hasSiblings ? (
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:px-8">
+          <h2 className="font-serif text-2xl text-foreground sm:text-3xl">
+            Frères et sœurs
+          </h2>
+          <p className="mt-2 max-w-xl text-sm text-foreground-muted">
+            {animal.litterTitle
+              ? `Même portée : ${animal.litterTitle}.`
+              : "Compagnons de la même portée."}
+          </p>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {animal.siblings.map((sib) => (
+              <RelatedAnimalCard key={sib.id} animal={sib} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {hasOffspring ? (
+        <section className="mx-auto mt-16 max-w-6xl px-5 sm:px-8">
+          <h2 className="font-serif text-2xl text-foreground sm:text-3xl">
+            Les enfants
+          </h2>
+          <p className="mt-2 max-w-xl text-sm text-foreground-muted">
+            Descendance publiée de {animal.name}.
+          </p>
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {animal.offspring.map((child) => (
+              <RelatedAnimalCard key={child.id} animal={child} />
+            ))}
           </div>
         </section>
       ) : null}
