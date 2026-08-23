@@ -68,41 +68,53 @@ export async function getAnimals(filters?: {
   status?: AnimalStatus;
   role?: AnimalRow["role"];
 }): Promise<AnimalCardModel[]> {
-  const supabase = await createClient();
-  let query = supabase
-    .from("animals")
-    .select(animalSelect)
-    .eq("published", true)
-    .eq("archived", false);
+  try {
+    const supabase = await createClient();
+    let query = supabase
+      .from("animals")
+      .select(animalSelect)
+      .eq("published", true)
+      .eq("archived", false);
 
-  if (filters?.species) query = query.eq("species", filters.species);
-  if (filters?.breed) query = query.eq("breed", filters.breed);
-  if (filters?.status) query = query.eq("status", filters.status);
-  if (filters?.role) query = query.eq("role", filters.role);
+    if (filters?.species) query = query.eq("species", filters.species);
+    if (filters?.breed) query = query.eq("breed", filters.breed);
+    if (filters?.status) query = query.eq("status", filters.status);
+    if (filters?.role) query = query.eq("role", filters.role);
 
-  const { data, error } = await query.order("name", { ascending: true });
-  if (error) {
-    console.error("getAnimals", error.message);
+    const { data, error } = await query.order("name", { ascending: true });
+    if (error) {
+      console.error("getAnimals", error.message);
+      return [];
+    }
+
+    return sortByAvailability(
+      (data as AnimalWithParents[] | null)?.map(mapAnimal) ?? [],
+    );
+  } catch (error) {
+    console.error("getAnimals", error);
     return [];
   }
-
-  return sortByAvailability((data as AnimalWithParents[] | null)?.map(mapAnimal) ?? []);
 }
 
 export async function getAvailableCount(): Promise<number> {
-  const supabase = await createClient();
-  const { count, error } = await supabase
-    .from("animals")
-    .select("id", { count: "exact", head: true })
-    .eq("published", true)
-    .eq("archived", false)
-    .eq("status", "disponible");
+  try {
+    const supabase = await createClient();
+    const { count, error } = await supabase
+      .from("animals")
+      .select("id", { count: "exact", head: true })
+      .eq("published", true)
+      .eq("archived", false)
+      .eq("status", "disponible");
 
-  if (error) {
-    console.error("getAvailableCount", error.message);
+    if (error) {
+      console.error("getAvailableCount", error.message);
+      return 0;
+    }
+    return count ?? 0;
+  } catch (error) {
+    console.error("getAvailableCount", error);
     return 0;
   }
-  return count ?? 0;
 }
 
 export async function getBreeders(species: Species): Promise<AnimalCardModel[]> {
@@ -110,6 +122,15 @@ export async function getBreeders(species: Species): Promise<AnimalCardModel[]> 
 }
 
 export async function getLittersWithYoung(): Promise<LitterCardModel[]> {
+  try {
+    return await fetchLittersWithYoung();
+  } catch (error) {
+    console.error("getLittersWithYoung", error);
+    return [];
+  }
+}
+
+async function fetchLittersWithYoung(): Promise<LitterCardModel[]> {
   const supabase = await createClient();
 
   const { data: litters, error } = await supabase
@@ -183,22 +204,27 @@ export async function getLittersWithYoung(): Promise<LitterCardModel[]> {
 }
 
 export async function getGalleryImages(galleryKey: string): Promise<GalleryImage[]> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("media")
-    .select("*")
-    .eq("gallery_key", galleryKey)
-    .order("sort_order", { ascending: true });
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("media")
+      .select("*")
+      .eq("gallery_key", galleryKey)
+      .order("sort_order", { ascending: true });
 
-  if (error) {
-    console.error("getGalleryImages", error.message);
+    if (error) {
+      console.error("getGalleryImages", error.message);
+      return [];
+    }
+
+    return ((data as MediaRow[] | null) ?? []).map((row) => ({
+      src: resolveMediaUrl(row.storage_path, "galleries"),
+      alt: row.alt_text || galleryKey,
+    }));
+  } catch (error) {
+    console.error("getGalleryImages", error);
     return [];
   }
-
-  return ((data as MediaRow[] | null) ?? []).map((row) => ({
-    src: resolveMediaUrl(row.storage_path, "galleries"),
-    alt: row.alt_text || galleryKey,
-  }));
 }
 
 export async function pingSupabase() {
