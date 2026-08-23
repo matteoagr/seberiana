@@ -42,11 +42,9 @@ export const litterStatusLabels: Record<LitterStatus, string> = {
   cloturee: "Clôturée",
 };
 
+/** Galerie publique : photos de la vie du domaine, affichées sur l’accueil. */
 export const galleryKeyLabels: Record<string, string> = {
-  accueil: "Accueil",
-  elevage_canin: "Élevage canin",
-  elevage_felin: "Élevage félin",
-  domaine: "Domaine",
+  accueil: "Vie du domaine (accueil)",
 };
 
 export function formatBirthDate(iso: string | null | undefined): string {

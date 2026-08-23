@@ -1,7 +1,7 @@
 import "server-only";
 
 import { sexLabels, statusOrder } from "@/lib/labels";
-import { createClient } from "@/lib/supabase/server";
+import { createAnonClient, createClient } from "@/lib/supabase/server";
 import { animalCoverUrl, litterCoverUrl, resolveMediaUrl } from "@/lib/supabase/storage";
 import type {
   AnimalCardModel,
@@ -19,6 +19,7 @@ type ParentJoin = {
   id: string;
   name: string;
   breed?: string;
+  sex?: import("@/lib/supabase/types").AnimalSex;
   cover_image_path?: string | null;
   cover_url?: string | null;
   published?: boolean;
@@ -70,7 +71,7 @@ function sortByAvailability(animals: AnimalCardModel[]): AnimalCardModel[] {
 const animalSelect = "*";
 
 const parentFields =
-  "id, name, breed, cover_image_path, cover_url, published, archived";
+  "id, name, breed, sex, cover_image_path, cover_url, published, archived";
 
 function mapParent(
   parent: ParentJoin | ParentJoin[] | null | undefined,
@@ -84,6 +85,7 @@ function mapParent(
     breed: row.breed || "",
     image: animalCoverUrl(row),
     published: Boolean(row.published),
+    ...(row.sex ? { sex: row.sex } : {}),
   };
 }
 
@@ -309,7 +311,7 @@ export async function getPublicAnimalById(
 
 export async function getPublicAnimalIds(): Promise<string[]> {
   try {
-    const supabase = await createClient();
+    const supabase = createAnonClient();
     const { data, error } = await supabase
       .from("animals")
       .select("id")
@@ -435,6 +437,11 @@ export async function getGalleryImages(galleryKey: string): Promise<GalleryImage
     console.error("getGalleryImages", error);
     return [];
   }
+}
+
+/** Photos de la vie du domaine affichées sur la page d’accueil. */
+export async function getHomeGalleryImages(): Promise<GalleryImage[]> {
+  return getGalleryImages("accueil");
 }
 
 export async function pingSupabase() {

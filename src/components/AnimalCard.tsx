@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { SexBadge } from "./SexBadge";
 import { StatusBadge } from "./StatusBadge";
 import type { AnimalCardModel } from "@/lib/supabase/types";
 import { formatBirthDate } from "@/lib/labels";
@@ -25,7 +26,6 @@ export function AnimalCard({
   const contactHref = `/contact?animal=${encodeURIComponent(animal.name)}&interest=${interest}`;
 
   const metaParts = [
-    animal.sex,
     animal.color || null,
     animal.birthDate ? formatBirthDate(animal.birthDate) : null,
     animal.parentsLabel || animal.lineage,
@@ -42,6 +42,9 @@ export function AnimalCard({
           sizes="(max-width: 768px) 100vw, 33vw"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
+        <div className="absolute top-3 left-3">
+          <SexBadge sex={animal.sexRaw} onMedia />
+        </div>
         <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
           <StatusBadge status={animal.status} onMedia />
           {animal.isLof ? (

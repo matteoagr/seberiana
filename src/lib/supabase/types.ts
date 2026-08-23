@@ -103,6 +103,7 @@ export type ParentPreview = {
   breed: string;
   image: string;
   published: boolean;
+  sex?: AnimalSex;
 };
 
 export type AnimalDetailModel = AnimalCardModel & {
