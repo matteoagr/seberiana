@@ -1,6 +1,5 @@
 import type { BreedProfile } from "@/data/breeds";
-
-const SITE_URL = "https://siberiana.fr";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 type BreedJsonLdProps = {
   breed: BreedProfile;
@@ -42,12 +41,12 @@ export function BreedJsonLd({ breed }: BreedJsonLdProps) {
     image: breed.heroImage,
     author: {
       "@type": "Organization",
-      name: "Domaine Sibérania",
+      name: SITE_NAME,
       url: SITE_URL,
     },
     publisher: {
       "@type": "Organization",
-      name: "Domaine Sibérania",
+      name: SITE_NAME,
       url: SITE_URL,
     },
     mainEntityOfPage: {

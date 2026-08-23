@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AnimalGallery } from "@/components/AnimalGallery";
 import { ButtonLink } from "@/components/ButtonLink";
+import { SexBadge } from "@/components/SexBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import {
   formatBirthDate,
@@ -69,6 +70,10 @@ function RelatedAnimalCard({
           <p className="absolute top-3 left-3 rounded-full bg-[#14110e]/90 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/35">
             {badge}
           </p>
+        ) : animal.sex ? (
+          <div className="absolute top-3 left-3">
+            <SexBadge sex={animal.sex} onMedia />
+          </div>
         ) : null}
         <div className="absolute inset-x-0 bottom-0 p-4">
           <p className="font-serif text-lg text-foreground">{animal.name}</p>
@@ -148,6 +153,7 @@ export default async function AnimalDetailPage({ params }: PageProps) {
         <div>
           <div className="flex flex-wrap items-center gap-2">
             <StatusBadge status={animal.status} />
+            <SexBadge sex={animal.sexRaw} />
             {animal.isLof ? (
               <span className="inline-flex items-center rounded-full bg-background-elevated px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/40">
                 LOF

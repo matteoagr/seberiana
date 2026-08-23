@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import { AnimalCard } from "@/components/AnimalCard";
 import { AnnuaireFilters } from "@/components/AnnuaireFilters";
 import { ButtonLink } from "@/components/ButtonLink";
@@ -7,11 +8,12 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { getAnimals, getAvailableCount } from "@/lib/supabase/queries";
 import type { AnimalStatus, Species } from "@/lib/supabase/types";
 
-export const metadata: Metadata = {
-  title: "Annuaire",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Annuaire des chiots et chatons",
   description:
-    "Chiens et chats du Domaine Sibérania — Pomsky, Shiba Inu, Teckel et Maine Coon, avec statut Disponible, Réservé ou Adopté.",
-};
+    "Annuaire Domaine Sibérania : Pomsky, Shiba Inu, Teckel et Maine Coon disponibles, réservés ou adoptés. Filtrez par espèce, race et statut.",
+  path: "/annuaire",
+});
 
 type PageProps = {
   searchParams: Promise<{
@@ -50,7 +52,7 @@ export default async function AnnuairePage({ searchParams }: PageProps) {
       <PageHero
         eyebrow="Annuaire"
         title="Nos chiots et chatons"
-        description="Les disponibles apparaissent en premier — parcourez les profils à votre rythme."
+        description="Pomsky, Shiba Inu, Teckel et Maine Coon — les disponibles apparaissent en premier. Filtrez par espèce, race ou statut."
         image="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=2000&q=80"
         imageAlt="Animaux du Domaine Sibérania"
       />

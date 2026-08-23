@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { buildPageMetadata } from "@/lib/seo";
 import Image from "next/image";
 import { AnimalCard } from "@/components/AnimalCard";
 import { ButtonLink } from "@/components/ButtonLink";
@@ -7,11 +8,12 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { formatLitterDate } from "@/lib/labels";
 import { getLittersWithYoung } from "@/lib/supabase/queries";
 
-export const metadata: Metadata = {
-  title: "Portées",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Portées en cours",
   description:
-    "Les portées en cours au Domaine Sibérania — parents, dates et petits de chaque portée.",
-};
+    "Portées du Domaine Sibérania : parents, dates de naissance et petits de chaque portée de Pomsky, Shiba Inu, Teckel ou Maine Coon.",
+  path: "/portees",
+});
 
 export default async function PorteesPage() {
   const litters = await getLittersWithYoung();
@@ -21,7 +23,7 @@ export default async function PorteesPage() {
       <PageHero
         eyebrow="Portées"
         title="Nos portées en cours"
-        description="Parents, date de naissance et statut — pour situer chaque petit dans son histoire."
+        description="Suivez les naissances au Domaine Sibérania : parents, dates et petits de chaque portée de Pomsky, Shiba, Teckel ou Maine Coon."
         image="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=2000&q=80"
         imageAlt="Jeunes animaux du domaine"
       />

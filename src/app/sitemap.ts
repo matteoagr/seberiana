@@ -1,30 +1,46 @@
 import type { MetadataRoute } from "next";
 import { breedProfiles } from "@/data/breeds";
+import { SITE_URL } from "@/lib/site";
+import { getPublicAnimalIds } from "@/lib/supabase/queries";
 
-const SITE_URL = "https://siberiana.fr";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const now = new Date();
 
-export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
-    "",
-    "/annuaire",
-    "/portees",
-    "/elevage-canin",
-    "/elevage-felin",
-    "/contact",
-    "/races",
-  ].map((path) => ({
+    { path: "", priority: 1, changeFrequency: "weekly" as const },
+    { path: "/annuaire", priority: 0.95, changeFrequency: "daily" as const },
+    { path: "/portees", priority: 0.9, changeFrequency: "weekly" as const },
+    { path: "/galerie", priority: 0.8, changeFrequency: "weekly" as const },
+    { path: "/elevage-canin", priority: 0.85, changeFrequency: "monthly" as const },
+    { path: "/elevage-felin", priority: 0.85, changeFrequency: "monthly" as const },
+    { path: "/races", priority: 0.9, changeFrequency: "monthly" as const },
+    { path: "/contact", priority: 0.7, changeFrequency: "yearly" as const },
+  ].map(({ path, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
-    lastModified: new Date(),
-    changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : path === "/races" ? 0.9 : 0.8,
+    lastModified: now,
+    changeFrequency,
+    priority,
   }));
 
   const breedPages: MetadataRoute.Sitemap = breedProfiles.map((breed) => ({
     url: `${SITE_URL}/races/${breed.slug}`,
-    lastModified: new Date(),
+    lastModified: now,
     changeFrequency: "monthly",
     priority: 0.85,
   }));
 
-  return [...staticPages, ...breedPages];
+  let animalPages: MetadataRoute.Sitemap = [];
+  try {
+    const ids = await getPublicAnimalIds();
+    animalPages = ids.map((id) => ({
+      url: `${SITE_URL}/annuaire/${id}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    }));
+  } catch {
+    animalPages = [];
+  }
+
+  return [...staticPages, ...breedPages, ...animalPages];
 }

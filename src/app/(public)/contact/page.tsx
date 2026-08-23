@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
-import { ContactForm } from "@/components/ContactForm";
+import { buildPageMetadata } from "@/lib/seo";
+import {
+  CONTACT_EMAIL,
+  CONTACT_PHONE_DISPLAY,
+  CONTACT_PHONE_TEL,
+} from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Contact",
+export const metadata: Metadata = buildPageMetadata({
+  title: "Contact — adoption et renseignements",
   description:
-    "Écrivez au Domaine Sibérania pour poser vos questions ou parler d’une adoption.",
-};
+    "Contactez le Domaine Sibérania pour une adoption de Pomsky, Shiba Inu, Teckel ou Maine Coon, ou pour toute question sur nos portées.",
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (
@@ -16,7 +23,7 @@ export default function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="On discute ?"
-        description="Dites-nous ce que vous cherchez — on vous répond avec plaisir et sans pression."
+        description="Dites-nous ce que vous cherchez — on vous répond avec plaisir."
         image="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2000&q=80"
         imageAlt="Allée boisée menant au domaine"
       />
@@ -26,17 +33,21 @@ export default function ContactPage() {
           <SectionHeading
             eyebrow="Nous écrire"
             title="On lit chaque message"
-            description="On prend le temps de répondre à chaque demande — la qualité de l’accueil passe avant la vitesse."
+            description="Questions sur une race, une portée ou un profil de l’annuaire : on répond avec soin et transparence."
           />
+          <p className="mt-6 max-w-md text-sm leading-relaxed text-foreground-muted">
+            Précisez l’espèce ou la race qui vous intéresse (Pomsky, Shiba Inu, Teckel,
+            Maine Coon) et votre projet de vie — cela nous aide à vous orienter.
+          </p>
           <dl className="mt-10 space-y-6 text-sm">
             <div>
               <dt className="font-serif text-gold/90">Courriel</dt>
               <dd className="mt-2">
                 <a
-                  href="mailto:elevagesiberania@gmail.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="text-foreground-muted transition-colors hover:text-gold-soft"
                 >
-                  elevagesiberania@gmail.com
+                  {CONTACT_EMAIL}
                 </a>
               </dd>
             </div>
@@ -44,10 +55,10 @@ export default function ContactPage() {
               <dt className="font-serif text-gold/90">Téléphone</dt>
               <dd className="mt-2">
                 <a
-                  href="tel:+33606524948"
+                  href={`tel:${CONTACT_PHONE_TEL}`}
                   className="text-foreground-muted transition-colors hover:text-gold-soft"
                 >
-                  06 06 52 49 48
+                  {CONTACT_PHONE_DISPLAY}
                 </a>
               </dd>
             </div>

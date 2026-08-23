@@ -25,6 +25,14 @@ export async function createClient() {
   });
 }
 
+/** Anon client without cookies — safe for sitemap / static public reads. */
+export function createAnonClient() {
+  const { url, anon } = assertSupabaseEnv();
+  return createSupabaseClient(url, anon, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
 /** Server-only admin client (bypasses RLS). Never import in client components. */
 export function createServiceClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
