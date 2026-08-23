@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+:root {
+  --background: #14110e;
+  --background-elevated: #1c1814;
+  --foreground: #f0e8dc;
+  --foreground-muted: #a89a88;
+  --gold: #d4a04a;
+  --gold-soft: #e0b86a;
+  --gold-dim: #9a7840;
+  --line: rgba(212, 160, 74, 0.16);
+  --soft-veil: rgba(20, 17, 14, 0.5);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-elevated: var(--background-elevated);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-gold-dim: var(--gold-dim);
+  --color-line: var(--line);
+  --font-sans: var(--font-body);
+  --font-serif: var(--font-display);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body), system-ui, sans-serif;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--gold) 35%, transparent);
+    color: var(--foreground);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .bg-domaine {
+    background-color: var(--background);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212, 160, 74, 0.1), transparent 55%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(120, 85, 45, 0.14), transparent 50%),
+      linear-gradient(180deg, #14110e 0%, #181410 50%, #12100d 100%);
+  }
+
+  .grain {
+    position: relative;
+  }
+
+  .grain::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
+
+  .reveal {
+    animation: reveal-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .reveal-delay-1 {
+    animation-delay: 0.12s;
+  }
+
+  .reveal-delay-2 {
+    animation-delay: 0.24s;
+  }
+
+  .reveal-delay-3 {
+    animation-delay: 0.36s;
+  }
+
+  .ken-burns {
+    animation: ken-burns 28s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ken-burns {
+  from {
+    transform: scale(1.05) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.12) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-delay-1,
+  .reveal-delay-2,
+  .reveal-delay-3,
+  .ken-burns {
+    animation: none !important;
+  }
+}
