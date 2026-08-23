@@ -42,16 +42,20 @@ export function AnimalCard({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-90" />
         <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
-          <StatusBadge status={animal.status} />
+          <StatusBadge status={animal.status} onMedia />
           {animal.isLof ? (
-            <span className="rounded-md border border-gold/40 bg-background/70 px-2 py-0.5 text-[11px] font-medium tracking-wide text-gold-soft">
+            <span className="rounded-full bg-[#14110e]/92 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft shadow-[0_2px_10px_rgba(0,0,0,0.45)] ring-1 ring-gold/40 backdrop-blur-md">
               LOF
             </span>
           ) : null}
         </div>
         <div className="absolute inset-x-0 bottom-0 p-5">
-          <p className="font-serif text-sm text-gold/90">{animal.breed}</p>
-          <h3 className="mt-1 font-serif text-2xl text-foreground">{animal.name}</h3>
+          <p className="font-serif text-sm text-gold/90 drop-shadow-[0_1px_8px_rgba(0,0,0,0.65)]">
+            {animal.breed}
+          </p>
+          <h3 className="mt-1 font-serif text-2xl text-foreground drop-shadow-[0_1px_10px_rgba(0,0,0,0.7)]">
+            {animal.name}
+          </h3>
         </div>
       </div>
       <div className="flex flex-1 flex-col space-y-3 p-5">
