@@ -220,7 +220,7 @@ export function LitterForm({
           {pending ? "Enregistrement…" : "Enregistrer"}
         </button>
         <Link
-          href={litter?.id ? `/admin/portees/${litter.id}` : "/admin/portees"}
+          href="/admin/portees"
           className="rounded-lg border border-line px-5 py-2.5 text-sm text-foreground-muted hover:border-gold/40"
         >
           Annuler

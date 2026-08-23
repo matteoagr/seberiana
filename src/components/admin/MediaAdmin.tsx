@@ -51,9 +51,14 @@ export function MediaAdmin({
           </div>
           <div>
             <label className="block text-sm text-gold/90" htmlFor="alt_text">
-              Texte alternatif
+              Légende (accueil)
             </label>
-            <input id="alt_text" name="alt_text" className={fieldClass} />
+            <input
+              id="alt_text"
+              name="alt_text"
+              placeholder="Ex. Chiots en socialisation au parc"
+              className={fieldClass}
+            />
           </div>
         </div>
         <div className="grid gap-5 sm:grid-cols-3">
@@ -87,8 +92,13 @@ export function MediaAdmin({
             <label className="block text-sm text-gold/90" htmlFor="gallery_key">
               Galerie
             </label>
-            <select id="gallery_key" name="gallery_key" className={fieldClass} defaultValue="">
-              <option value="">—</option>
+            <select
+              id="gallery_key"
+              name="gallery_key"
+              className={fieldClass}
+              defaultValue="accueil"
+            >
+              <option value="">— (animal / portée uniquement)</option>
               {Object.entries(galleryKeyLabels).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
@@ -97,23 +107,17 @@ export function MediaAdmin({
             </select>
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-6">
-          <label className="inline-flex items-center gap-2 text-sm text-foreground-muted">
-            <input type="checkbox" name="is_cover" className="accent-[var(--gold)]" />
-            Image de couverture
+        <div>
+          <label className="block text-sm text-gold/90" htmlFor="sort_order">
+            Ordre d’affichage
           </label>
-          <div>
-            <label className="block text-sm text-gold/90" htmlFor="sort_order">
-              Ordre
-            </label>
-            <input
-              id="sort_order"
-              name="sort_order"
-              type="number"
-              defaultValue={0}
-              className={`${fieldClass} w-24`}
-            />
-          </div>
+          <input
+            id="sort_order"
+            name="sort_order"
+            type="number"
+            defaultValue={0}
+            className={`${fieldClass} w-24`}
+          />
         </div>
         {state && !state.ok ? (
           <p className="text-sm text-red-300">{state.error}</p>

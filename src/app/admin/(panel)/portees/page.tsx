@@ -3,11 +3,31 @@ import { archiveLitterAction } from "@/app/admin/actions";
 import { litterStatusLabels, speciesLabels } from "@/lib/labels";
 import { adminListLitters } from "@/lib/supabase/queries";
 
-export default async function AdminPorteesPage() {
-  const litters = await adminListLitters();
+type PageProps = {
+  searchParams: Promise<{ ok?: string }>;
+};
+
+export default async function AdminPorteesPage({ searchParams }: PageProps) {
+  const [{ ok }, litters] = await Promise.all([searchParams, adminListLitters()]);
+
+  const successMessage =
+    ok === "en-ligne"
+      ? "La portée est en ligne."
+      : ok === "enregistree"
+        ? "La portée a été enregistrée."
+        : null;
 
   return (
     <div>
+      {successMessage ? (
+        <p
+          role="status"
+          className="mb-6 rounded-xl border border-gold/35 bg-gold/10 px-4 py-3 text-sm text-gold-soft"
+        >
+          {successMessage}
+        </p>
+      ) : null}
+
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="font-serif text-sm text-gold/90">Étape 1</p>

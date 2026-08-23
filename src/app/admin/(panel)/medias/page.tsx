@@ -17,7 +17,8 @@ export default async function AdminMediasPage() {
       <p className="font-serif text-sm text-gold/90">Étape 3</p>
       <h1 className="mt-1 font-serif text-3xl text-foreground">Galerie</h1>
       <p className="mt-3 max-w-xl text-sm text-foreground-muted">
-        Photos des pages du site (accueil, élevages) — indépendantes des fiches animaux.
+        Photos de la vie au domaine, affichées sur la page d’accueil avec leur légende.
+        Les images des pages vitrine (héros, races) restent fixes — hors base de données.
       </p>
       <div className="mt-10">
         <MediaAdmin media={media} animals={animals} litters={litters} />

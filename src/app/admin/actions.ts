@@ -218,13 +218,21 @@ export async function upsertLitterAction(
       revalidatePath("/portees");
       revalidatePath("/admin/portees");
       revalidatePath(`/admin/portees/${id}`);
-      redirect(`/admin/portees/${id}`);
+      redirect(
+        payload.published && !payload.archived
+          ? "/admin/portees?ok=en-ligne"
+          : "/admin/portees?ok=enregistree",
+      );
     } else {
-      const { data, error } = await supabase.from("litters").insert(payload).select("id").single();
+      const { error } = await supabase.from("litters").insert(payload);
       if (error) return { ok: false, error: error.message };
       revalidatePath("/portees");
       revalidatePath("/admin/portees");
-      redirect(`/admin/portees/${data.id}`);
+      redirect(
+        payload.published && !payload.archived
+          ? "/admin/portees?ok=en-ligne"
+          : "/admin/portees?ok=enregistree",
+      );
     }
   } catch (e) {
     if (e && typeof e === "object" && "digest" in e) throw e;
@@ -279,7 +287,8 @@ export async function createMediaAction(
       storage_path: path,
       alt_text: String(formData.get("alt_text") ?? "").trim(),
       sort_order: Number(formData.get("sort_order") ?? 0) || 0,
-      is_cover: boolFromForm(formData, "is_cover"),
+      // Couverture = fiches animaux uniquement ; inutile pour la galerie
+      is_cover: galleryKey ? false : boolFromForm(formData, "is_cover"),
       animal_id: animalId,
       litter_id: litterId,
       gallery_key: galleryKey,
@@ -287,8 +296,8 @@ export async function createMediaAction(
     if (error) return { ok: false, error: error.message };
 
     revalidatePath("/admin/medias");
-    revalidatePath("/elevage-canin");
-    revalidatePath("/elevage-felin");
+    revalidatePath("/galerie");
+    revalidatePath("/");
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -349,6 +358,7 @@ function revalidateAnimalPaths(animalId: string | null) {
   revalidatePath("/annuaire");
   revalidatePath("/portees");
   revalidatePath("/admin/medias");
+  revalidatePath("/galerie");
   if (animalId) {
     revalidatePath(`/admin/portees`);
   }
@@ -484,8 +494,9 @@ export async function deleteMediaFormAction(formData: FormData): Promise<void> {
   const storagePath = String(formData.get("storage_path") ?? "");
   if (!id) return;
   await deleteMediaAction(id, storagePath);
-  revalidatePath("/elevage-canin");
-  revalidatePath("/elevage-felin");
+  revalidatePath("/");
+  revalidatePath("/admin/medias");
+  revalidatePath("/galerie");
 }
 
 export async function submitContactAction(
