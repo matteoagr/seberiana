@@ -13,6 +13,7 @@ import {
   statusLabels,
 } from "@/lib/labels";
 import type { AnimalRow, LitterRow, Species } from "@/lib/supabase/types";
+import { PhotoDropzone } from "@/components/admin/PhotoDropzone";
 
 const fieldClass =
   "mt-2 w-full rounded-lg border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-gold/50";
@@ -246,11 +247,19 @@ export function AnimalForm({
             <input type="hidden" name="cover_image_path" value={animal.cover_image_path} />
           ) : null}
         </div>
-      ) : (
+      ) : animal?.id ? (
         <p className="text-sm text-foreground-muted">
-          Les photos se gèrent juste en dessous — vous pouvez en ajouter autant que
-          vous voulez après l’enregistrement.
+          Les photos se déposent dans la zone en dessous du formulaire — pas besoin
+          d’enregistrer pour les ajouter.
         </p>
+      ) : (
+        <div>
+          <p className={labelClass}>Photos</p>
+          <p className="mt-1 mb-2 text-xs text-foreground-muted">
+            Déposez-les ici : elles seront liées au jeune dès l’enregistrement.
+          </p>
+          <PhotoDropzone litterId={litter?.id} />
+        </div>
       )}
 
       <label className="inline-flex items-center gap-2 text-sm text-foreground-muted">

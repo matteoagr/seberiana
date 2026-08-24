@@ -123,6 +123,11 @@ export async function upsertAnimalAction(
       payload.cover_url = null;
     }
 
+    const extraPhotos = formData
+      .getAll("files")
+      .filter((f): f is File => f instanceof File && f.size > 0);
+
+    let animalId = id;
     if (id) {
       const { error } = await supabase.from("animals").update(payload).eq("id", id);
       if (error) return { ok: false, error: error.message };
@@ -133,10 +138,23 @@ export async function upsertAnimalAction(
         .select("id")
         .single();
       if (error) return { ok: false, error: error.message };
-      if (payload.role === "jeune" && litterId) {
-        revalidatePath(`/admin/portees/${litterId}`);
-        redirect(`/admin/portees/${litterId}/jeunes/${data.id}`);
-      }
+      animalId = data.id;
+    }
+
+    if (animalId && extraPhotos.length > 0) {
+      const uploadError = await saveAnimalPhotoFiles(
+        supabase,
+        animalId,
+        payload.species,
+        extraPhotos,
+      );
+      if (uploadError) return { ok: false, error: uploadError };
+    }
+
+    if (!id && payload.role === "jeune" && litterId && animalId) {
+      revalidatePath(`/admin/portees/${litterId}`);
+      revalidatePath("/admin/animaux");
+      redirect(`/admin/portees/${litterId}/jeunes/${animalId}`);
     }
 
     revalidatePath("/");
@@ -170,6 +188,73 @@ export async function archiveAnimalAction(id: string): Promise<ActionResult> {
     revalidatePath("/admin/animaux");
     revalidatePath("/admin/reproducteurs");
     revalidatePath("/annuaire");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
+export async function updateAnimalRowAction(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const id = emptyToNull(formData.get("id"));
+    if (!id) return { ok: false, error: "Animal introuvable." };
+
+    const litterId = emptyToNull(formData.get("litter_id"));
+    const payload = {
+      name: String(formData.get("name") ?? "").trim(),
+      species: String(formData.get("species") ?? "canin") as Species,
+      breed: String(formData.get("breed") ?? "").trim(),
+      sex: String(formData.get("sex") ?? "male") as AnimalSex,
+      birth_date: emptyToNull(formData.get("birth_date")),
+      color: String(formData.get("color") ?? "").trim(),
+      status: String(formData.get("status") ?? "disponible") as AnimalStatus,
+      role: String(formData.get("role") ?? "jeune") as AnimalRole,
+      is_lof: boolFromForm(formData, "is_lof"),
+      litter_id: litterId,
+      lineage_label: String(formData.get("lineage_label") ?? "").trim(),
+      description: String(formData.get("description") ?? "").trim(),
+      published: boolFromForm(formData, "published"),
+      archived: boolFromForm(formData, "archived"),
+    };
+
+    if (!payload.name || !payload.breed) {
+      return { ok: false, error: "Nom et race sont obligatoires." };
+    }
+
+    if (litterId) {
+      const { data: litter } = await supabase
+        .from("litters")
+        .select("species, breed, birth_date, sire_id, dam_id")
+        .eq("id", litterId)
+        .maybeSingle();
+      if (litter && payload.role === "jeune") {
+        payload.species = litter.species as Species;
+        if (litter.breed) payload.breed = litter.breed;
+        if (!payload.birth_date && litter.birth_date) {
+          payload.birth_date = litter.birth_date;
+        }
+        const { error } = await supabase
+          .from("animals")
+          .update({
+            ...payload,
+            sire_id: litter.sire_id,
+            dam_id: litter.dam_id,
+          })
+          .eq("id", id);
+        if (error) return { ok: false, error: error.message };
+        revalidateAnimalPaths(id);
+        return { ok: true };
+      }
+    }
+
+    const { error } = await supabase.from("animals").update(payload).eq("id", id);
+    if (error) return { ok: false, error: error.message };
+
+    revalidateAnimalPaths(id);
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -496,10 +581,70 @@ function revalidateAnimalPaths(animalId: string | null) {
   revalidatePath("/annuaire");
   revalidatePath("/portees");
   revalidatePath("/admin/medias");
+  revalidatePath("/admin/animaux");
+  revalidatePath("/admin/portees");
   revalidatePath("/galerie");
   if (animalId) {
-    revalidatePath(`/admin/portees`);
+    revalidatePath(`/annuaire/${animalId}`);
   }
+}
+
+async function saveAnimalPhotoFiles(
+  supabase: Awaited<ReturnType<typeof requireUser>>,
+  animalId: string,
+  species: string,
+  files: File[],
+): Promise<string | null> {
+  const { count } = await supabase
+    .from("media")
+    .select("id", { count: "exact", head: true })
+    .eq("animal_id", animalId);
+  const { data: animal } = await supabase
+    .from("animals")
+    .select("cover_image_path")
+    .eq("id", animalId)
+    .maybeSingle();
+  const { data: existingCover } = await supabase
+    .from("media")
+    .select("id")
+    .eq("animal_id", animalId)
+    .eq("is_cover", true)
+    .maybeSingle();
+
+  let sortOrder = count ?? 0;
+  let needsCover = !animal?.cover_image_path && !existingCover;
+
+  for (const file of files) {
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${species}/${animalId}/${crypto.randomUUID()}.${ext}`;
+    const { error: uploadError } = await supabase.storage
+      .from("animals")
+      .upload(path, file, { upsert: true, contentType: file.type || undefined });
+    if (uploadError) return uploadError.message;
+
+    const isCover = needsCover;
+    if (isCover) needsCover = false;
+
+    const { error: insertError } = await supabase.from("media").insert({
+      storage_path: path,
+      alt_text: "",
+      sort_order: sortOrder,
+      is_cover: isCover,
+      animal_id: animalId,
+    });
+    if (insertError) return insertError.message;
+
+    if (isCover) {
+      await supabase
+        .from("animals")
+        .update({ cover_image_path: path, cover_url: null })
+        .eq("id", animalId);
+    }
+
+    sortOrder += 1;
+  }
+
+  return null;
 }
 
 export async function uploadAnimalPhotosAction(
@@ -523,52 +668,16 @@ export async function uploadAnimalPhotosAction(
       (f): f is File => f instanceof File && f.size > 0,
     );
     if (files.length === 0) {
-      return { ok: false, error: "Sélectionnez au moins une photo." };
+      return { ok: false, error: "Glissez ou choisissez au moins une photo." };
     }
 
-    const { count } = await supabase
-      .from("media")
-      .select("id", { count: "exact", head: true })
-      .eq("animal_id", animalId);
-    const { data: existingCover } = await supabase
-      .from("media")
-      .select("id")
-      .eq("animal_id", animalId)
-      .eq("is_cover", true)
-      .maybeSingle();
-
-    let sortOrder = count ?? 0;
-    let needsCover = !animal.cover_image_path && !existingCover;
-
-    for (const file of files) {
-      const ext = file.name.split(".").pop() || "jpg";
-      const path = `${animal.species}/${animalId}/${crypto.randomUUID()}.${ext}`;
-      const { error: uploadError } = await supabase.storage
-        .from("animals")
-        .upload(path, file, { upsert: true, contentType: file.type || undefined });
-      if (uploadError) return { ok: false, error: uploadError.message };
-
-      const isCover = needsCover;
-      if (isCover) needsCover = false;
-
-      const { error: insertError } = await supabase.from("media").insert({
-        storage_path: path,
-        alt_text: String(formData.get("alt_text") ?? "").trim(),
-        sort_order: sortOrder,
-        is_cover: isCover,
-        animal_id: animalId,
-      });
-      if (insertError) return { ok: false, error: insertError.message };
-
-      if (isCover) {
-        await supabase
-          .from("animals")
-          .update({ cover_image_path: path, cover_url: null })
-          .eq("id", animalId);
-      }
-
-      sortOrder += 1;
-    }
+    const uploadError = await saveAnimalPhotoFiles(
+      supabase,
+      animalId,
+      animal.species,
+      files,
+    );
+    if (uploadError) return { ok: false, error: uploadError };
 
     revalidateAnimalPaths(animalId);
     if (litterId) revalidatePath(`/admin/portees/${litterId}`);

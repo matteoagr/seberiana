@@ -10,10 +10,10 @@ export default function AdminPanelLayout({
   return (
     <>
       <header className="border-b border-line/70 bg-background-elevated/50">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
+        <div className="mx-auto flex max-w-[88rem] flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
           <div>
             <p className="font-serif text-sm text-gold/90">Back-office</p>
-            <Link href="/admin/portees" className="font-serif text-xl text-foreground">
+            <Link href="/admin/animaux" className="font-serif text-xl text-foreground">
               Domaine Sibérania
             </Link>
           </div>
@@ -28,7 +28,7 @@ export default function AdminPanelLayout({
             </form>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-12">
+      <main className="mx-auto w-full max-w-[88rem] flex-1 px-5 py-10 sm:px-8 sm:py-12">
         {children}
       </main>
     </>

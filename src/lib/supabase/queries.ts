@@ -454,6 +454,13 @@ export async function pingSupabase() {
 }
 
 /** Admin lists (includes unpublished / archived) */
+export type AdminAnimalListItem = AnimalRow & {
+  litterTitle: string | null;
+  sireName: string | null;
+  damName: string | null;
+  photoCount: number;
+};
+
 export async function adminListAnimals(): Promise<AnimalRow[]> {
   const supabase = await createClient();
   const { data, error } = await supabase
@@ -462,6 +469,38 @@ export async function adminListAnimals(): Promise<AnimalRow[]> {
     .order("updated_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as AnimalRow[];
+}
+
+export async function adminListAnimalsDetailed(): Promise<AdminAnimalListItem[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("animals")
+    .select(
+      `
+      *,
+      litter:litter_id(id, title),
+      sire:sire_id(id, name),
+      dam:dam_id(id, name)
+    `,
+    )
+    .order("name");
+  if (error) throw error;
+
+  const rows = (data ?? []) as (AnimalRow & {
+    litter: { id: string; title: string } | null;
+    sire: { id: string; name: string } | null;
+    dam: { id: string; name: string } | null;
+  })[];
+
+  const counts = await adminMediaCountsByAnimal(rows.map((row) => row.id));
+
+  return rows.map((row) => ({
+    ...row,
+    litterTitle: row.litter?.title ?? null,
+    sireName: row.sire?.name ?? null,
+    damName: row.dam?.name ?? null,
+    photoCount: counts[row.id] ?? 0,
+  }));
 }
 
 export async function adminListBreeders(): Promise<AnimalRow[]> {

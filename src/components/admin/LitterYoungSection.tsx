@@ -1,6 +1,9 @@
+import Image from "next/image";
 import Link from "next/link";
 import { archiveAnimalAction } from "@/app/admin/actions";
+import { PhotoDropzone } from "@/components/admin/PhotoDropzone";
 import { sexLabels, statusLabels } from "@/lib/labels";
+import { animalCoverUrl } from "@/lib/supabase/storage";
 import type { AnimalRow } from "@/lib/supabase/types";
 
 export function LitterYoungSection({
@@ -20,7 +23,8 @@ export function LitterYoungSection({
         <div>
           <h2 className="font-serif text-2xl text-foreground">Jeunes de la portée</h2>
           <p className="mt-1 text-sm text-foreground-muted">
-            Chiots ou chatons rattachés à « {litterTitle} » — statut et photo ici.
+            Chiots ou chatons rattachés à « {litterTitle} ». Déposez les photos
+            directement sur la ligne.
           </p>
         </div>
         <Link
@@ -45,21 +49,34 @@ export function LitterYoungSection({
         </div>
       ) : (
         <div className="overflow-x-auto rounded-xl border border-line/60">
-          <table className="w-full min-w-[560px] text-left text-sm">
+          <table className="w-full min-w-[720px] text-left text-sm">
             <thead className="border-b border-line bg-background-elevated/60 text-foreground-muted">
               <tr>
-                <th className="px-4 py-3 font-medium">Nom</th>
+                <th className="px-4 py-3 font-medium">Jeune</th>
                 <th className="px-4 py-3 font-medium">Sexe</th>
                 <th className="px-4 py-3 font-medium">Couleur</th>
                 <th className="px-4 py-3 font-medium">Statut</th>
-                <th className="px-4 py-3 font-medium">Photos</th>
+                <th className="px-4 py-3 font-medium">Ajouter des photos</th>
                 <th className="px-4 py-3 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {young.map((animal) => (
-                <tr key={animal.id} className="border-b border-line/40">
-                  <td className="px-4 py-3 text-foreground">{animal.name}</td>
+                <tr key={animal.id} className="border-b border-line/40 align-top">
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <span className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-line/50">
+                        <Image
+                          src={animalCoverUrl(animal)}
+                          alt=""
+                          fill
+                          className="object-cover"
+                          sizes="48px"
+                        />
+                      </span>
+                      <span className="text-foreground">{animal.name}</span>
+                    </div>
+                  </td>
                   <td className="px-4 py-3 text-foreground-muted">
                     {sexLabels[animal.sex]}
                   </td>
@@ -69,8 +86,16 @@ export function LitterYoungSection({
                   <td className="px-4 py-3 text-foreground-muted">
                     {statusLabels[animal.status]}
                   </td>
-                  <td className="px-4 py-3 text-foreground-muted">
-                    {photoCounts[animal.id] ?? 0}
+                  <td className="px-4 py-3 min-w-[180px]">
+                    <PhotoDropzone
+                      animalId={animal.id}
+                      litterId={litterId}
+                      compact
+                    />
+                    <p className="mt-1 text-[11px] text-foreground-muted">
+                      {photoCounts[animal.id] ?? 0} photo
+                      {(photoCounts[animal.id] ?? 0) > 1 ? "s" : ""}
+                    </p>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-2">
@@ -79,12 +104,6 @@ export function LitterYoungSection({
                         className="text-gold-soft hover:text-gold"
                       >
                         Modifier
-                      </Link>
-                      <Link
-                        href={`/admin/portees/${litterId}/jeunes/${animal.id}#photos`}
-                        className="text-foreground-muted hover:text-gold-soft"
-                      >
-                        Photos
                       </Link>
                       <form
                         action={async () => {

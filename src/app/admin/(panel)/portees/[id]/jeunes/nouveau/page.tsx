@@ -23,7 +23,8 @@ export default async function NouveauJeunePage({ params }: PageProps) {
         Ajouter un jeune
       </h1>
       <p className="mt-2 text-sm text-foreground-muted">
-        Le jeune sera rattaché à cette portée et apparaîtra dans l’annuaire.
+        Le jeune sera rattaché à cette portée. Vous pouvez déjà déposer ses photos
+        dans le formulaire — elles s’enregistrent avec le profil.
       </p>
       <div className="mt-10 max-w-2xl">
         <AnimalForm
