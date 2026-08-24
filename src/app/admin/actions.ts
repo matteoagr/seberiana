@@ -3,12 +3,13 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import type {
-  AnimalRole,
-  AnimalSex,
-  AnimalStatus,
-  LitterStatus,
-  Species,
+import {
+  GALLERY_TAGS,
+  type AnimalRole,
+  type AnimalSex,
+  type AnimalStatus,
+  type LitterStatus,
+  type Species,
 } from "@/lib/supabase/types";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
@@ -194,7 +195,6 @@ export async function upsertLitterAction(
       description: String(formData.get("description") ?? "").trim(),
       cover_image_path: emptyToNull(formData.get("cover_image_path")),
       published: boolFromForm(formData, "published"),
-      archived: boolFromForm(formData, "archived"),
     };
 
     if (!payload.title || !payload.breed) {
@@ -213,23 +213,29 @@ export async function upsertLitterAction(
     }
 
     if (id) {
+      const { data: existing, error: existingError } = await supabase
+        .from("litters")
+        .select("archived")
+        .eq("id", id)
+        .maybeSingle();
+      if (existingError) return { ok: false, error: existingError.message };
       const { error } = await supabase.from("litters").update(payload).eq("id", id);
       if (error) return { ok: false, error: error.message };
       revalidatePath("/portees");
       revalidatePath("/admin/portees");
       revalidatePath(`/admin/portees/${id}`);
       redirect(
-        payload.published && !payload.archived
+        payload.published && !existing?.archived
           ? "/admin/portees?ok=en-ligne"
           : "/admin/portees?ok=enregistree",
       );
     } else {
-      const { error } = await supabase.from("litters").insert(payload);
+      const { error } = await supabase.from("litters").insert({ ...payload, archived: false });
       if (error) return { ok: false, error: error.message };
       revalidatePath("/portees");
       revalidatePath("/admin/portees");
       redirect(
-        payload.published && !payload.archived
+        payload.published
           ? "/admin/portees?ok=en-ligne"
           : "/admin/portees?ok=enregistree",
       );
@@ -256,6 +262,42 @@ export async function archiveLitterAction(id: string): Promise<ActionResult> {
   }
 }
 
+export async function unarchiveLitterAction(id: string): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const { error } = await supabase
+      .from("litters")
+      .update({ archived: false, published: true })
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/portees");
+    revalidatePath("/portees");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
+/** Soft delete: keep the row in the database, hide it from public site and admin list. */
+export async function deleteLitterAction(id: string): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const { error } = await supabase
+      .from("litters")
+      .update({
+        deleted_at: new Date().toISOString(),
+        published: false,
+      })
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/portees");
+    revalidatePath("/portees");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
 export async function createMediaAction(
   _prev: ActionResult | null,
   formData: FormData,
@@ -270,9 +312,17 @@ export async function createMediaAction(
     const animalId = emptyToNull(formData.get("animal_id"));
     const litterId = emptyToNull(formData.get("litter_id"));
     const galleryKey = emptyToNull(formData.get("gallery_key"));
+    const galleryTagRaw = emptyToNull(formData.get("gallery_tag"));
     if (!animalId && !litterId && !galleryKey) {
       return { ok: false, error: "Assignez l’image à un animal, une portée ou une galerie." };
     }
+
+    const galleryTag =
+      galleryKey && galleryTagRaw
+        ? (GALLERY_TAGS.includes(galleryTagRaw as (typeof GALLERY_TAGS)[number])
+            ? galleryTagRaw
+            : null)
+        : null;
 
     const bucket = animalId ? "animals" : litterId ? "litters" : "galleries";
     const ext = file.name.split(".").pop() || "jpg";
@@ -292,12 +342,100 @@ export async function createMediaAction(
       animal_id: animalId,
       litter_id: litterId,
       gallery_key: galleryKey,
+      gallery_tag: galleryTag,
     });
     if (error) return { ok: false, error: error.message };
 
     revalidatePath("/admin/medias");
     revalidatePath("/galerie");
     revalidatePath("/");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
+export async function updateMediaAction(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const id = String(formData.get("id") ?? "").trim();
+    if (!id) return { ok: false, error: "Média introuvable." };
+
+    const { data: existing, error: existingError } = await supabase
+      .from("media")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (existingError || !existing) {
+      return { ok: false, error: "Média introuvable." };
+    }
+
+    const nextGalleryKey = emptyToNull(formData.get("gallery_key"));
+    const galleryTagRaw = emptyToNull(formData.get("gallery_tag"));
+    const galleryTag =
+      nextGalleryKey &&
+      galleryTagRaw &&
+      GALLERY_TAGS.includes(galleryTagRaw as (typeof GALLERY_TAGS)[number])
+        ? galleryTagRaw
+        : null;
+
+    const altText = String(formData.get("alt_text") ?? "").trim();
+    const sortOrder = Number(formData.get("sort_order") ?? existing.sort_order) || 0;
+
+    const file = formData.get("file");
+    let storagePath = existing.storage_path as string;
+    const bucket = existing.animal_id
+      ? "animals"
+      : existing.litter_id
+        ? "litters"
+        : "galleries";
+
+    if (file instanceof File && file.size > 0) {
+      const ext = file.name.split(".").pop() || "jpg";
+      const folder =
+        nextGalleryKey ||
+        existing.animal_id ||
+        existing.litter_id ||
+        "misc";
+      const nextPath = `${folder}/${crypto.randomUUID()}.${ext}`;
+      const { error: uploadError } = await supabase.storage
+        .from(bucket)
+        .upload(nextPath, file, { upsert: true, contentType: file.type || undefined });
+      if (uploadError) return { ok: false, error: uploadError.message };
+
+      await supabase.storage.from(bucket).remove([storagePath]);
+      storagePath = nextPath;
+
+      if (existing.animal_id && existing.is_cover) {
+        await supabase
+          .from("animals")
+          .update({ cover_image_path: storagePath, cover_url: null })
+          .eq("id", existing.animal_id);
+      }
+    }
+
+    const { error } = await supabase
+      .from("media")
+      .update({
+        alt_text: altText,
+        sort_order: sortOrder,
+        gallery_key: nextGalleryKey,
+        gallery_tag: nextGalleryKey ? galleryTag : null,
+        storage_path: storagePath,
+      })
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+
+    revalidatePath("/admin/medias");
+    revalidatePath("/galerie");
+    revalidatePath("/");
+    if (existing.animal_id) {
+      revalidatePath(`/annuaire/${existing.animal_id}`);
+      revalidatePath("/annuaire");
+    }
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };

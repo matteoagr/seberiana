@@ -5,6 +5,7 @@ import { AnnuaireFilters } from "@/components/AnnuaireFilters";
 import { ButtonLink } from "@/components/ButtonLink";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
+import { siteImages } from "@/data/site-images";
 import { getAnimals, getAvailableCount } from "@/lib/supabase/queries";
 import type { AnimalStatus, Species } from "@/lib/supabase/types";
 
@@ -53,8 +54,8 @@ export default async function AnnuairePage({ searchParams }: PageProps) {
         eyebrow="Annuaire"
         title="Nos chiots et chatons"
         description="Pomsky, Shiba Inu, Teckel et Maine Coon — les disponibles apparaissent en premier. Filtrez par espèce, race ou statut."
-        image="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=2000&q=80"
-        imageAlt="Animaux du Domaine Sibérania"
+        image={siteImages.annuaire}
+        imageAlt="Chiots Pomsky du Domaine Sibérania"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-12 sm:px-8 sm:py-16">

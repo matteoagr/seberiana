@@ -8,6 +8,7 @@ import { FaqJsonLd, SiteJsonLd } from "@/components/JsonLd";
 import { Logo } from "@/components/Logo";
 import { SectionHeading } from "@/components/SectionHeading";
 import { breedProfiles } from "@/data/breeds";
+import { siteImages } from "@/data/site-images";
 import { buildPageMetadata } from "@/lib/seo";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 import { getAvailableCount, getHomeGalleryImages } from "@/lib/supabase/queries";
@@ -56,8 +57,8 @@ export default async function HomePage() {
       <section className="relative isolate flex min-h-[100svh] items-end overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <Image
-            src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=2000&q=80"
-            alt="Paysage boisé du Domaine Sibérania"
+            src={siteImages.homeHero}
+            alt="Chiots Pomsky du Domaine Sibérania"
             fill
             priority
             className="object-cover ken-burns"
@@ -113,8 +114,8 @@ export default async function HomePage() {
         <div className="grid lg:grid-cols-2">
           <div className="relative min-h-[340px] lg:min-h-[480px]">
             <Image
-              src="https://images.unsplash.com/photo-1605568427561-40dd23c2acea?auto=format&fit=crop&w=1400&q=80"
-              alt="Élevage canin Sibérania — Pomsky, Shiba Inu et Teckel"
+              src={siteImages.homeDogs}
+              alt="Élevage canin Sibérania — Pomsky"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -193,8 +194,8 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-2 lg:gap-14">
           <div className="relative min-h-[280px] overflow-hidden sm:min-h-[360px]">
             <Image
-              src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1400&q=80"
-              alt="Chiots socialisés au Domaine Sibérania"
+              src={siteImages.homeApproach}
+              alt="Vie familiale au Domaine Sibérania"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -311,8 +312,8 @@ export default async function HomePage() {
           </div>
           <div className="relative min-h-[320px] overflow-hidden lg:min-h-full lg:sticky lg:top-28">
             <Image
-              src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=1200&q=80"
-              alt="Jeune compagnon prêt à rejoindre sa famille"
+              src={siteImages.homeAdoption}
+              alt="Chiot Pomsky prêt à rejoindre sa famille"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 40vw"

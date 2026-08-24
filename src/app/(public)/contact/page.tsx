@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { ContactForm } from "@/components/ContactForm";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
+import { siteImages } from "@/data/site-images";
 import { buildPageMetadata } from "@/lib/seo";
 import {
   CONTACT_EMAIL,
@@ -24,8 +25,8 @@ export default function ContactPage() {
         eyebrow="Contact"
         title="On discute ?"
         description="Dites-nous ce que vous cherchez — on vous répond avec plaisir."
-        image="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=2000&q=80"
-        imageAlt="Allée boisée menant au domaine"
+        image={siteImages.contact}
+        imageAlt="Pomsky du Domaine Sibérania"
       />
 
       <section className="mx-auto grid max-w-6xl gap-14 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[0.9fr_1.1fr]">

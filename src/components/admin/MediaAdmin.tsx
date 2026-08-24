@@ -1,15 +1,13 @@
 "use client";
 
 import { useActionState } from "react";
-import Image from "next/image";
 import {
   createMediaAction,
-  deleteMediaFormAction,
   type ActionResult,
 } from "@/app/admin/actions";
-import { galleryKeyLabels } from "@/lib/labels";
-import { resolveMediaUrl } from "@/lib/supabase/storage";
-import type { AnimalRow, LitterRow, MediaRow } from "@/lib/supabase/types";
+import { MediaEditCard } from "@/components/admin/MediaEditCard";
+import { galleryKeyLabels, galleryTagLabels } from "@/lib/labels";
+import { GALLERY_TAGS, type AnimalRow, type LitterRow, type MediaRow } from "@/lib/supabase/types";
 
 const fieldClass =
   "mt-2 w-full rounded-lg border border-line bg-background px-4 py-2.5 text-sm outline-none focus:border-gold/50";
@@ -27,6 +25,9 @@ export function MediaAdmin({
     createMediaAction,
     null,
   );
+
+  const galleryMedia = media.filter((item) => item.gallery_key);
+  const otherMedia = media.filter((item) => !item.gallery_key);
 
   return (
     <div className="space-y-12">
@@ -51,7 +52,7 @@ export function MediaAdmin({
           </div>
           <div>
             <label className="block text-sm text-gold/90" htmlFor="alt_text">
-              Légende (accueil)
+              Légende / alt
             </label>
             <input
               id="alt_text"
@@ -61,7 +62,7 @@ export function MediaAdmin({
             />
           </div>
         </div>
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <label className="block text-sm text-gold/90" htmlFor="animal_id">
               Animal
@@ -106,6 +107,24 @@ export function MediaAdmin({
               ))}
             </select>
           </div>
+          <div>
+            <label className="block text-sm text-gold/90" htmlFor="gallery_tag">
+              Catégorie (filtre)
+            </label>
+            <select
+              id="gallery_tag"
+              name="gallery_tag"
+              className={fieldClass}
+              defaultValue="pomsky"
+            >
+              <option value="">—</option>
+              {GALLERY_TAGS.map((tag) => (
+                <option key={tag} value={tag}>
+                  {galleryTagLabels[tag]}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
         <div>
           <label className="block text-sm text-gold/90" htmlFor="sort_order">
@@ -134,56 +153,34 @@ export function MediaAdmin({
       </form>
 
       <div>
-        <h2 className="font-serif text-xl text-foreground">Médias existants</h2>
-        {media.length === 0 ? (
-          <p className="mt-4 text-sm text-foreground-muted">Aucun média.</p>
+        <h2 className="font-serif text-xl text-foreground">Galerie publique</h2>
+        <p className="mt-2 text-sm text-foreground-muted">
+          Modifiez la légende, la catégorie, l’ordre, ou remplacez le fichier image.
+        </p>
+        {galleryMedia.length === 0 ? (
+          <p className="mt-4 text-sm text-foreground-muted">Aucune photo de galerie.</p>
         ) : (
           <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {media.map((item) => {
-              const bucket = item.animal_id
-                ? "animals"
-                : item.litter_id
-                  ? "litters"
-                  : "galleries";
-              const src = resolveMediaUrl(item.storage_path, bucket);
-              return (
-                <li
-                  key={item.id}
-                  className="overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40"
-                >
-                  <div className="relative aspect-[4/3]">
-                    <Image
-                      src={src}
-                      alt={item.alt_text || "Média"}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="space-y-2 p-4 text-sm">
-                    <p className="text-foreground-muted">
-                      {item.gallery_key
-                        ? galleryKeyLabels[item.gallery_key] || item.gallery_key
-                        : item.animal_id
-                          ? "Animal"
-                          : "Portée"}
-                    </p>
-                    <p className="truncate text-xs text-foreground-muted/80">
-                      {item.storage_path}
-                    </p>
-                    <form action={deleteMediaFormAction}>
-                      <input type="hidden" name="id" value={item.id} />
-                      <input type="hidden" name="storage_path" value={item.storage_path} />
-                      <button type="submit" className="text-red-300/90 hover:text-red-200">
-                        Supprimer
-                      </button>
-                    </form>
-                  </div>
-                </li>
-              );
-            })}
+            {galleryMedia.map((item) => (
+              <MediaEditCard key={item.id} item={item} />
+            ))}
           </ul>
         )}
       </div>
+
+      {otherMedia.length > 0 ? (
+        <div>
+          <h2 className="font-serif text-xl text-foreground">Autres médias</h2>
+          <p className="mt-2 text-sm text-foreground-muted">
+            Photos liées à un animal ou une portée.
+          </p>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {otherMedia.map((item) => (
+              <MediaEditCard key={item.id} item={item} />
+            ))}
+          </ul>
+        </div>
+      ) : null}
     </div>
   );
 }

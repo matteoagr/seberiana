@@ -5,6 +5,7 @@ import { AnimalCard } from "@/components/AnimalCard";
 import { ButtonLink } from "@/components/ButtonLink";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
+import { siteImages } from "@/data/site-images";
 import { formatLitterDate } from "@/lib/labels";
 import { getLittersWithYoung } from "@/lib/supabase/queries";
 
@@ -24,8 +25,8 @@ export default async function PorteesPage() {
         eyebrow="Portées"
         title="Nos portées en cours"
         description="Suivez les naissances au Domaine Sibérania : parents, dates et petits de chaque portée de Pomsky, Shiba, Teckel ou Maine Coon."
-        image="https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=2000&q=80"
-        imageAlt="Jeunes animaux du domaine"
+        image={siteImages.portees}
+        imageAlt="Portée de chiots Pomsky du Domaine Sibérania"
       />
 
       <section className="border-b border-line bg-background-elevated/35">

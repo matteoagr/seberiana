@@ -6,6 +6,7 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getBreedBySlug } from "@/data/breeds";
+import { siteImages } from "@/data/site-images";
 import { getBreeders } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = buildPageMetadata({
@@ -32,8 +33,8 @@ export default async function ElevageCaninPage() {
         eyebrow="Nos chiens"
         title="Pomsky, Shiba & Teckel"
         description="Le Pomsky est notre cœur de métier, complété par le Shiba Inu et le Teckel — élevés ici, au rythme de la famille."
-        image="https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=2000&q=80"
-        imageAlt="Espace extérieur de l’élevage canin"
+        image={siteImages.elevageCanin}
+        imageAlt="Pomsky du Domaine Sibérania"
       />
 
       <section className="border-b border-line bg-background-elevated/35">

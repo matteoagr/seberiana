@@ -2,6 +2,7 @@ import type {
   AnimalRole,
   AnimalSex,
   AnimalStatus,
+  GalleryTag,
   LitterStatus,
   Species,
 } from "@/lib/supabase/types";
@@ -45,6 +46,14 @@ export const litterStatusLabels: Record<LitterStatus, string> = {
 /** Galerie publique : photos de la vie du domaine, affichées sur l’accueil. */
 export const galleryKeyLabels: Record<string, string> = {
   accueil: "Vie du domaine (accueil)",
+};
+
+export const galleryTagLabels: Record<GalleryTag, string> = {
+  pomsky: "Pomsky",
+  teckel: "Teckel",
+  "maine-coon": "Maine Coon",
+  shiba: "Shiba Inu",
+  domaine: "Vie du domaine",
 };
 
 export function formatBirthDate(iso: string | null | undefined): string {

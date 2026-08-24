@@ -1,3 +1,4 @@
+import { siteImages } from "@/data/site-images";
 import type { Species } from "@/lib/supabase/types";
 
 export type BreedSection = {
@@ -36,8 +37,7 @@ export const breedProfiles: BreedProfile[] = [
     heroTitle: "Le Pomsky",
     heroDescription:
       "Un compagnon compact et expressif, né du croisement Husky et Spitz — notre race de cœur au domaine.",
-    heroImage:
-      "https://images.unsplash.com/photo-1568572933382-74d440642117?auto=format&fit=crop&w=2000&q=80",
+    heroImage: siteImages.breedPomsky,
     lofAtKennel: "non-lof",
     lofLabel: "Non inscrit LOF (race de croisement)",
     intro:
@@ -152,8 +152,7 @@ export const breedProfiles: BreedProfile[] = [
     heroTitle: "Le Teckel",
     heroDescription:
       "Un compagnon courageux et affectueux, au corps allongé unique — présent au domaine en lignée non LOF.",
-    heroImage:
-      "https://images.unsplash.com/photo-1612536057832-2ff7ead58194?auto=format&fit=crop&w=2000&q=80",
+    heroImage: siteImages.breedTeckel,
     lofAtKennel: "non-lof",
     lofLabel: "Non inscrit LOF au domaine",
     intro:

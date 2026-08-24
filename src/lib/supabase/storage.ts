@@ -1,5 +1,6 @@
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=1200&q=80";
+import { siteImages } from "@/data/site-images";
+
+const FALLBACK_IMAGE = siteImages.fallback;
 
 /** Resolve a storage path or absolute URL to a public image URL. */
 export function resolveMediaUrl(

@@ -1,11 +1,6 @@
 import Link from "next/link";
 import { logoutAction } from "@/app/admin/actions";
-
-const nav = [
-  { href: "/admin/portees", label: "Portées" },
-  { href: "/admin/reproducteurs", label: "Reproducteurs" },
-  { href: "/admin/medias", label: "Galerie" },
-];
+import { AdminNav } from "@/components/admin/AdminNav";
 
 export default function AdminPanelLayout({
   children,
@@ -22,22 +17,7 @@ export default function AdminPanelLayout({
               Domaine Sibérania
             </Link>
           </div>
-          <nav className="flex flex-wrap items-center gap-2">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="rounded-lg border border-line px-3 py-1.5 text-sm text-foreground-muted transition-colors hover:border-gold/40 hover:text-gold-soft"
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link
-              href="/"
-              className="rounded-lg px-3 py-1.5 text-sm text-foreground-muted hover:text-gold-soft"
-            >
-              Site
-            </Link>
+          <AdminNav />
             <form action={logoutAction}>
               <button
                 type="submit"
@@ -46,7 +26,6 @@ export default function AdminPanelLayout({
                 Déconnexion
               </button>
             </form>
-          </nav>
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-5 py-10 sm:px-8 sm:py-12">

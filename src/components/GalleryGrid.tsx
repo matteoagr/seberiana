@@ -35,6 +35,11 @@ export function GalleryGrid({
     [total],
   );
 
+  const imagesKey = images.map((image) => image.src).join("|");
+  useEffect(() => {
+    setOpenIndex(null);
+  }, [imagesKey]);
+
   useEffect(() => {
     if (!isOpen) return;
 

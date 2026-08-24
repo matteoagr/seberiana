@@ -41,9 +41,20 @@ export type LitterRow = {
   cover_image_path: string | null;
   published: boolean;
   archived: boolean;
+  deleted_at: string | null;
   created_at: string;
   updated_at: string;
 };
+
+export type GalleryTag = "pomsky" | "teckel" | "maine-coon" | "shiba" | "domaine";
+
+export const GALLERY_TAGS: GalleryTag[] = [
+  "pomsky",
+  "teckel",
+  "maine-coon",
+  "shiba",
+  "domaine",
+];
 
 export type MediaRow = {
   id: string;
@@ -54,6 +65,7 @@ export type MediaRow = {
   animal_id: string | null;
   litter_id: string | null;
   gallery_key: string | null;
+  gallery_tag: GalleryTag | null;
   created_at: string;
 };
 
@@ -95,6 +107,7 @@ export type LitterCardModel = {
 export type GalleryImage = {
   src: string;
   alt: string;
+  tag: GalleryTag | null;
 };
 
 export type ParentPreview = {

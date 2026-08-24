@@ -283,12 +283,13 @@ export async function getPublicAnimalById(
     const photosFromMedia = ((media as MediaRow[] | null) ?? []).map((rowMedia) => ({
       src: resolveMediaUrl(rowMedia.storage_path, "animals"),
       alt: rowMedia.alt_text || animal.name,
+      tag: null,
     }));
 
     const photos =
       photosFromMedia.length > 0
         ? photosFromMedia
-        : [{ src: animal.image, alt: animal.name }];
+        : [{ src: animal.image, alt: animal.name, tag: null }];
 
     return {
       ...animal,
@@ -356,6 +357,7 @@ async function fetchLittersWithYoung(): Promise<LitterCardModel[]> {
     )
     .eq("published", true)
     .eq("archived", false)
+    .is("deleted_at", null)
     .order("birth_date", { ascending: false });
 
   if (error) {
@@ -432,6 +434,7 @@ export async function getGalleryImages(galleryKey: string): Promise<GalleryImage
     return ((data as MediaRow[] | null) ?? []).map((row) => ({
       src: resolveMediaUrl(row.storage_path, "galleries"),
       alt: row.alt_text || galleryKey,
+      tag: row.gallery_tag ?? null,
     }));
   } catch (error) {
     console.error("getGalleryImages", error);
@@ -508,6 +511,7 @@ export async function adminListLitters(): Promise<AdminLitterSummary[]> {
       dam:animals!litters_dam_id_fkey(id, name)
     `,
     )
+    .is("deleted_at", null)
     .order("birth_date", { ascending: false, nullsFirst: false })
     .order("updated_at", { ascending: false });
 
@@ -567,6 +571,12 @@ export async function adminGetLitterDetail(id: string): Promise<AdminLitterDetai
   if (error) throw error;
   if (!litter) return null;
 
+  const row = litter as LitterRow & {
+    sire: { id: string; name: string } | null;
+    dam: { id: string; name: string } | null;
+  };
+  if (row.deleted_at) return null;
+
   const { data: young, error: youngError } = await supabase
     .from("animals")
     .select("*")
@@ -577,10 +587,7 @@ export async function adminGetLitterDetail(id: string): Promise<AdminLitterDetai
   if (youngError) throw youngError;
 
   return {
-    ...(litter as LitterRow & {
-      sire: { id: string; name: string } | null;
-      dam: { id: string; name: string } | null;
-    }),
+    ...row,
     young: (young ?? []) as AnimalRow[],
   };
 }
@@ -631,6 +638,7 @@ export async function adminListMedia(): Promise<MediaRow[]> {
   const { data, error } = await supabase
     .from("media")
     .select("*")
+    .order("sort_order", { ascending: true })
     .order("created_at", { ascending: false });
   if (error) throw error;
   return (data ?? []) as MediaRow[];
@@ -657,6 +665,7 @@ export async function adminLitterOptions(): Promise<
     .from("litters")
     .select("id, title, species, breed")
     .eq("archived", false)
+    .is("deleted_at", null)
     .order("title");
   if (error) throw error;
   return data ?? [];

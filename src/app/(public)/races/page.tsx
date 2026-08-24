@@ -4,6 +4,7 @@ import { BreedTeaser } from "@/components/BreedTeaser";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { breedProfiles } from "@/data/breeds";
+import { siteImages } from "@/data/site-images";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Fiches races — Pomsky, Shiba Inu, Teckel, Maine Coon",
@@ -23,8 +24,8 @@ export default function RacesIndexPage() {
         eyebrow="Nos races"
         title="Fiches races"
         description="Caractéristiques, tempérament et élevage pour chaque race présente au Domaine Sibérania — avec un exemple photo pour visualiser."
-        image="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=2000&q=80"
-        imageAlt="Chiens et chats au domaine"
+        image={siteImages.races}
+        imageAlt="Chiots Pomsky du Domaine Sibérania"
       />
 
       <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">

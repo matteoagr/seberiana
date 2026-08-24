@@ -196,15 +196,6 @@ export function LitterForm({
           />
           Publiée
         </label>
-        <label className="inline-flex items-center gap-2 text-sm text-foreground-muted">
-          <input
-            type="checkbox"
-            name="archived"
-            defaultChecked={litter?.archived ?? false}
-            className="accent-[var(--gold)]"
-          />
-          Archivée
-        </label>
       </div>
 
       {state && !state.ok ? (
