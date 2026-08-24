@@ -120,7 +120,7 @@ export function AnimalsTable({ animals }: { animals: AdminAnimalListItem[] }) {
           Archivés
         </label>
         <p className="pb-1 text-xs text-foreground-muted">
-          {filtered.length} animal{filtered.length > 1 ? "ux" : ""}
+          {filtered.length} {filtered.length > 1 ? "animaux" : "animal"}
         </p>
       </div>
 
