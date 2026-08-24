@@ -1,15 +1,9 @@
 import Link from "next/link";
 import { AnimalsTable } from "@/components/admin/AnimalsTable";
-import {
-  adminListAnimalsDetailed,
-  adminLitterOptions,
-} from "@/lib/supabase/queries";
+import { adminListAnimalsDetailed } from "@/lib/supabase/queries";
 
 export default async function AdminAnimauxPage() {
-  const [animals, litters] = await Promise.all([
-    adminListAnimalsDetailed(),
-    adminLitterOptions(),
-  ]);
+  const animals = await adminListAnimalsDetailed();
 
   return (
     <div>
@@ -18,9 +12,8 @@ export default async function AdminAnimauxPage() {
           <p className="font-serif text-sm text-gold/90">Tous les animaux</p>
           <h1 className="mt-1 font-serif text-3xl text-foreground">Animaux</h1>
           <p className="mt-2 max-w-2xl text-sm text-foreground-muted">
-            Tableau de tous les profils : jeunes, reproducteurs, portée, parents,
-            statut. Modifiez une ligne puis Enregistrer. Les photos se déposent
-            dans la colonne Photos.
+            Récapitulatif de tous les profils. Pour changer une info ou les
+            photos, ouvrez la fiche avec Modifier.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -39,7 +32,7 @@ export default async function AdminAnimauxPage() {
         </div>
       </div>
       <div className="mt-8">
-        <AnimalsTable animals={animals} litters={litters} />
+        <AnimalsTable animals={animals} />
       </div>
     </div>
   );
