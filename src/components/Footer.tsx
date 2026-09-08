@@ -5,6 +5,7 @@ import {
   CONTACT_PHONE_TEL,
 } from "@/lib/site";
 import { Logo } from "./Logo";
+import { PetitsCoeursLabel } from "./PetitsCoeurs";
 
 export function Footer() {
   return (
@@ -42,7 +43,7 @@ export function Footer() {
           <ul className="space-y-2 text-sm text-foreground-muted">
             <li>
               <Link href="/annuaire" className="transition-colors hover:text-gold-soft">
-                Annuaire
+                <PetitsCoeursLabel iconClassName="h-3 w-3 text-gold-soft" />
               </Link>
             </li>
             <li>

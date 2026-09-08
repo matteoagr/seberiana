@@ -184,7 +184,7 @@ async function fetchSiblingsByLitterId(
   };
 }
 
-/** Profil public : jeunes publiés, ou reproducteurs (même non listés dans l’annuaire). */
+/** Profil public : jeunes publiés, ou reproducteurs (même non listés parmi nos petits cœurs). */
 function isPublicProfileVisible(animal: Pick<AnimalRow, "published" | "role">): boolean {
   return animal.published || animal.role === "reproducteur";
 }

@@ -8,7 +8,7 @@ export const SITE_TAGLINE =
   "Élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon";
 
 export const SITE_DESCRIPTION =
-  "Pomsky, Shiba Inu, Teckel et Maine Coon au Domaine Sibérania. Annuaire des disponibilités, portées suivies et élevage familial en France.";
+  "Pomsky, Shiba Inu, Teckel et Maine Coon au Domaine Sibérania. Nos petits cœurs, portées suivies et élevage familial en France.";
 
 export const CONTACT_EMAIL = "elevagesiberania@gmail.com";
 export const CONTACT_PHONE_DISPLAY = "06 06 52 49 48";

@@ -12,6 +12,7 @@ import { siteImages } from "@/data/site-images";
 import { buildPageMetadata } from "@/lib/seo";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 import { getAvailableCount, getHomeGalleryImages } from "@/lib/supabase/queries";
+import { PetitsCoeursLabel, PETITS_COEURS } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
   title: `${SITE_NAME} — Élevage familial Pomsky, Shiba, Teckel & Maine Coon`,
@@ -29,12 +30,12 @@ const HOME_FAQ = [
   {
     question: "Comment savoir si un chiot ou un chaton est disponible ?",
     answer:
-      "L’annuaire liste tous les profils publiés avec leur statut (disponible, réservé ou adopté). Les portées regroupent les petits d’une même naissance avec leurs parents.",
+      `${PETITS_COEURS} liste tous les profils publiés avec leur statut (disponible, réservé ou adopté). Les portées regroupent les petits d’une même naissance avec leurs parents.`,
   },
   {
     question: "Comment se déroule une adoption ?",
     answer:
-      "Vous consultez l’annuaire ou les portées, puis vous nous contactez. Nous échangeons sur votre projet, le profil de l’animal et le suivi. Chaque départ est préparé avec transparence.",
+      `Vous consultez ${PETITS_COEURS.toLowerCase()} ou les portées, puis vous nous contactez. Nous échangeons sur votre projet, le profil de l’animal et le suivi. Chaque départ est préparé avec transparence.`,
   },
   {
     question: "Où se trouve l’élevage ?",
@@ -80,7 +81,9 @@ export default async function HomePage() {
             élevés avec amour, pour des familles qui comptent.
           </p>
           <div className="reveal reveal-delay-3 mt-10 flex flex-wrap items-center justify-center gap-4">
-            <ButtonLink href="/annuaire">Voir l’annuaire</ButtonLink>
+            <ButtonLink href="/annuaire">
+              <PetitsCoeursLabel leading="Voir nos petits" iconClassName="h-3.5 w-3.5" />
+            </ButtonLink>
             <ButtonLink href="/contact" variant="ghost">
               Nous écrire
             </ButtonLink>
@@ -96,7 +99,7 @@ export default async function HomePage() {
             description={
               availableCount > 0
                 ? `${availableCount} profil${availableCount > 1 ? "s" : ""} disponible${availableCount > 1 ? "s" : ""} en ce moment.`
-                : "Consultez l’annuaire pour découvrir nos compagnons."
+                : "Consultez nos petits cœurs pour découvrir nos compagnons."
             }
           />
           <div className="flex flex-wrap gap-3">
@@ -131,7 +134,12 @@ export default async function HomePage() {
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <ButtonLink href="/annuaire?espece=canin" onMedia>
-                  Annuaire chiens
+                  <PetitsCoeursLabel
+                    leading="Nos petits"
+                    trailing="chiens"
+                    iconClassName="h-3.5 w-3.5"
+                    className="inline-flex items-center gap-1.5"
+                  />
                 </ButtonLink>
                 <ButtonLink href="/elevage-canin" variant="ghost" onMedia>
                   En savoir plus
@@ -159,7 +167,12 @@ export default async function HomePage() {
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <ButtonLink href="/annuaire?espece=felin" onMedia>
-                  Annuaire chats
+                  <PetitsCoeursLabel
+                    leading="Nos petits"
+                    trailing="chats"
+                    iconClassName="h-3.5 w-3.5"
+                    className="inline-flex items-center gap-1.5"
+                  />
                 </ButtonLink>
                 <ButtonLink href="/elevage-felin" variant="ghost" onMedia>
                   En savoir plus
@@ -216,7 +229,7 @@ export default async function HomePage() {
                 vétérinaire, une socialisation progressive et une sélection attentive des familles.
               </p>
               <p>
-                Chaque profil publié dans l’annuaire indique clairement le statut — disponible,
+                Chaque profil publié parmi nos petits cœurs indique clairement le statut — disponible,
                 réservé ou adopté — ainsi que les parents et la portée lorsque l’information est
                 connue. Notre objectif : vous donner les éléments pour choisir en confiance.
               </p>
@@ -269,9 +282,13 @@ export default async function HomePage() {
               <div>
                 <h3 className="font-serif text-xl text-foreground">Parcourir les profils</h3>
                 <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
-                  Consultez l’
+                  Consultez{" "}
                   <Link href="/annuaire" className="text-gold-soft hover:underline">
-                    annuaire
+                    <PetitsCoeursLabel
+                      leading="nos petits"
+                      iconClassName="h-3 w-3 inline"
+                      className="inline-flex items-center gap-1"
+                    />
                   </Link>{" "}
                   et les{" "}
                   <Link href="/portees" className="text-gold-soft hover:underline">

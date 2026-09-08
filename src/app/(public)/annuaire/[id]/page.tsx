@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AnimalGallery } from "@/components/AnimalGallery";
 import { ButtonLink } from "@/components/ButtonLink";
+import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 import { SexBadge } from "@/components/SexBadge";
 import { StatusBadge } from "@/components/StatusBadge";
 import {
@@ -139,7 +140,11 @@ export default async function AnimalDetailPage({ params }: PageProps) {
           <li aria-hidden>/</li>
           <li>
             <Link href="/annuaire" className="transition-colors hover:text-gold-soft">
-              Annuaire
+              <PetitsCoeursLabel
+                leading="Nos petits"
+                iconClassName="h-3 w-3 inline text-gold-soft"
+                className="inline-flex items-center gap-1"
+              />
             </Link>
           </li>
           <li aria-hidden>/</li>
@@ -195,7 +200,10 @@ export default async function AnimalDetailPage({ params }: PageProps) {
               </ButtonLink>
             ) : null}
             <ButtonLink href="/annuaire" variant="ghost">
-              Retour à l’annuaire
+              <PetitsCoeursLabel
+                leading="Retour aux petits"
+                iconClassName="h-3.5 w-3.5"
+              />
             </ButtonLink>
           </div>
         </div>

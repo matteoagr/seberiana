@@ -61,7 +61,7 @@ export function ContactForm() {
           className="mt-2 w-full rounded-lg border border-line bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold/50"
           defaultValue={defaultInterest}
         >
-          <option value="annuaire">Un profil de l’annuaire</option>
+          <option value="annuaire">Un de nos petits cœurs</option>
           <option value="portees">Une portée</option>
           <option value="pomsky">Pomsky</option>
           <option value="shiba">Shiba Inu</option>

@@ -8,6 +8,7 @@ import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getBreedBySlug } from "@/data/breeds";
 import { getBreeders } from "@/lib/supabase/queries";
+import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Élevage félin Maine Coon",
@@ -38,10 +39,18 @@ export default async function ElevageFelinPage() {
               Adopter un chaton
             </p>
             <p className="mt-2 text-base leading-relaxed text-foreground/90">
-              Chatons disponibles ou réservés ? L’annuaire vous dit tout, statut compris.
+              Chatons disponibles ou réservés ? Nos petits cœurs vous disent tout, statut
+              compris.
             </p>
           </div>
-          <ButtonLink href="/annuaire?espece=felin">Annuaire chats</ButtonLink>
+          <ButtonLink href="/annuaire?espece=felin">
+            <PetitsCoeursLabel
+              leading="Nos petits"
+              trailing="chats"
+              iconClassName="h-3.5 w-3.5"
+              className="inline-flex items-center gap-1.5"
+            />
+          </ButtonLink>
         </div>
       </section>
 
@@ -75,9 +84,9 @@ export default async function ElevageFelinPage() {
                 <a href="/races/maine-coon" className="text-gold-soft hover:underline">
                   fiche Maine Coon
                 </a>{" "}
-                et les disponibilités dans l’
+                et les disponibilités parmi{" "}
                 <a href="/annuaire?espece=felin" className="text-gold-soft hover:underline">
-                  annuaire chats
+                  nos petits cœurs
                 </a>
                 .
               </p>
@@ -89,7 +98,7 @@ export default async function ElevageFelinPage() {
       <BreedSectionVisual
         breed={maineCoonBreed}
         title="Nos reproducteurs"
-        description="Les parents de nos portées, visibles dans l’annuaire lorsqu’ils sont publiés."
+        description="Les parents de nos portées, visibles parmi nos petits cœurs lorsqu’ils sont publiés."
       >
         {founders.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2">

@@ -4,16 +4,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "./Logo";
+import { PetitsCoeursLabel } from "./PetitsCoeurs";
 
 const links = [
   { href: "/", label: "Accueil" },
-  { href: "/annuaire", label: "Annuaire" },
+  { href: "/annuaire", label: "petits-coeurs" as const },
   { href: "/portees", label: "Portées" },
   { href: "/galerie", label: "Galerie" },
   { href: "/elevage-canin", label: "Chiens" },
   { href: "/elevage-felin", label: "Chats" },
   { href: "/contact", label: "Contact" },
 ];
+
+function NavLabel({ label }: { label: (typeof links)[number]["label"] }) {
+  if (label === "petits-coeurs") {
+    return <PetitsCoeursLabel iconClassName="h-3.5 w-3.5 text-gold-soft" />;
+  }
+  return <>{label}</>;
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -56,7 +64,7 @@ export function Header() {
                   active ? "text-gold-soft" : "text-foreground/80 hover:text-gold-soft"
                 }`}
               >
-                {link.label}
+                <NavLabel label={link.label} />
                 <span
                   className={`absolute -bottom-1 left-0 h-px bg-gold transition-all duration-300 ${
                     active ? "w-full" : "w-0 group-hover:w-full"
@@ -112,7 +120,7 @@ export function Header() {
                   active ? "text-gold-soft" : "text-foreground/85"
                 }`}
               >
-                {link.label}
+                <NavLabel label={link.label} />
               </Link>
             );
           })}

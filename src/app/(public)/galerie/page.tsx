@@ -6,6 +6,7 @@ import { PageHero } from "@/components/PageHero";
 import { siteImages } from "@/data/site-images";
 import { buildPageMetadata } from "@/lib/seo";
 import { getHomeGalleryImages } from "@/lib/supabase/queries";
+import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Galerie — la vie au Domaine Sibérania",
@@ -45,11 +46,13 @@ export default async function GaleriePage() {
         ) : (
           <div className="max-w-xl space-y-6">
             <p className="text-base leading-relaxed text-foreground-muted">
-              La galerie se remplit bientôt. En attendant, découvrez nos compagnons dans
-              l’annuaire ou les portées en cours.
+              La galerie se remplit bientôt. En attendant, découvrez nos compagnons parmi
+              nos petits cœurs ou les portées en cours.
             </p>
             <div className="flex flex-wrap gap-3">
-              <ButtonLink href="/annuaire">Voir l’annuaire</ButtonLink>
+              <ButtonLink href="/annuaire">
+                <PetitsCoeursLabel leading="Voir nos petits" iconClassName="h-3.5 w-3.5" />
+              </ButtonLink>
               <ButtonLink href="/portees" variant="ghost">
                 Voir les portées
               </ButtonLink>
@@ -65,11 +68,13 @@ export default async function GaleriePage() {
               Un profil vous plaît ?
             </p>
             <p className="mt-2 text-base leading-relaxed text-foreground/90">
-              Consultez l’annuaire pour les disponibilités, ou écrivez-nous pour en parler.
+              Consultez nos petits cœurs pour les disponibilités, ou écrivez-nous pour en parler.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <ButtonLink href="/annuaire">Annuaire</ButtonLink>
+            <ButtonLink href="/annuaire">
+              <PetitsCoeursLabel iconClassName="h-3.5 w-3.5" />
+            </ButtonLink>
             <ButtonLink href="/contact" variant="ghost">
               Contact
             </ButtonLink>

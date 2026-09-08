@@ -26,7 +26,8 @@ export function AnimalPhotosManager({
         <h2 className="font-serif text-2xl text-foreground">Photos de {animalName}</h2>
         <p className="mt-1 text-sm text-foreground-muted">
           Déposez les images dans la zone ci-dessous — elles s’enregistrent
-          immédiatement. Cliquez une photo pour en faire la couverture de l’annuaire.
+          immédiatement. Cliquez une photo pour en faire la couverture parmi nos petits
+          cœurs.
         </p>
       </div>
 

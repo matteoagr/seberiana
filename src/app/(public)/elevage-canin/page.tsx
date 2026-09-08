@@ -8,11 +8,12 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { getBreedBySlug } from "@/data/breeds";
 import { siteImages } from "@/data/site-images";
 import { getBreeders } from "@/lib/supabase/queries";
+import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Élevage canin Pomsky, Shiba Inu & Teckel",
   description:
-    "Élevage canin familial au Domaine Sibérania : Pomsky (race principale), Shiba Inu et Teckel. Socialisation, suivi vétérinaire et annuaire des chiots disponibles.",
+    "Élevage canin familial au Domaine Sibérania : Pomsky (race principale), Shiba Inu et Teckel. Socialisation, suivi vétérinaire et nos petits cœurs disponibles.",
   path: "/elevage-canin",
 });
 
@@ -44,10 +45,17 @@ export default async function ElevageCaninPage() {
               Adopter un chiot
             </p>
             <p className="mt-2 text-base leading-relaxed text-foreground/90">
-              Un chiot disponible ? Consultez l’annuaire pour voir les profils à jour.
+              Un chiot disponible ? Consultez nos petits cœurs pour voir les profils à jour.
             </p>
           </div>
-          <ButtonLink href="/annuaire?espece=canin">Annuaire chiens</ButtonLink>
+          <ButtonLink href="/annuaire?espece=canin">
+            <PetitsCoeursLabel
+              leading="Nos petits"
+              trailing="chiens"
+              iconClassName="h-3.5 w-3.5"
+              className="inline-flex items-center gap-1.5"
+            />
+          </ButtonLink>
         </div>
       </section>
 
@@ -73,9 +81,9 @@ export default async function ElevageCaninPage() {
               <a href="/races" className="text-gold-soft hover:underline">
                 fiches races
               </a>
-              . Les profils disponibles sont mis à jour dans l’
+              . Les profils disponibles sont mis à jour dans{" "}
               <a href="/annuaire?espece=canin" className="text-gold-soft hover:underline">
-                annuaire chiens
+                nos petits cœurs
               </a>
               .
             </p>

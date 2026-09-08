@@ -31,8 +31,8 @@ export default function RacesIndexPage() {
       <section className="mx-auto max-w-6xl px-5 py-14 sm:px-8 sm:py-20">
         <p className="max-w-3xl text-base leading-relaxed text-foreground/85 sm:text-lg">
           Chaque fiche détaille l’origine, le caractère, les besoins et la situation LOF/LOOF
-          au sein de notre élevage familial. Retrouvez aussi les jeunes disponibles dans
-          l’annuaire.
+          au sein de notre élevage familial. Retrouvez aussi les jeunes disponibles parmi
+          nos petits cœurs.
         </p>
 
         <div className="mt-14">

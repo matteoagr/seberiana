@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { BreedProfile } from "@/data/breeds";
+import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
 type BreedProfileViewProps = {
   breed: BreedProfile;
@@ -97,7 +98,12 @@ export function BreedProfileView({ breed }: BreedProfileViewProps) {
               href={breed.annuaireHref}
               className="inline-flex items-center rounded-full border border-gold/40 bg-gold/10 px-5 py-2.5 text-sm text-gold-soft transition-colors hover:bg-gold/20"
             >
-              Voir l&apos;annuaire {breed.name}
+              <PetitsCoeursLabel
+                leading="Voir nos petits"
+                trailing={breed.name}
+                iconClassName="h-3.5 w-3.5"
+                className="inline-flex items-center gap-1.5"
+              />
             </Link>
             <Link
               href={breed.elevageHref}

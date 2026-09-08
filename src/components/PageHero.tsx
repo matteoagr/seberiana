@@ -1,11 +1,12 @@
 import Image from "next/image";
+import type { ReactNode } from "react";
 
 type PageHeroProps = {
-  title: string;
+  title: ReactNode;
   description: string;
   image: string;
   imageAlt: string;
-  eyebrow?: string;
+  eyebrow?: ReactNode;
   /** Pages intérieures : hero plus compact et titres plus lisibles. */
   compact?: boolean;
 };
@@ -39,7 +40,7 @@ export function PageHero({
 
       <div className="mx-auto flex max-w-6xl flex-col justify-end px-5 pb-12 pt-20 sm:px-8 sm:pb-16 sm:pt-24">
         {eyebrow ? (
-          <p
+          <div
             className={`reveal mb-2 text-gold/85 ${
               compact
                 ? "text-xs font-medium uppercase tracking-[0.14em]"
@@ -47,7 +48,7 @@ export function PageHero({
             }`}
           >
             {eyebrow}
-          </p>
+          </div>
         ) : null}
         <h1
           className={`reveal reveal-delay-1 max-w-3xl font-serif leading-tight text-foreground text-balance ${

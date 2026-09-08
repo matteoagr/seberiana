@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { siteImages } from "@/data/site-images";
 import { formatLitterDate } from "@/lib/labels";
 import { getLittersWithYoung } from "@/lib/supabase/queries";
+import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Portées en cours",
@@ -32,9 +33,17 @@ export default async function PorteesPage() {
       <section className="border-b border-line bg-background-elevated/35">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p className="max-w-xl text-sm leading-relaxed text-foreground-muted">
-            Pour voir qui est disponible ou réservé, l’annuaire est le plus pratique.
+            Pour voir qui est disponible ou réservé,{" "}
+            <PetitsCoeursLabel
+              leading="nos petits"
+              iconClassName="h-3 w-3 inline text-gold-soft"
+              className="inline-flex items-center gap-1"
+            />{" "}
+            sont le plus pratique.
           </p>
-          <ButtonLink href="/annuaire">Ouvrir l’annuaire</ButtonLink>
+          <ButtonLink href="/annuaire">
+            <PetitsCoeursLabel leading="Ouvrir nos petits" iconClassName="h-3.5 w-3.5" />
+          </ButtonLink>
         </div>
       </section>
 
@@ -43,10 +52,12 @@ export default async function PorteesPage() {
           <div className="rounded-xl border border-line/60 bg-background-elevated/40 px-6 py-12 text-center">
             <p className="font-serif text-2xl text-gold-soft">Aucune portée pour le moment</p>
             <p className="mt-3 text-sm text-foreground-muted">
-              Revenez bientôt, ou consultez l’annuaire des compagnons déjà présents.
+              Revenez bientôt, ou consultez nos petits cœurs déjà présents.
             </p>
             <div className="mt-8 flex justify-center">
-              <ButtonLink href="/annuaire">Voir l’annuaire</ButtonLink>
+              <ButtonLink href="/annuaire">
+                <PetitsCoeursLabel leading="Voir nos petits" iconClassName="h-3.5 w-3.5" />
+              </ButtonLink>
             </div>
           </div>
         ) : (
@@ -87,7 +98,10 @@ export default async function PorteesPage() {
                         href={`/annuaire?espece=${litter.species}`}
                         variant="ghost"
                       >
-                        Voir dans l’annuaire
+                        <PetitsCoeursLabel
+                          leading="Voir nos petits"
+                          iconClassName="h-3.5 w-3.5"
+                        />
                       </ButtonLink>
                     </div>
                   </div>

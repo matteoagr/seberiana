@@ -34,7 +34,7 @@ export default function ContactPage() {
           <SectionHeading
             eyebrow="Nous écrire"
             title="On lit chaque message"
-            description="Questions sur une race, une portée ou un profil de l’annuaire : on répond avec soin et transparence."
+            description="Questions sur une race, une portée ou un de nos petits cœurs : on répond avec soin et transparence."
           />
           <p className="mt-6 max-w-md text-sm leading-relaxed text-foreground-muted">
             Précisez l’espèce ou la race qui vous intéresse (Pomsky, Shiba Inu, Teckel,

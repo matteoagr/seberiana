@@ -34,7 +34,7 @@ Buckets Storage : `animals`, `litters`, `galleries`, `media`.
 | Route | Source de données |
 | --- | --- |
 | `/` | Compteur d’animaux disponibles |
-| `/annuaire` | `animals` (filtres espèce / race / statut) |
+| `/annuaire` | Nos petits cœurs — `animals` (filtres espèce / race / statut) |
 | `/portees` | `litters` + jeunes liés |
 | `/elevage-canin` | reproducteurs canins + galerie `elevage_canin` |
 | `/elevage-felin` | reproducteurs félins + galerie `elevage_felin` |

@@ -15,7 +15,7 @@ export const siteImages = {
   elevageCanin: "/photos/elevage-canin.jpg",
   /** Index fiches races — hero */
   races: "/photos/races.jpg",
-  /** Annuaire — hero */
+  /** Nos petits cœurs — hero */
   annuaire: "/photos/annuaire.jpg",
   /** Portées — hero */
   portees: "/photos/portees.jpg",
