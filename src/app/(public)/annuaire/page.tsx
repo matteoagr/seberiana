@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { buildPageMetadata } from "@/lib/seo";
-import { AnimalCard } from "@/components/AnimalCard";
-import { AnnuaireFilters } from "@/components/AnnuaireFilters";
+import { AnnuaireBrowser } from "@/components/AnnuaireBrowser";
 import { ButtonLink } from "@/components/ButtonLink";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { siteImages } from "@/data/site-images";
 import { getAnimals, getAvailableCount } from "@/lib/supabase/queries";
-import type { AnimalStatus, Species } from "@/lib/supabase/types";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Annuaire des chiots et chatons",
@@ -16,35 +15,9 @@ export const metadata: Metadata = buildPageMetadata({
   path: "/annuaire",
 });
 
-type PageProps = {
-  searchParams: Promise<{
-    espece?: string;
-    race?: string;
-    statut?: string;
-  }>;
-};
-
-export default async function AnnuairePage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const espece =
-    params.espece === "canin" || params.espece === "felin"
-      ? (params.espece as Species)
-      : undefined;
-  const statut =
-    params.statut === "disponible" ||
-    params.statut === "reserve" ||
-    params.statut === "adopte"
-      ? (params.statut as AnimalStatus)
-      : undefined;
-  const race = params.race?.trim() || undefined;
-
-  const filters = { espece, race, statut };
+export default async function AnnuairePage() {
   const [animals, availableCount] = await Promise.all([
-    getAnimals({
-      species: espece,
-      breed: race,
-      status: statut,
-    }),
+    getAnimals(),
     getAvailableCount(),
   ]);
 
@@ -70,34 +43,9 @@ export default async function AnnuairePage({ searchParams }: PageProps) {
           </ButtonLink>
         </div>
 
-        <div className="mt-6">
-          <AnnuaireFilters filters={filters} />
-        </div>
-
-        <p className="mt-6 text-sm text-foreground-muted">
-          {animals.length} profil{animals.length > 1 ? "s" : ""}
-        </p>
-
-        {animals.length > 0 ? (
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {animals.map((animal) => (
-              <AnimalCard key={animal.id} animal={animal} showCta />
-            ))}
-          </div>
-        ) : (
-          <div className="mt-10 rounded-xl border border-line/60 bg-background-elevated/40 px-6 py-12 text-center">
-            <p className="font-serif text-2xl text-gold-soft">Aucun profil trouvé</p>
-            <p className="mt-3 text-sm text-foreground-muted">
-              Essayez d’élargir vos filtres, ou jetez un œil aux portées en cours.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <ButtonLink href="/annuaire">Tout afficher</ButtonLink>
-              <ButtonLink href="/portees" variant="ghost">
-                Voir les portées
-              </ButtonLink>
-            </div>
-          </div>
-        )}
+        <Suspense fallback={<p className="mt-8 text-sm text-foreground-muted">Chargement…</p>}>
+          <AnnuaireBrowser animals={animals} />
+        </Suspense>
       </section>
 
       <section className="border-t border-line bg-background-elevated/30">

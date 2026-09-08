@@ -1,5 +1,6 @@
 import "server-only";
 
+import { unstable_cache } from "next/cache";
 import { sexLabels, statusOrder } from "@/lib/labels";
 import { createAnonClient, createClient } from "@/lib/supabase/server";
 import { animalCoverUrl, litterCoverUrl, resolveMediaUrl } from "@/lib/supabase/storage";
@@ -14,6 +15,8 @@ import type {
   MediaRow,
   Species,
 } from "@/lib/supabase/types";
+
+const PUBLIC_REVALIDATE_SECONDS = 60;
 
 type ParentJoin = {
   id: string;
@@ -89,9 +92,11 @@ function mapParent(
   };
 }
 
+type PublicDb = ReturnType<typeof createAnonClient>;
+
 /** PostgREST self-joins on animals return [] — load parents by id instead. */
 async function fetchParentsByIds(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: PublicDb,
   sireId: string | null,
   damId: string | null,
 ): Promise<{ sire: ParentJoin | null; dam: ParentJoin | null }> {
@@ -121,7 +126,7 @@ async function fetchParentsByIds(
 
 /** Enfants publiés (père ou mère = animal courant). */
 async function fetchOffspringByParentId(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: PublicDb,
   parentId: string,
 ): Promise<ParentJoin[]> {
   const { data, error } = await supabase
@@ -144,7 +149,7 @@ async function fetchOffspringByParentId(
 
 /** Frères/sœurs publiés de la même portée (hors animal courant). */
 async function fetchSiblingsByLitterId(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: PublicDb,
   litterId: string | null,
   animalId: string,
 ): Promise<{ siblings: ParentJoin[]; litterTitle: string | null }> {
@@ -190,60 +195,80 @@ export async function getAnimals(filters?: {
   status?: AnimalStatus;
   role?: AnimalRow["role"];
 }): Promise<AnimalCardModel[]> {
-  try {
-    const supabase = await createClient();
-    let query = supabase
-      .from("animals")
-      .select(animalSelect)
-      .eq("published", true)
-      .eq("archived", false);
+  const cacheKey = [
+    "animals",
+    filters?.species ?? "",
+    filters?.breed ?? "",
+    filters?.status ?? "",
+    filters?.role ?? "",
+  ];
 
-    if (filters?.species) query = query.eq("species", filters.species);
-    if (filters?.breed) query = query.eq("breed", filters.breed);
-    if (filters?.status) query = query.eq("status", filters.status);
-    if (filters?.role) query = query.eq("role", filters.role);
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createAnonClient();
+        let query = supabase
+          .from("animals")
+          .select(animalSelect)
+          .eq("published", true)
+          .eq("archived", false);
 
-    const { data, error } = await query.order("name", { ascending: true });
-    if (error) {
-      console.error("getAnimals", error.message);
-      return [];
-    }
+        if (filters?.species) query = query.eq("species", filters.species);
+        if (filters?.breed) query = query.eq("breed", filters.breed);
+        if (filters?.status) query = query.eq("status", filters.status);
+        if (filters?.role) query = query.eq("role", filters.role);
 
-    return sortByAvailability(
-      (data as AnimalWithParents[] | null)?.map(mapAnimal) ?? [],
-    );
-  } catch (error) {
-    console.error("getAnimals", error);
-    return [];
-  }
+        const { data, error } = await query.order("name", { ascending: true });
+        if (error) {
+          console.error("getAnimals", error.message);
+          return [];
+        }
+
+        return sortByAvailability(
+          (data as AnimalWithParents[] | null)?.map(mapAnimal) ?? [],
+        );
+      } catch (error) {
+        console.error("getAnimals", error);
+        return [];
+      }
+    },
+    cacheKey,
+    { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: ["animals"] },
+  )();
 }
 
 export async function getAvailableCount(): Promise<number> {
-  try {
-    const supabase = await createClient();
-    const { count, error } = await supabase
-      .from("animals")
-      .select("id", { count: "exact", head: true })
-      .eq("published", true)
-      .eq("archived", false)
-      .eq("status", "disponible");
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createAnonClient();
+        const { count, error } = await supabase
+          .from("animals")
+          .select("id", { count: "exact", head: true })
+          .eq("published", true)
+          .eq("archived", false)
+          .eq("status", "disponible");
 
-    if (error) {
-      console.error("getAvailableCount", error.message);
-      return 0;
-    }
-    return count ?? 0;
-  } catch (error) {
-    console.error("getAvailableCount", error);
-    return 0;
-  }
+        if (error) {
+          console.error("getAvailableCount", error.message);
+          return 0;
+        }
+        return count ?? 0;
+      } catch (error) {
+        console.error("getAvailableCount", error);
+        return 0;
+      }
+    },
+    ["available-count"],
+    { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: ["animals"] },
+  )();
 }
 
 export async function getPublicAnimalById(
   id: string,
 ): Promise<AnimalDetailModel | null> {
   try {
-    const supabase = await createClient();
+    const supabase = createAnonClient();
     const { data, error } = await supabase
       .from("animals")
       .select("*")
@@ -335,16 +360,22 @@ export async function getBreeders(species: Species): Promise<AnimalCardModel[]> 
 }
 
 export async function getLittersWithYoung(): Promise<LitterCardModel[]> {
-  try {
-    return await fetchLittersWithYoung();
-  } catch (error) {
-    console.error("getLittersWithYoung", error);
-    return [];
-  }
+  return unstable_cache(
+    async () => {
+      try {
+        return await fetchLittersWithYoung();
+      } catch (error) {
+        console.error("getLittersWithYoung", error);
+        return [];
+      }
+    },
+    ["litters-with-young"],
+    { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: ["litters", "animals"] },
+  )();
 }
 
 async function fetchLittersWithYoung(): Promise<LitterCardModel[]> {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
 
   const { data: litters, error } = await supabase
     .from("litters")
@@ -418,28 +449,34 @@ async function fetchLittersWithYoung(): Promise<LitterCardModel[]> {
 }
 
 export async function getGalleryImages(galleryKey: string): Promise<GalleryImage[]> {
-  try {
-    const supabase = await createClient();
-    const { data, error } = await supabase
-      .from("media")
-      .select("*")
-      .eq("gallery_key", galleryKey)
-      .order("sort_order", { ascending: true });
+  return unstable_cache(
+    async () => {
+      try {
+        const supabase = createAnonClient();
+        const { data, error } = await supabase
+          .from("media")
+          .select("*")
+          .eq("gallery_key", galleryKey)
+          .order("sort_order", { ascending: true });
 
-    if (error) {
-      console.error("getGalleryImages", error.message);
-      return [];
-    }
+        if (error) {
+          console.error("getGalleryImages", error.message);
+          return [];
+        }
 
-    return ((data as MediaRow[] | null) ?? []).map((row) => ({
-      src: resolveMediaUrl(row.storage_path, "galleries"),
-      alt: row.alt_text || galleryKey,
-      tag: row.gallery_tag ?? null,
-    }));
-  } catch (error) {
-    console.error("getGalleryImages", error);
-    return [];
-  }
+        return ((data as MediaRow[] | null) ?? []).map((row) => ({
+          src: resolveMediaUrl(row.storage_path, "galleries"),
+          alt: row.alt_text || galleryKey,
+          tag: row.gallery_tag ?? null,
+        }));
+      } catch (error) {
+        console.error("getGalleryImages", error);
+        return [];
+      }
+    },
+    ["gallery", galleryKey],
+    { revalidate: PUBLIC_REVALIDATE_SECONDS, tags: ["gallery"] },
+  )();
 }
 
 /** Photos de la vie du domaine affichées sur la page d’accueil. */
@@ -448,7 +485,7 @@ export async function getHomeGalleryImages(): Promise<GalleryImage[]> {
 }
 
 export async function pingSupabase() {
-  const supabase = await createClient();
+  const supabase = createAnonClient();
   const { error } = await supabase.from("animals").select("id").limit(1);
   return { ok: !error, error: error?.message ?? null };
 }

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -13,6 +13,12 @@ import {
 } from "@/lib/supabase/types";
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
+
+function revalidatePublicContent() {
+  updateTag("animals");
+  updateTag("litters");
+  updateTag("gallery");
+}
 
 async function requireUser() {
   const supabase = await createClient();
@@ -166,6 +172,7 @@ export async function upsertAnimalAction(
     revalidatePath("/admin/reproducteurs");
     revalidatePath("/admin/portees");
     if (litterId) revalidatePath(`/admin/portees/${litterId}`);
+    revalidatePublicContent();
 
     if (returnTo) redirectTo(returnTo);
     if (payload.role === "reproducteur") redirect("/admin/reproducteurs");
@@ -188,6 +195,7 @@ export async function archiveAnimalAction(id: string): Promise<ActionResult> {
     revalidatePath("/admin/animaux");
     revalidatePath("/admin/reproducteurs");
     revalidatePath("/annuaire");
+    revalidatePublicContent();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -242,6 +250,7 @@ export async function upsertLitterAction(
       revalidatePath("/portees");
       revalidatePath("/admin/portees");
       revalidatePath(`/admin/portees/${id}`);
+      revalidatePublicContent();
       redirect(
         payload.published && !existing?.archived
           ? "/admin/portees?ok=en-ligne"
@@ -252,6 +261,7 @@ export async function upsertLitterAction(
       if (error) return { ok: false, error: error.message };
       revalidatePath("/portees");
       revalidatePath("/admin/portees");
+      revalidatePublicContent();
       redirect(
         payload.published
           ? "/admin/portees?ok=en-ligne"
@@ -274,6 +284,7 @@ export async function archiveLitterAction(id: string): Promise<ActionResult> {
     if (error) return { ok: false, error: error.message };
     revalidatePath("/admin/portees");
     revalidatePath("/portees");
+    revalidatePublicContent();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -290,6 +301,7 @@ export async function unarchiveLitterAction(id: string): Promise<ActionResult> {
     if (error) return { ok: false, error: error.message };
     revalidatePath("/admin/portees");
     revalidatePath("/portees");
+    revalidatePublicContent();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -310,6 +322,7 @@ export async function deleteLitterAction(id: string): Promise<ActionResult> {
     if (error) return { ok: false, error: error.message };
     revalidatePath("/admin/portees");
     revalidatePath("/portees");
+    revalidatePublicContent();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -367,6 +380,7 @@ export async function createMediaAction(
     revalidatePath("/admin/medias");
     revalidatePath("/galerie");
     revalidatePath("/");
+    revalidatePublicContent();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -454,6 +468,7 @@ export async function updateMediaAction(
       revalidatePath(`/annuaire/${existing.animal_id}`);
       revalidatePath("/annuaire");
     }
+    revalidatePublicContent();
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
@@ -520,6 +535,7 @@ function revalidateAnimalPaths(animalId: string | null) {
   if (animalId) {
     revalidatePath(`/annuaire/${animalId}`);
   }
+  revalidatePublicContent();
 }
 
 async function saveAnimalPhotoFiles(
@@ -677,6 +693,7 @@ export async function deleteMediaFormAction(formData: FormData): Promise<void> {
   revalidatePath("/");
   revalidatePath("/admin/medias");
   revalidatePath("/galerie");
+  revalidatePublicContent();
 }
 
 export async function submitContactAction(
