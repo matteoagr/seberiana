@@ -7,6 +7,7 @@ import { GalleryGrid } from "@/components/GalleryGrid";
 import { FaqJsonLd, SiteJsonLd } from "@/components/JsonLd";
 import { Logo } from "@/components/Logo";
 import { SectionHeading } from "@/components/SectionHeading";
+import { activities } from "@/data/activities";
 import { breedProfiles } from "@/data/breeds";
 import { siteImages } from "@/data/site-images";
 import { buildPageMetadata } from "@/lib/seo";
@@ -275,6 +276,41 @@ export default async function HomePage() {
       <section className="border-b border-line bg-background-elevated/20">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
           <AdoptionProcessTimeline />
+        </div>
+      </section>
+
+      <section className="border-b border-line">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <SectionHeading
+            eyebrow="Au domaine"
+            title="Nos activités"
+            description="Puppy yoga, magnétisme animalier et médiation animale — trois propositions, trois demandes dédiées."
+          />
+          <ul className="mt-12 grid gap-10 sm:grid-cols-3">
+            {activities.map((activity) => (
+              <li key={activity.slug}>
+                <p className="text-xs font-medium uppercase tracking-[0.14em] text-gold/85">
+                  {activity.eyebrow}
+                </p>
+                <h3 className="mt-2 font-serif text-xl text-foreground">{activity.title}</h3>
+                <p className="mt-3 text-base leading-relaxed text-foreground-muted">
+                  {activity.summary}
+                </p>
+                <ButtonLink
+                  href={`/activites/${activity.slug}`}
+                  variant="ghost"
+                  className="mt-5"
+                >
+                  Réserver / demander
+                </ButtonLink>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10">
+            <ButtonLink href="/activites" variant="ghost">
+              Toutes les activités
+            </ButtonLink>
+          </div>
         </div>
       </section>
 

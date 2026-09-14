@@ -16,6 +16,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/races", priority: 0.9, changeFrequency: "monthly" as const },
     { path: "/adoption", priority: 0.8, changeFrequency: "monthly" as const },
     { path: "/certificat-engagement", priority: 0.75, changeFrequency: "yearly" as const },
+    { path: "/activites", priority: 0.8, changeFrequency: "monthly" as const },
+    { path: "/activites/puppy-yoga", priority: 0.7, changeFrequency: "monthly" as const },
+    {
+      path: "/activites/magnetisme-animalier",
+      priority: 0.7,
+      changeFrequency: "monthly" as const,
+    },
+    {
+      path: "/activites/mediation-animale",
+      priority: 0.7,
+      changeFrequency: "monthly" as const,
+    },
+    { path: "/partenaires", priority: 0.65, changeFrequency: "monthly" as const },
     { path: "/contact", priority: 0.7, changeFrequency: "yearly" as const },
   ].map(({ path, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,

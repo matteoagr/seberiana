@@ -68,6 +68,10 @@ export function ContactForm() {
           <option value="teckel">Teckel</option>
           <option value="maine-coon">Maine Coon</option>
           <option value="visite">Une visite</option>
+          <option value="puppy-yoga">Puppy yoga</option>
+          <option value="magnetisme">Magnétisme animalier</option>
+          <option value="mediation">Médiation animale</option>
+          <option value="partenariat">Partenariat</option>
         </select>
       </div>
       <div className="mt-5">

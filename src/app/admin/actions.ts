@@ -702,17 +702,81 @@ export async function submitContactAction(
 ): Promise<ActionResult> {
   try {
     const supabase = await createClient();
+    const interest = String(formData.get("interest") ?? "annuaire").trim();
+    const activityKind = emptyToNull(formData.get("activityKind"));
+    const baseMessage = String(formData.get("message") ?? "").trim();
+    const message = activityKind
+      ? buildActivityMessage(activityKind, formData, baseMessage)
+      : baseMessage;
+
+    if (!String(formData.get("firstName") ?? "").trim()) {
+      return { ok: false, error: "Le prénom est requis." };
+    }
+    if (!String(formData.get("email") ?? "").trim()) {
+      return { ok: false, error: "L’email est requis." };
+    }
+    if (!message) {
+      return { ok: false, error: "Le message est requis." };
+    }
+
     const { error } = await supabase.from("contact_requests").insert({
       first_name: String(formData.get("firstName") ?? "").trim(),
       last_name: String(formData.get("lastName") ?? "").trim(),
       email: String(formData.get("email") ?? "").trim(),
       phone: emptyToNull(formData.get("phone")),
-      interest: String(formData.get("interest") ?? "annuaire"),
-      message: String(formData.get("message") ?? "").trim(),
+      interest,
+      message,
     });
     if (error) return { ok: false, error: error.message };
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
   }
+}
+
+function buildActivityMessage(
+  kind: string,
+  formData: FormData,
+  extra: string,
+): string {
+  const lines: string[] = [];
+
+  if (kind === "puppy-yoga") {
+    lines.push("Demande — Puppy yoga");
+    const date = emptyToNull(formData.get("preferredDate"));
+    const participants = emptyToNull(formData.get("participants"));
+    const level = emptyToNull(formData.get("level"));
+    if (date) lines.push(`Date souhaitée : ${date}`);
+    if (participants) lines.push(`Participants : ${participants}`);
+    if (level) lines.push(`Niveau : ${level}`);
+  } else if (kind === "magnetisme") {
+    lines.push("Demande — Magnétisme animalier");
+    const animalName = emptyToNull(formData.get("animalName"));
+    const species = emptyToNull(formData.get("animalSpecies"));
+    const mode = emptyToNull(formData.get("sessionMode"));
+    const reason = emptyToNull(formData.get("reason"));
+    if (animalName) lines.push(`Animal : ${animalName}`);
+    if (species) lines.push(`Espèce : ${species}`);
+    if (mode) lines.push(`Format : ${mode}`);
+    if (reason) lines.push(`Motif : ${reason}`);
+  } else if (kind === "mediation") {
+    lines.push("Demande — Médiation animale");
+    const audience = emptyToNull(formData.get("audience"));
+    const format = emptyToNull(formData.get("format"));
+    const organization = emptyToNull(formData.get("organization"));
+    const objective = emptyToNull(formData.get("objective"));
+    if (audience) lines.push(`Public : ${audience}`);
+    if (format) lines.push(`Format : ${format}`);
+    if (organization) lines.push(`Structure : ${organization}`);
+    if (objective) lines.push(`Objectif : ${objective}`);
+  } else {
+    lines.push(`Demande — ${kind}`);
+  }
+
+  if (extra) {
+    lines.push("");
+    lines.push(extra);
+  }
+
+  return lines.join("\n").trim();
 }

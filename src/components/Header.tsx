@@ -13,7 +13,9 @@ const links = [
   { href: "/galerie", label: "Galerie" },
   { href: "/elevage-canin", label: "Chiens" },
   { href: "/elevage-felin", label: "Chats" },
-  { href: "/adoption", label: "Adoption responsable" },
+  { href: "/adoption", label: "Adoption" },
+  { href: "/activites", label: "Activités" },
+  { href: "/partenaires", label: "Partenaires" },
   { href: "/contact", label: "Contact" },
 ];
 
