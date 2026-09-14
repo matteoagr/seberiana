@@ -128,7 +128,7 @@ export default function CertificatEngagementPage() {
             Cadre légal : article D.214-32-4 du Code rural et de la pêche maritime. Plus de
             détails sur le parcours d’adoption sur la page{" "}
             <Link href="/adoption" className="text-gold-soft hover:underline">
-              Comment adopter
+              Adoption responsable
             </Link>
             .
           </p>

@@ -13,7 +13,7 @@ const links = [
   { href: "/galerie", label: "Galerie" },
   { href: "/elevage-canin", label: "Chiens" },
   { href: "/elevage-felin", label: "Chats" },
-  { href: "/adoption", label: "Comment adopter" },
+  { href: "/adoption", label: "Adoption responsable" },
   { href: "/contact", label: "Contact" },
 ];
 

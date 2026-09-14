@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
+import { AdoptionProcessTimeline } from "@/components/AdoptionProcessTimeline";
 import { BreedTeaser } from "@/components/BreedTeaser";
 import { ButtonLink } from "@/components/ButtonLink";
 import { GalleryGrid } from "@/components/GalleryGrid";
@@ -35,7 +35,7 @@ const HOME_FAQ = [
   {
     question: "Comment se déroule une adoption ?",
     answer:
-      "Le parcours « Comment adopter » détaille 6 étapes : découverte des profils, contact, échanges, réservation, certificat d’engagement, puis accueil avec visite ou envoi. Le certificat chien ou chat se télécharge sur le site.",
+      "Sur l’accueil, le parcours « Comment adopter » détaille 6 étapes : découverte des profils, contact, échanges, réservation, certificat d’engagement, puis accueil. Le guide d’adoption responsable complète la préparation du foyer.",
   },
   {
     question: "Où télécharger le certificat d’engagement ?",
@@ -45,7 +45,7 @@ const HOME_FAQ = [
   {
     question: "Où se trouve l’élevage ?",
     answer:
-      "Le Domaine Sibérania est un élevage familial en France. Contactez-nous pour organiser une visite ou pour organiser un envoi avec un transporteur de confiance.",
+      "Le Domaine Sibérania est un élevage familial en France. Contactez-nous pour organiser une visite ou un envoi avec un transporteur de confiance.",
   },
 ] as const;
 
@@ -272,88 +272,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="border-b border-line">
-        <div className="mx-auto grid max-w-6xl items-start gap-10 px-5 py-16 sm:px-8 sm:py-24 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
-          <div>
-            <SectionHeading
-              eyebrow="Adoption"
-              title="Comment adopter ?"
-              description="Un parcours simple, sans précipitation — pour bien matcher famille et animal."
-            />
-            <ol className="mt-12 max-w-3xl space-y-8">
-              <li className="flex gap-5">
-                <span className="font-serif text-2xl text-gold/80" aria-hidden>
-                  1
-                </span>
-                <div>
-                  <h3 className="font-serif text-xl text-foreground">Parcourir les profils</h3>
-                  <p className="mt-2 text-base leading-relaxed text-foreground-muted">
-                    Consultez{" "}
-                    <Link href="/annuaire" className="text-gold-soft hover:underline">
-                      <PetitsCoeursLabel
-                        leading="nos petits"
-                        iconClassName="h-3.5 w-3.5 inline"
-                        className="inline-flex items-center gap-1"
-                      />
-                    </Link>{" "}
-                    et les{" "}
-                    <Link href="/portees" className="text-gold-soft hover:underline">
-                      portées
-                    </Link>{" "}
-                    pour voir les disponibilités, les parents et l’histoire de chaque jeune.
-                  </p>
-                </div>
-              </li>
-              <li className="flex gap-5">
-                <span className="font-serif text-2xl text-gold/80" aria-hidden>
-                  2
-                </span>
-                <div>
-                  <h3 className="font-serif text-xl text-foreground">Nous écrire</h3>
-                  <p className="mt-2 text-base leading-relaxed text-foreground-muted">
-                    Via la page{" "}
-                    <Link href="/contact" className="text-gold-soft hover:underline">
-                      contact
-                    </Link>
-                    , présentez votre foyer et ce que vous recherchez. Nous répondons avec soin.
-                  </p>
-                </div>
-              </li>
-              <li className="flex gap-5">
-                <span className="font-serif text-2xl text-gold/80" aria-hidden>
-                  3
-                </span>
-                <div>
-                  <h3 className="font-serif text-xl text-foreground">Préparer l’arrivée</h3>
-                  <p className="mt-2 text-base leading-relaxed text-foreground-muted">
-                    Signez le{" "}
-                    <Link
-                      href="/certificat-engagement"
-                      className="text-gold-soft hover:underline"
-                    >
-                      certificat d’engagement
-                    </Link>
-                    , puis visite sur place ou envoi avec des transporteurs de confiance —
-                    jusqu’à l’installation dans votre famille.
-                  </p>
-                </div>
-              </li>
-            </ol>
-            <div className="mt-10">
-              <ButtonLink href="/adoption" variant="ghost">
-                Voir le parcours complet
-              </ButtonLink>
-            </div>
-          </div>
-          <div className="relative min-h-[320px] overflow-hidden lg:min-h-full lg:sticky lg:top-28">
-            <Image
-              src={siteImages.homeAdoption}
-              alt="Chiot Pomsky prêt à rejoindre sa famille"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 40vw"
-            />
-          </div>
+      <section className="border-b border-line bg-background-elevated/20">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:px-8 sm:py-24">
+          <AdoptionProcessTimeline />
         </div>
       </section>
 
