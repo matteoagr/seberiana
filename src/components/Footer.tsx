@@ -72,6 +72,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link href="/adoption" className="transition-colors hover:text-gold-soft">
+                Comment adopter
+              </Link>
+            </li>
+            <li>
               <Link href="/contact" className="transition-colors hover:text-gold-soft">
                 Contact
               </Link>

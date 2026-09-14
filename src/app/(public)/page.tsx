@@ -35,12 +35,12 @@ const HOME_FAQ = [
   {
     question: "Comment se déroule une adoption ?",
     answer:
-      `Vous consultez ${PETITS_COEURS.toLowerCase()} ou les portées, puis vous nous contactez. Nous échangeons sur votre projet, le profil de l’animal et le suivi. Chaque départ est préparé avec transparence.`,
+      `Vous consultez ${PETITS_COEURS.toLowerCase()} ou les portées, puis vous nous contactez. Nous échangeons sur votre projet, le profil de l’animal et le suivi. Les visites sont possibles sur rendez-vous ; les envois se font partout en France et à l’étranger avec des transporteurs de confiance.`,
   },
   {
     question: "Où se trouve l’élevage ?",
     answer:
-      "Le Domaine Sibérania est un élevage familial en France. Contactez-nous pour organiser une visite ou en savoir plus sur les prochaines portées.",
+      "Le Domaine Sibérania est un élevage familial en France. Contactez-nous pour organiser une visite ou pour organiser un envoi avec un transporteur de confiance.",
   },
 ] as const;
 
@@ -321,12 +321,17 @@ export default async function HomePage() {
               <div>
                 <h3 className="font-serif text-xl text-foreground">Préparer l’arrivée</h3>
                 <p className="mt-2 text-base leading-relaxed text-foreground-muted">
-                  Échanges, conseils et organisation du départ : chaque adoption est suivie jusqu’à
-                  l’installation dans votre famille.
+                  Visite sur place ou envoi partout en France et à l’étranger avec des transporteurs
+                  de confiance : chaque départ est suivi jusqu’à l’installation dans votre famille.
                 </p>
               </div>
             </li>
           </ol>
+            <div className="mt-10">
+              <ButtonLink href="/adoption" variant="ghost">
+                Voir le parcours complet
+              </ButtonLink>
+            </div>
           </div>
           <div className="relative min-h-[320px] overflow-hidden lg:min-h-full lg:sticky lg:top-28">
             <Image

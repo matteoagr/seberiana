@@ -26,7 +26,7 @@ export default async function AnnuairePage() {
       <PageHero
         eyebrow={<PetitsCoeursLabel iconClassName="h-3.5 w-3.5 inline text-gold-soft" />}
         title="Nos chiots et chatons"
-        description="Pomsky, Shiba Inu, Teckel et Maine Coon — les disponibles apparaissent en premier. Filtrez par espèce, race ou statut."
+        description="Pomsky, Shiba Inu, Teckel et Maine Coon — les petits disponibles apparaissent en premier. Filtrez par espèce, race ou statut."
         image={siteImages.annuaire}
         imageAlt="Chiots Pomsky du Domaine Sibérania"
       />
@@ -53,7 +53,7 @@ export default async function AnnuairePage() {
           <SectionHeading
             eyebrow="Envie d’en savoir plus ?"
             title="Chaque profil a son histoire"
-            description="Parents, date de naissance, places restantes — tout est sur la page Portées."
+            description="Parents, date de naissance, places restantes — tout est sur la page Portées. Visites possibles et envois partout en France et à l’étranger avec des transporteurs de confiance."
           />
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/portees">Voir les portées</ButtonLink>

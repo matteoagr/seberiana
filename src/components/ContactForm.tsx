@@ -41,7 +41,7 @@ export function ContactForm() {
   return (
     <form
       action={formAction}
-      className="rounded-xl border border-line/60 bg-background-elevated/60 p-6 sm:p-10"
+      className="rounded-xl border border-line/60 bg-background-elevated/60 p-5 sm:p-7"
     >
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Prénom" name="firstName" required />
@@ -78,7 +78,7 @@ export function ContactForm() {
           id="message"
           name="message"
           required
-          rows={6}
+          rows={4}
           defaultValue={defaultMessage}
           className="mt-2 w-full resize-y rounded-lg border border-line bg-background px-4 py-3 text-sm text-foreground outline-none focus:border-gold/50"
           placeholder="Parlez-nous un peu de vous et de ce que vous cherchez…"
@@ -90,7 +90,7 @@ export function ContactForm() {
       <button
         type="submit"
         disabled={pending}
-        className="mt-8 inline-flex w-full items-center justify-center rounded-lg border border-gold/50 bg-gold/12 px-6 py-2.5 text-sm font-medium text-gold-soft transition-colors hover:bg-gold/22 disabled:opacity-60 sm:w-auto"
+        className="mt-6 inline-flex w-full items-center justify-center rounded-lg border border-gold/50 bg-gold/12 px-6 py-2.5 text-sm font-medium text-gold-soft transition-colors hover:bg-gold/22 disabled:opacity-60 sm:w-auto"
       >
         {pending ? "Envoi…" : "Envoyer le message"}
       </button>
