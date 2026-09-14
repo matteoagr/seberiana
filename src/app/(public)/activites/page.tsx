@@ -21,7 +21,7 @@ export default function ActivitesPage() {
         compact
         eyebrow="Au domaine"
         title="Nos activités"
-        description="Au-delà de l’élevage : des moments de bien-être et de lien avec l’animal, sur réservation."
+        description="Au-delà de l’élevage : des parenthèses douces pour se ressourcer auprès des animaux."
         image={siteImages.homeApproach}
         imageAlt="Vie au Domaine Sibérania"
       />
@@ -31,8 +31,8 @@ export default function ActivitesPage() {
           <SectionHeading
             size="page"
             eyebrow="Découvrir"
-            title="Trois propositions, trois formulaires"
-            description="Chaque activité a sa page et sa demande dédiée — pour que nous puissions vous répondre précisément."
+            title="Des moments à partager avec l’animal"
+            description="Se détendre, se reconnecter, créer du lien — au Domaine Sibérania, l’animal est aussi une invitation au bien-être."
           />
           <ul className="mt-14 space-y-16">
             {activities.map((activity) => (

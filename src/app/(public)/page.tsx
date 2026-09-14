@@ -284,7 +284,7 @@ export default async function HomePage() {
           <SectionHeading
             eyebrow="Au domaine"
             title="Nos activités"
-            description="Puppy yoga, magnétisme animalier et médiation animale — trois propositions, trois demandes dédiées."
+            description="Puppy yoga, magnétisme animalier et médiation animale — pour se détendre, se reconnecter et vivre de beaux moments avec l’animal."
           />
           <ul className="mt-12 grid gap-10 sm:grid-cols-3">
             {activities.map((activity) => (
@@ -301,7 +301,7 @@ export default async function HomePage() {
                   variant="ghost"
                   className="mt-5"
                 >
-                  Réserver / demander
+                  Découvrir
                 </ButtonLink>
               </li>
             ))}
