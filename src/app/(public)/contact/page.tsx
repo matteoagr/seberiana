@@ -91,6 +91,17 @@ export default function ContactPage() {
               </dd>
             </div>
             <div>
+              <dt className="font-serif text-gold/90">Certificat d’engagement</dt>
+              <dd className="mt-1.5">
+                <a
+                  href="/certificat-engagement"
+                  className="text-foreground-muted transition-colors hover:text-gold-soft"
+                >
+                  Télécharger (chien ou chat)
+                </a>
+              </dd>
+            </div>
+            <div>
               <dt className="font-serif text-gold/90">Délai de réponse</dt>
               <dd className="mt-1.5 text-foreground-muted">Au plus vite.</dd>
             </div>

@@ -35,7 +35,12 @@ const HOME_FAQ = [
   {
     question: "Comment se déroule une adoption ?",
     answer:
-      `Vous consultez ${PETITS_COEURS.toLowerCase()} ou les portées, puis vous nous contactez. Nous échangeons sur votre projet, le profil de l’animal et le suivi. Les visites sont possibles sur rendez-vous ; les envois se font partout en France et à l’étranger avec des transporteurs de confiance.`,
+      `Vous consultez ${PETITS_COEURS.toLowerCase()} ou les portées, puis vous nous contactez. Le certificat d’engagement (chien ou chat) doit être signé au moins 7 jours avant la remise. Les visites sont possibles sur rendez-vous ; les envois se font partout en France et à l’étranger avec des transporteurs de confiance.`,
+  },
+  {
+    question: "Où télécharger le certificat d’engagement ?",
+    answer:
+      "Sur la page Certificat d’engagement : un PDF pour les chiens et un PDF pour les chats. Signez-le puis renvoyez-le nous avant le départ de l’animal.",
   },
   {
     question: "Où se trouve l’élevage ?",

@@ -77,6 +77,14 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link
+                href="/certificat-engagement"
+                className="transition-colors hover:text-gold-soft"
+              >
+                Certificat d’engagement
+              </Link>
+            </li>
+            <li>
               <Link href="/contact" className="transition-colors hover:text-gold-soft">
                 Contact
               </Link>

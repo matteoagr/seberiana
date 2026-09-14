@@ -51,9 +51,11 @@ const STEPS = [
     title: "Certificat d’engagement",
     body: (
       <>
-        Avant toute remise de l’animal, vous signez le certificat d’engagement et de
-        connaissance (CAC). C’est une étape obligatoire, à réaliser au minimum 7 jours avant
-        l’adoption.
+        Avant toute remise de l’animal, vous signez le{" "}
+        <Link href="/certificat-engagement" className="text-gold-soft hover:underline">
+          certificat d’engagement et de connaissance
+        </Link>{" "}
+        (CAC). C’est une étape obligatoire, à réaliser au minimum 7 jours avant l’adoption.
       </>
     ),
   },
@@ -206,15 +208,22 @@ export default function AdoptionPage() {
           <div className="mt-16 max-w-3xl space-y-6 text-base leading-relaxed text-foreground/85">
             <h3 className="font-serif text-2xl text-foreground">Comment l’obtenir ?</h3>
             <p className="text-foreground-muted">
-              Dès que votre projet d’adoption est engagé, nous vous adressons le certificat à
-              signer (manuscritement ou électroniquement). Il doit être daté et signé par vous
-              et par l’élevage, au plus tard 7 jours avant le départ de l’animal.
+              Téléchargez le certificat chien ou chat sur la page{" "}
+              <Link href="/certificat-engagement" className="text-gold-soft hover:underline">
+                certificat d’engagement
+              </Link>
+              , signez-le (manuscritement ou électroniquement), puis renvoyez-nous le document
+              daté. Il doit aussi être signé par l’élevage, au plus tard 7 jours avant le départ
+              de l’animal.
             </p>
             <p className="text-foreground-muted">
               Si la signature n’a pas encore eu lieu lors d’une visite, le délai de réflexion
               commence à la date de signature : l’animal ne pourra pas vous être remis avant
               ces 7 jours.
             </p>
+            <div className="pt-2">
+              <ButtonLink href="/certificat-engagement">Télécharger les certificats</ButtonLink>
+            </div>
             <p className="text-sm text-foreground-muted/90">
               Au Domaine Sibérania, toutes les cessions sont soumises à cette obligation,
               conformément à la réglementation en vigueur.
@@ -259,8 +268,8 @@ export default function AdoptionPage() {
                 iconClassName="h-3.5 w-3.5"
               />
             </ButtonLink>
-            <ButtonLink href="/contact" variant="ghost">
-              Nous écrire
+            <ButtonLink href="/certificat-engagement" variant="ghost">
+              Certificat d’engagement
             </ButtonLink>
           </div>
         </div>

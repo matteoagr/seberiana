@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/elevage-felin", priority: 0.85, changeFrequency: "monthly" as const },
     { path: "/races", priority: 0.9, changeFrequency: "monthly" as const },
     { path: "/adoption", priority: 0.8, changeFrequency: "monthly" as const },
+    { path: "/certificat-engagement", priority: 0.75, changeFrequency: "yearly" as const },
     { path: "/contact", priority: 0.7, changeFrequency: "yearly" as const },
   ].map(({ path, priority, changeFrequency }) => ({
     url: `${SITE_URL}${path}`,
