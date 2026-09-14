@@ -76,9 +76,9 @@ export default async function HomePage() {
           <h1 className="reveal reveal-delay-1 mt-2 font-serif text-4xl text-foreground sm:text-5xl md:text-6xl">
             Domaine Sibérania
           </h1>
-          <p className="reveal reveal-delay-2 mt-5 max-w-lg text-base leading-relaxed text-foreground/85 sm:text-lg">
+          <p className="reveal reveal-delay-2 mt-5 max-w-2xl text-lg leading-relaxed text-foreground/85 sm:text-xl">
             Élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon — des compagnons
-            élevés avec amour, pour des familles qui comptent.
+            sélectionnés et élevés avec amour, pour des familles aimantes et attentionnées.
           </p>
           <div className="reveal reveal-delay-3 mt-10 flex flex-wrap items-center justify-center gap-4">
             <ButtonLink href="/annuaire">
@@ -129,7 +129,7 @@ export default async function HomePage() {
               <h2 className="mt-2 font-serif text-3xl text-foreground">
                 Pomsky, Shiba & Teckel
               </h2>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-foreground/80">
+              <p className="mt-3 max-w-md text-base leading-relaxed text-foreground/80">
                 Nos chiots grandissent ici, entourés de soin et de jeu.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -162,7 +162,7 @@ export default async function HomePage() {
               <h2 className="mt-2 font-serif text-3xl text-foreground">
                 Maine Coon
               </h2>
-              <p className="mt-3 max-w-md text-sm leading-relaxed text-foreground/80">
+              <p className="mt-3 max-w-md text-base leading-relaxed text-foreground/80">
                 Des chatons doux et curieux, dans un cadre calme et familial.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
@@ -220,7 +220,7 @@ export default async function HomePage() {
               title="Un élevage familial, transparent"
               description="Au Domaine Sibérania, chiens et chats grandissent dans un cadre de vie réel — pas en batterie, pas en vitrine."
             />
-            <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-foreground/85">
+            <div className="mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-foreground/85">
               <p>
                 Nous élevons des <strong className="font-medium text-foreground">Pomsky</strong>,{" "}
                 <strong className="font-medium text-foreground">Shiba Inu</strong>,{" "}
@@ -229,9 +229,10 @@ export default async function HomePage() {
                 vétérinaire, une socialisation progressive et une sélection attentive des familles.
               </p>
               <p>
-                Chaque profil publié parmi nos petits cœurs indique clairement le statut — disponible,
-                réservé ou adopté — ainsi que les parents et la portée lorsque l’information est
-                connue. Notre objectif : vous donner les éléments pour choisir en confiance.
+                Chaque profil publié parmi nos petits cœurs indique clairement le statut —
+                disponible, réservé ou adopté — ainsi que les parents et la portée. Notre
+                objectif : vous donner les éléments pour faire un choix adapté à votre vie et
+                en confiance.
               </p>
             </div>
             <div className="mt-8 flex flex-wrap gap-3">
@@ -281,12 +282,12 @@ export default async function HomePage() {
               </span>
               <div>
                 <h3 className="font-serif text-xl text-foreground">Parcourir les profils</h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                <p className="mt-2 text-base leading-relaxed text-foreground-muted">
                   Consultez{" "}
                   <Link href="/annuaire" className="text-gold-soft hover:underline">
                     <PetitsCoeursLabel
                       leading="nos petits"
-                      iconClassName="h-3 w-3 inline"
+                      iconClassName="h-3.5 w-3.5 inline"
                       className="inline-flex items-center gap-1"
                     />
                   </Link>{" "}
@@ -304,7 +305,7 @@ export default async function HomePage() {
               </span>
               <div>
                 <h3 className="font-serif text-xl text-foreground">Nous écrire</h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                <p className="mt-2 text-base leading-relaxed text-foreground-muted">
                   Via la page{" "}
                   <Link href="/contact" className="text-gold-soft hover:underline">
                     contact
@@ -319,7 +320,7 @@ export default async function HomePage() {
               </span>
               <div>
                 <h3 className="font-serif text-xl text-foreground">Préparer l’arrivée</h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                <p className="mt-2 text-base leading-relaxed text-foreground-muted">
                   Échanges, conseils et organisation du départ : chaque adoption est suivie jusqu’à
                   l’installation dans votre famille.
                 </p>
@@ -368,7 +369,7 @@ export default async function HomePage() {
                     </svg>
                   </span>
                 </summary>
-                <p className="mt-3 text-sm leading-relaxed text-foreground-muted">
+                <p className="mt-3 text-base leading-relaxed text-foreground-muted">
                   {item.answer}
                 </p>
               </details>

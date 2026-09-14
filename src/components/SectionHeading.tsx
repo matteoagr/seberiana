@@ -22,10 +22,10 @@ const eyebrowClass: Record<NonNullable<SectionHeadingProps["size"]>, string> = {
 };
 
 const descriptionClass: Record<NonNullable<SectionHeadingProps["size"]>, string> = {
-  display: "mt-4 text-base leading-relaxed text-foreground-muted text-balance",
-  page: "mt-3 text-base leading-relaxed text-foreground/80 text-balance",
-  section: "mt-3 text-sm leading-relaxed text-foreground-muted sm:text-base text-balance",
-  subsection: "mt-2 text-sm leading-relaxed text-foreground-muted text-balance",
+  display: "mt-4 text-lg leading-relaxed text-foreground-muted text-balance",
+  page: "mt-3 text-lg leading-relaxed text-foreground/80 text-balance",
+  section: "mt-3 text-base leading-relaxed text-foreground-muted sm:text-lg text-balance",
+  subsection: "mt-2 text-base leading-relaxed text-foreground-muted text-balance",
 };
 
 export function SectionHeading({

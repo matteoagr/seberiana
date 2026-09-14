@@ -61,7 +61,7 @@ export function PageHero({
         </h1>
         <p
           className={`reveal reveal-delay-2 mt-4 max-w-xl leading-relaxed text-foreground/85 ${
-            compact ? "text-base sm:text-[1.0625rem]" : "text-base sm:text-lg"
+            compact ? "text-lg sm:text-xl" : "text-lg sm:text-xl"
           }`}
         >
           {description}

@@ -67,7 +67,7 @@ export default async function ElevageCaninPage() {
             title="Des chiots élevés pour la vie de famille"
             description="Au Domaine Sibérania, nos races canines grandissent dans un cadre familial, avec un suivi de santé et une socialisation progressive."
           />
-          <div className="mt-6 max-w-3xl space-y-4 text-[15px] leading-7 text-foreground/85 sm:text-base">
+          <div className="mt-6 max-w-3xl space-y-4 text-base leading-7 text-foreground/85 sm:text-lg">
             <p>
               Nous élevons principalement le{" "}
               <strong className="font-medium text-foreground">Pomsky</strong>, complété par le{" "}

@@ -72,7 +72,7 @@ export default async function ElevageFelinPage() {
               title="Maine Coon élevés en famille"
               description="Nos Maine Coon grandissent dans un environnement calme, avec beaucoup de contact humain et un suivi attentif."
             />
-            <div className="mt-6 max-w-xl space-y-4 text-[15px] leading-7 text-foreground/85 sm:text-base">
+            <div className="mt-6 max-w-xl space-y-4 text-base leading-7 text-foreground/85 sm:text-lg">
               <p>
                 Le <strong className="font-medium text-foreground">Maine Coon</strong> est la race
                 féline du Domaine Sibérania. Nous privilégions le tempérament, la santé et une

@@ -5,7 +5,7 @@ export const SITE_NAME = "Domaine Sibérania";
 export const SITE_NAME_SHORT = "Sibérania";
 
 export const SITE_TAGLINE =
-  "Élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon";
+  "Élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon — des compagnons sélectionnés et élevés avec amour, pour des familles aimantes et attentionnées";
 
 export const SITE_DESCRIPTION =
   "Pomsky, Shiba Inu, Teckel et Maine Coon au Domaine Sibérania. Nos petits cœurs, portées suivies et élevage familial en France.";
