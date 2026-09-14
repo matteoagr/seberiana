@@ -146,7 +146,7 @@ export default function CertificatEngagementPage() {
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/contact">Nous écrire</ButtonLink>
             <ButtonLink href="/adoption" variant="ghost">
-              Parcours d’adoption
+              Adoption responsable
             </ButtonLink>
           </div>
         </div>
