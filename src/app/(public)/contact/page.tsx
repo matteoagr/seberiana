@@ -22,9 +22,9 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
+        eyebrow="Domaine Sibérania"
         title="On discute ?"
-        description="Dites-nous ce que vous cherchez — on vous répond au plus vite."
+        description="Écrivez au Domaine Sibérania — on vous répond au plus vite pour une adoption, une visite ou une activité."
         image={siteImages.contact}
         imageAlt="Pomsky du Domaine Sibérania"
         compact

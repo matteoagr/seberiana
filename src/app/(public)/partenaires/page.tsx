@@ -19,9 +19,9 @@ export default function PartenairesPage() {
     <>
       <PageHero
         compact
-        eyebrow="Réseau"
+        eyebrow="Domaine Sibérania"
         title="Nos partenaires"
-        description="Des interlocuteurs de confiance pour la santé, les envois et les activités autour de l’animal."
+        description="Le réseau de confiance du Domaine Sibérania : santé, envois et bien-être animal."
         image={siteImages.contact}
         imageAlt="Domaine Sibérania"
       />

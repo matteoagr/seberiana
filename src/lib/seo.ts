@@ -30,9 +30,9 @@ export function buildPageMetadata({
   const imageUrl = image.startsWith("http") ? image : `${SITE_URL}${image}`;
   const ogTitle = absoluteTitle
     ? title
-    : title.includes(SITE_NAME_SHORT)
+    : title.includes(SITE_NAME) || title.includes(SITE_NAME_SHORT)
       ? title
-      : `${title} · ${SITE_NAME_SHORT}`;
+      : `${title} · ${SITE_NAME}`;
 
   return {
     title: absoluteTitle ? { absolute: title } : title,

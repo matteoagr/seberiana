@@ -21,7 +21,7 @@ export default function RacesIndexPage() {
     <>
       <PageHero
         compact
-        eyebrow="Nos races"
+        eyebrow="Domaine Sibérania"
         title="Fiches races"
         description="Caractéristiques, tempérament et élevage pour chaque race présente au Domaine Sibérania — avec un exemple photo pour visualiser."
         image={siteImages.races}

@@ -23,7 +23,7 @@ export default async function PorteesPage() {
   return (
     <>
       <PageHero
-        eyebrow="Portées"
+        eyebrow="Domaine Sibérania"
         title="Nos portées en cours"
         description="Suivez les naissances au Domaine Sibérania : parents, dates et petits de chaque portée de Pomsky, Shiba, Teckel ou Maine Coon."
         image={siteImages.portees}

@@ -37,9 +37,9 @@ export default function CertificatEngagementPage() {
     <>
       <PageHero
         compact
-        eyebrow="Adoption responsable"
+        eyebrow="Domaine Sibérania"
         title="Certificat d’engagement"
-        description="Document obligatoire avant toute adoption — téléchargez la version adaptée à votre compagnon, signez-la, puis renvoyez-nous le document daté."
+        description="Document obligatoire avant toute adoption au Domaine Sibérania — téléchargez la version adaptée à votre compagnon, signez-la, puis renvoyez-nous le document daté."
         image={siteImages.homeAdoption}
         imageAlt="Adoption responsable au Domaine Sibérania"
       />

@@ -19,9 +19,9 @@ export default function ActivitesPage() {
     <>
       <PageHero
         compact
-        eyebrow="Au domaine"
+        eyebrow="Domaine Sibérania"
         title="Nos activités"
-        description="Au-delà de l’élevage : des parenthèses douces pour se ressourcer auprès des animaux."
+        description="Au Domaine Sibérania, au-delà de l’élevage : des parenthèses douces pour se ressourcer auprès des animaux."
         image={siteImages.homeApproach}
         imageAlt="Vie au Domaine Sibérania"
       />

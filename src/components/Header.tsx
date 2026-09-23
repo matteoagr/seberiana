@@ -40,7 +40,7 @@ const navigation: NavItem[] = [
   },
   {
     id: "domaine",
-    label: "Le domaine",
+    label: "Domaine Sibérania",
     matches: [
       "/elevage-canin",
       "/elevage-felin",

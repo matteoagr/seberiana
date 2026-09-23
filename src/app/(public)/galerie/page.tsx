@@ -23,8 +23,8 @@ export default async function GaleriePage() {
     <>
       <PageHero
         compact
-        eyebrow="Galerie"
-        title="La vie au domaine"
+        eyebrow="Domaine Sibérania"
+        title="La vie au Domaine Sibérania"
         description="Des images du quotidien : chiots, chatons, parents et petits moments partagés — pour mieux sentir l’ambiance de l’élevage."
         image={hero?.src ?? siteImages.fallback}
         imageAlt={hero?.alt ?? "Vie au Domaine Sibérania"}

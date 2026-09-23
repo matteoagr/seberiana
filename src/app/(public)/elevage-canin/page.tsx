@@ -31,9 +31,9 @@ export default async function ElevageCaninPage() {
     <>
       <PageHero
         compact
-        eyebrow="Nos chiens"
+        eyebrow="Domaine Sibérania"
         title="Pomsky, Shiba & Teckel"
-        description="Le Pomsky est notre cœur de métier, complété par le Shiba Inu et le Teckel — élevés ici, au rythme de la famille."
+        description="Au Domaine Sibérania, le Pomsky est notre cœur de métier, complété par le Shiba Inu et le Teckel — élevés ici, au rythme de la famille."
         image={siteImages.elevageCanin}
         imageAlt="Pomsky du Domaine Sibérania"
       />

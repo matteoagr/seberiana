@@ -25,9 +25,9 @@ export default async function ElevageFelinPage() {
     <>
       <PageHero
         compact
-        eyebrow="Nos chats"
+        eyebrow="Domaine Sibérania"
         title="Maine Coon"
-        description="Des chatons au tempérament doux, élevés dans un cadre calme et familial."
+        description="Au Domaine Sibérania, des chatons Maine Coon au tempérament doux, élevés dans un cadre calme et familial."
         image={maineCoonBreed.heroImage}
         imageAlt="Maine Coon — exemple de la race au Domaine Sibérania"
       />

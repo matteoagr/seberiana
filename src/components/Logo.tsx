@@ -30,7 +30,7 @@ export function Logo({
     <span className={`inline-flex flex-col items-center gap-3 ${className}`}>
       <Image
         src="/brand/logo.png"
-        alt="Sibérania"
+        alt="Domaine Sibérania"
         width={dim.width}
         height={dim.height}
         priority={priority}
@@ -39,7 +39,7 @@ export function Logo({
       />
       {showWordmark ? (
         <span className="font-serif text-sm text-gold/90 sm:text-base">
-          Sibérania
+          Domaine Sibérania
         </span>
       ) : null}
     </span>
@@ -47,7 +47,7 @@ export function Logo({
 
   if (href === null) return content;
   return (
-    <Link href={href} aria-label="Sibérania — Accueil" className="outline-none">
+    <Link href={href} aria-label="Domaine Sibérania — Accueil" className="outline-none">
       {content}
     </Link>
   );

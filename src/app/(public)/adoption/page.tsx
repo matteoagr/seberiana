@@ -90,7 +90,7 @@ export default function AdoptionPage() {
     <>
       <PageHero
         compact
-        eyebrow="Adoption responsable"
+        eyebrow="Domaine Sibérania"
         title="Bien accueillir votre compagnon"
         description="Conseils pour adopter un chiot ou un chaton au Domaine Sibérania — engagement, préparation et premiers pas, avec sérénité."
         image={siteImages.homeAdoption}

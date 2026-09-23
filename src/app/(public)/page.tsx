@@ -83,8 +83,9 @@ export default async function HomePage() {
             Domaine Sibérania
           </h1>
           <p className="reveal reveal-delay-2 mt-5 max-w-2xl text-lg leading-relaxed text-foreground/85 sm:text-xl">
-            Élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon — des compagnons
-            sélectionnés et élevés avec amour, pour des familles aimantes et attentionnées.
+            Au Domaine Sibérania, élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon —
+            des compagnons sélectionnés et élevés avec amour, pour des familles aimantes et
+            attentionnées.
           </p>
           <div className="reveal reveal-delay-3 mt-10 flex flex-wrap items-center justify-center gap-4">
             <ButtonLink href="/annuaire">
@@ -100,12 +101,12 @@ export default async function HomePage() {
       <section className="border-y border-line bg-background-elevated/35">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-16 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-20">
           <SectionHeading
-            eyebrow="Futurs adoptants"
+            eyebrow="Domaine Sibérania"
             title="Trouvez votre compagnon"
             description={
               availableCount > 0
-                ? `${availableCount} profil${availableCount > 1 ? "s" : ""} disponible${availableCount > 1 ? "s" : ""} en ce moment.`
-                : "Consultez nos petits cœurs pour découvrir nos compagnons."
+                ? `${availableCount} profil${availableCount > 1 ? "s" : ""} disponible${availableCount > 1 ? "s" : ""} en ce moment au Domaine Sibérania.`
+                : "Consultez nos petits cœurs pour découvrir les compagnons du Domaine Sibérania."
             }
           />
           <div className="flex flex-wrap gap-3">
@@ -124,7 +125,7 @@ export default async function HomePage() {
           <div className="relative min-h-[340px] lg:min-h-[480px]">
             <Image
               src={siteImages.homeDogs}
-              alt="Élevage canin Sibérania — Pomsky"
+              alt="Élevage canin du Domaine Sibérania — Pomsky"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -157,7 +158,7 @@ export default async function HomePage() {
           <div className="relative min-h-[340px] lg:min-h-[480px]">
             <Image
               src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=1400&q=80"
-              alt="Élevage félin Sibérania — Maine Coon"
+              alt="Élevage félin du Domaine Sibérania — Maine Coon"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 50vw"

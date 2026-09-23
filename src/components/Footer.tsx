@@ -18,7 +18,7 @@ const footerColumns = [
     ],
   },
   {
-    title: "Le domaine",
+    title: "Domaine Sibérania",
     links: [
       { href: "/elevage-canin", label: "Nos chiens" },
       { href: "/elevage-felin", label: "Nos chats" },
@@ -44,10 +44,10 @@ export function Footer() {
     <footer className="mt-auto border-t border-line bg-background-elevated">
       <div className="mx-auto grid max-w-6xl gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[1.1fr_2fr]">
         <div className="flex flex-col gap-4">
-          <Logo size="md" />
+          <Logo size="md" showWordmark />
           <p className="max-w-sm text-sm leading-relaxed text-foreground-muted">
-            Un élevage familial où chiens et chats grandissent entourés de soin et de
-            transparence.
+            Domaine Sibérania — un élevage familial où chiens et chats grandissent entourés
+            de soin, de transparence et d’amour.
           </p>
           <p className="text-sm text-foreground-muted">
             <a
@@ -97,7 +97,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 text-xs text-foreground-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p>© {new Date().getFullYear()} Domaine Sibérania</p>
           <p className="text-gold/70">
-            Élevage familial · Pomsky · Shiba · Teckel · Maine Coon
+            Domaine Sibérania · Pomsky · Shiba · Teckel · Maine Coon
           </p>
         </div>
       </div>
