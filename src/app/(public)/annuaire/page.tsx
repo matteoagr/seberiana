@@ -36,7 +36,7 @@ export default async function AnnuairePage() {
           <SectionHeading
             eyebrow="Parcourir"
             title="Qui est disponible ?"
-            description={`${availableCount} animal${availableCount > 1 ? "aux" : ""} disponible${availableCount > 1 ? "s" : ""} en ce moment.`}
+            description={`${availableCount} ${availableCount > 1 ? "animaux" : "animal"} disponible${availableCount > 1 ? "s" : ""} en ce moment.`}
           />
           <ButtonLink href="/contact" className="self-start sm:self-auto">
             Nous contacter
