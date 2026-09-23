@@ -13,8 +13,11 @@ export function AnimalCard({
   showCta?: boolean;
 }) {
   const href = `/annuaire/${animal.id}`;
+  const isBreeder = animal.role === "reproducteur";
   const canContact =
-    showCta && (animal.status === "disponible" || animal.status === "reserve");
+    showCta &&
+    !isBreeder &&
+    (animal.status === "disponible" || animal.status === "reserve");
   const interest =
     animal.breed === "Pomsky"
       ? "pomsky"
@@ -46,7 +49,13 @@ export function AnimalCard({
           <SexBadge sex={animal.sexRaw} onMedia />
         </div>
         <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
-          <StatusBadge status={animal.status} onMedia />
+          {isBreeder ? (
+            <span className="rounded-full bg-[#14110e]/92 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft shadow-[0_2px_10px_rgba(0,0,0,0.45)] ring-1 ring-gold/40 backdrop-blur-md">
+              Reproducteur
+            </span>
+          ) : (
+            <StatusBadge status={animal.status} onMedia />
+          )}
           {animal.isLof ? (
             <span className="rounded-full bg-[#14110e]/92 px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft shadow-[0_2px_10px_rgba(0,0,0,0.45)] ring-1 ring-gold/40 backdrop-blur-md">
               LOF

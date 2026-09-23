@@ -22,6 +22,7 @@ const footerColumns = [
     links: [
       { href: "/elevage-canin", label: "Nos chiens" },
       { href: "/elevage-felin", label: "Nos chats" },
+      { href: "/reproducteurs", label: "Reproducteurs" },
       { href: "/galerie", label: "Galerie" },
       { href: "/races", label: "Fiches races" },
       { href: "/partenaires", label: "Partenaires" },

@@ -105,8 +105,10 @@ export default async function AnimalDetailPage({ params }: PageProps) {
           : "maine-coon";
 
   const contactHref = `/contact?animal=${encodeURIComponent(animal.name)}&interest=${interest}`;
+  const isBreeder = animal.role === "reproducteur";
   const canContact =
-    animal.status === "disponible" || animal.status === "reserve";
+    !isBreeder &&
+    (animal.status === "disponible" || animal.status === "reserve");
 
   const facts = [
     { label: "Espèce", value: speciesLabels[animal.species] },
@@ -139,13 +141,22 @@ export default async function AnimalDetailPage({ params }: PageProps) {
           </li>
           <li aria-hidden>/</li>
           <li>
-            <Link href="/annuaire" className="transition-colors hover:text-gold-soft">
-              <PetitsCoeursLabel
-                leading="Nos petits"
-                iconClassName="h-3 w-3 inline text-gold-soft"
-                className="inline-flex items-center gap-1"
-              />
-            </Link>
+            {isBreeder ? (
+              <Link
+                href="/reproducteurs"
+                className="transition-colors hover:text-gold-soft"
+              >
+                Reproducteurs
+              </Link>
+            ) : (
+              <Link href="/annuaire" className="transition-colors hover:text-gold-soft">
+                <PetitsCoeursLabel
+                  leading="Nos petits"
+                  iconClassName="h-3 w-3 inline text-gold-soft"
+                  className="inline-flex items-center gap-1"
+                />
+              </Link>
+            )}
           </li>
           <li aria-hidden>/</li>
           <li className="text-foreground/90">{animal.name}</li>
@@ -157,7 +168,13 @@ export default async function AnimalDetailPage({ params }: PageProps) {
 
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <StatusBadge status={animal.status} />
+            {isBreeder ? (
+              <span className="inline-flex items-center rounded-full bg-background-elevated px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/40">
+                Reproducteur
+              </span>
+            ) : (
+              <StatusBadge status={animal.status} />
+            )}
             <SexBadge sex={animal.sexRaw} />
             {animal.isLof ? (
               <span className="inline-flex items-center rounded-full bg-background-elevated px-2.5 py-1 text-[11px] font-medium tracking-wide text-gold-soft ring-1 ring-gold/40">
@@ -199,12 +216,18 @@ export default async function AnimalDetailPage({ params }: PageProps) {
                   : "Poser une question"}
               </ButtonLink>
             ) : null}
-            <ButtonLink href="/annuaire" variant="ghost">
-              <PetitsCoeursLabel
-                leading="Retour aux petits"
-                iconClassName="h-3.5 w-3.5"
-              />
-            </ButtonLink>
+            {isBreeder ? (
+              <ButtonLink href="/reproducteurs" variant="ghost">
+                Tous les reproducteurs
+              </ButtonLink>
+            ) : (
+              <ButtonLink href="/annuaire" variant="ghost">
+                <PetitsCoeursLabel
+                  leading="Retour aux petits"
+                  iconClassName="h-3.5 w-3.5"
+                />
+              </ButtonLink>
+            )}
           </div>
         </div>
       </section>

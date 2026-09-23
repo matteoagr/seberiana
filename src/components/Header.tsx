@@ -44,6 +44,7 @@ const navigation: NavItem[] = [
     matches: [
       "/elevage-canin",
       "/elevage-felin",
+      "/reproducteurs",
       "/galerie",
       "/races",
       "/partenaires",
@@ -51,6 +52,7 @@ const navigation: NavItem[] = [
     children: [
       { href: "/elevage-canin", label: "Nos chiens" },
       { href: "/elevage-felin", label: "Nos chats" },
+      { href: "/reproducteurs", label: "Reproducteurs" },
       { href: "/galerie", label: "Galerie" },
       { href: "/races", label: "Fiches races" },
       { href: "/partenaires", label: "Partenaires" },

@@ -98,7 +98,7 @@ export default async function ElevageFelinPage() {
       <BreedSectionVisual
         breed={maineCoonBreed}
         title="Nos reproducteurs"
-        description="Les parents de nos portées, visibles parmi nos petits cœurs lorsqu’ils sont publiés."
+        description="Les parents de nos portées — aussi réunis sur la page Reproducteurs du Domaine Sibérania."
       >
         {founders.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2">

@@ -247,6 +247,7 @@ export async function getAvailableCount(): Promise<number> {
           .select("id", { count: "exact", head: true })
           .eq("published", true)
           .eq("archived", false)
+          .eq("role", "jeune")
           .eq("status", "disponible");
 
         if (error) {
@@ -355,8 +356,10 @@ export async function getPublicAnimalIds(): Promise<string[]> {
   }
 }
 
-export async function getBreeders(species: Species): Promise<AnimalCardModel[]> {
-  return getAnimals({ species, role: "reproducteur" });
+export async function getBreeders(species?: Species): Promise<AnimalCardModel[]> {
+  return getAnimals(
+    species ? { species, role: "reproducteur" } : { role: "reproducteur" },
+  );
 }
 
 export async function getLittersWithYoung(): Promise<LitterCardModel[]> {

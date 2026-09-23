@@ -17,7 +17,7 @@ export const metadata: Metadata = buildPageMetadata({
 
 export default async function AnnuairePage() {
   const [animals, availableCount] = await Promise.all([
-    getAnimals(),
+    getAnimals({ role: "jeune" }),
     getAvailableCount(),
   ]);
 
@@ -57,8 +57,8 @@ export default async function AnnuairePage() {
           />
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/portees">Voir les portées</ButtonLink>
-            <ButtonLink href="/contact" variant="ghost">
-              Nous écrire
+            <ButtonLink href="/reproducteurs" variant="ghost">
+              Nos reproducteurs
             </ButtonLink>
           </div>
         </div>

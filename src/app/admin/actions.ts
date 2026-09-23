@@ -165,6 +165,7 @@ export async function upsertAnimalAction(
 
     revalidatePath("/");
     revalidatePath("/annuaire");
+    revalidatePath("/reproducteurs");
     revalidatePath("/portees");
     revalidatePath("/elevage-canin");
     revalidatePath("/elevage-felin");
@@ -195,6 +196,7 @@ export async function archiveAnimalAction(id: string): Promise<ActionResult> {
     revalidatePath("/admin/animaux");
     revalidatePath("/admin/reproducteurs");
     revalidatePath("/annuaire");
+    revalidatePath("/reproducteurs");
     revalidatePublicContent();
     return { ok: true };
   } catch (e) {
@@ -527,6 +529,7 @@ export async function deleteMediaAction(id: string, storagePath: string): Promis
 function revalidateAnimalPaths(animalId: string | null) {
   revalidatePath("/");
   revalidatePath("/annuaire");
+  revalidatePath("/reproducteurs");
   revalidatePath("/portees");
   revalidatePath("/admin/medias");
   revalidatePath("/admin/animaux");
