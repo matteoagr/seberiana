@@ -54,9 +54,7 @@ export default function AdminAidePage() {
       <p className="mt-4 text-base leading-relaxed text-foreground-muted">
         Ce guide est pensé pour une personne débutante. Suivez les étapes dans l’ordre :
         d’abord les parents (reproducteurs), puis une portée, puis les petits, puis les
-        photos. Chaque changement se retrouve ensuite sur le site public. Les messages du
-        formulaire contact arrivent aussi dans{" "}
-        <DocLink href="/admin/messages">Messages</DocLink>.
+        photos. Chaque changement se retrouve ensuite sur le site public.
       </p>
 
       <section className="mt-10 rounded-xl border border-line/60 bg-background-elevated/30 p-5 sm:p-6">
@@ -94,8 +92,7 @@ export default function AdminAidePage() {
           </p>
           <Tip>
             Gardez cet accès pour vous. Pour vous déconnecter, utilisez le bouton
-            « Déconnexion » en haut à droite. Les demandes des familles arrivent dans{" "}
-            <DocLink href="/admin/messages">Messages</DocLink> (et aussi par email).
+            « Déconnexion » en haut à droite.
           </Tip>
         </Step>
 

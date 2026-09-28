@@ -16,14 +16,11 @@ Fichier `.env.local` (déjà gitignoré) :
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
-RESEND_API_KEY=
-# optionnel — défaut : elevagesiberania@gmail.com
-CONTACT_NOTIFY_TO=
-# optionnel — après vérif domaine Resend : "Domaine Sibérania <contact@siberiana.fr>"
-CONTACT_FROM_EMAIL=
 ```
 
-Sans `RESEND_API_KEY`, les messages sont quand même enregistrés dans le BO (`/admin/messages`), mais l’email de notification n’est pas envoyé.
+Les formulaires publics (contact + activités) passent par **Netlify Forms**.  
+Dans Netlify → Forms → `contact` → Notifications : email vers `elevagesiberania@gmail.com`  
+(et Reply-To = champ `email` du formulaire).
 
 ## Schéma (léger)
 
@@ -52,7 +49,6 @@ Buckets Storage : `animals`, `litters`, `galleries`, `media`.
 | Route | Contenu |
 | --- | --- |
 | `/admin/login` | Connexion email / mot de passe |
-| `/admin/messages` | Messages contact / activités |
 | `/admin/animaux` | Liste / créer / modifier / archiver |
 | `/admin/portees` | Liste / créer / modifier / archiver |
 | `/admin/medias` | Upload / assignation / suppression |

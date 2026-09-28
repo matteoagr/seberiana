@@ -1,17 +1,16 @@
 "use client";
 
-import { useActionState } from "react";
+import { useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
-import { submitContactAction, type ActionResult } from "@/app/admin/actions";
+import { formDataToRecord, submitNetlifyForm } from "@/lib/netlify-form";
 
 export function ContactForm() {
   const searchParams = useSearchParams();
   const animal = searchParams.get("animal");
   const interestParam = searchParams.get("interest");
-  const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
-    submitContactAction,
-    null,
-  );
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [ok, setOk] = useState(false);
 
   const defaultInterest =
     interestParam === "pomsky" ||
@@ -27,7 +26,20 @@ export function ContactForm() {
     ? `Bonjour,\n\nJe suis intéressé(e) par ${animal}. Pourriez-vous m’en dire un peu plus ?\n\n`
     : "";
 
-  if (state?.ok) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPending(true);
+    setError(null);
+    const result = await submitNetlifyForm(formDataToRecord(new FormData(event.currentTarget)));
+    setPending(false);
+    if (!result.ok) {
+      setError(result.error);
+      return;
+    }
+    setOk(true);
+  }
+
+  if (ok) {
     return (
       <div className="rounded-xl border border-line/60 bg-background-elevated/60 p-8 sm:p-10">
         <p className="font-serif text-2xl text-gold-soft">Merci pour votre message !</p>
@@ -40,9 +52,19 @@ export function ContactForm() {
 
   return (
     <form
-      action={formAction}
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      onSubmit={onSubmit}
       className="rounded-xl border border-line/60 bg-background-elevated/60 p-5 sm:p-7"
     >
+      <input type="hidden" name="form-name" value="contact" />
+      <p className="hidden" aria-hidden>
+        <label>
+          Ne pas remplir : <input name="bot-field" tabIndex={-1} autoComplete="off" />
+        </label>
+      </p>
       <div className="grid gap-5 sm:grid-cols-2">
         <Field label="Prénom" name="firstName" required />
         <Field label="Nom" name="lastName" required />
@@ -87,9 +109,7 @@ export function ContactForm() {
           placeholder="Parlez-nous un peu de vous et de ce que vous cherchez…"
         />
       </div>
-      {state && !state.ok ? (
-        <p className="mt-4 text-sm text-red-300">{state.error}</p>
-      ) : null}
+      {error ? <p className="mt-4 text-sm text-red-300">{error}</p> : null}
       <button
         type="submit"
         disabled={pending}
