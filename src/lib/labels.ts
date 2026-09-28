@@ -15,6 +15,15 @@ export const statusLabels: Record<AnimalStatus, string> = {
   adopte: "Adopté",
 };
 
+export const contactStatusLabels: Record<
+  import("@/lib/supabase/types").ContactStatus,
+  string
+> = {
+  nouveau: "Nouveau",
+  lu: "Lu",
+  repondu: "Répondu",
+};
+
 export const statusOrder: Record<AnimalStatus, number> = {
   disponible: 0,
   reserve: 1,

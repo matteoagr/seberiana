@@ -7,12 +7,16 @@ export const siteImages = {
   homeHero: "/photos/home-hero.jpg",
   /** Accueil — bloc élevage canin */
   homeDogs: "/photos/home-dogs.jpg",
+  /** Accueil — bloc élevage félin (extrait galerie) */
+  homeCats: "/photos/home-cats.jpg",
   /** Accueil — approche / cadre familial */
   homeApproach: "/photos/home-approach.jpg",
-  /** Accueil — parcours d’adoption */
+  /** Accueil / adoption — parcours d’adoption */
   homeAdoption: "/photos/home-adoption.jpg",
   /** Page élevage canin — hero */
   elevageCanin: "/photos/elevage-canin.jpg",
+  /** Page élevage félin — section photo */
+  elevageFelin: "/photos/home-cats.jpg",
   /** Index fiches races — hero */
   races: "/photos/races.jpg",
   /** Nos petits cœurs — hero */
@@ -25,6 +29,8 @@ export const siteImages = {
   breedPomsky: "/photos/home-hero.jpg",
   /** Fiche race Teckel */
   breedTeckel: "/photos/breed-teckel.jpg",
+  /** Fiche race Maine Coon (extrait galerie domaine) */
+  breedMaineCoon: "/photos/breed-maine-coon.jpg",
   /** Fallback image absente */
   fallback: "/photos/fallback.jpg",
 } as const;

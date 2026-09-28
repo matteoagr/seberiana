@@ -151,8 +151,7 @@ export const breedProfiles: BreedProfile[] = [
     heroTitle: "Le Maine Coon",
     heroDescription:
       "Le « gentle giant » du monde félin — un chat imposant, doux et sociable, élevé au rythme du domaine.",
-    heroImage:
-      "https://images.unsplash.com/photo-1615789591457-74a63395c990?auto=format&fit=crop&w=2000&q=80",
+    heroImage: siteImages.breedMaineCoon,
     lofAtKennel: "non-lof",
     lofLabel: "Non inscrit LOOF au domaine",
     intro:

@@ -157,7 +157,7 @@ export default async function HomePage() {
 
           <div className="relative min-h-[340px] lg:min-h-[480px]">
             <Image
-              src="https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=1400&q=80"
+              src={siteImages.homeCats}
               alt="Élevage félin du Domaine Sibérania — Maine Coon"
               fill
               className="object-cover"

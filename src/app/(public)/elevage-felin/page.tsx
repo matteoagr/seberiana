@@ -7,6 +7,7 @@ import { ButtonLink } from "@/components/ButtonLink";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getBreedBySlug } from "@/data/breeds";
+import { siteImages } from "@/data/site-images";
 import { getBreeders } from "@/lib/supabase/queries";
 import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
@@ -58,7 +59,7 @@ export default async function ElevageFelinPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:px-8 sm:py-16 lg:grid-cols-2 lg:gap-14">
           <div className="relative min-h-[260px] overflow-hidden sm:min-h-[340px]">
             <Image
-              src="https://images.unsplash.com/photo-1573865526731-10659f70035b?auto=format&fit=crop&w=1400&q=80"
+              src={siteImages.elevageFelin}
               alt="Chaton Maine Coon dans un intérieur calme"
               fill
               className="object-cover"

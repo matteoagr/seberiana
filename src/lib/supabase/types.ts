@@ -3,6 +3,7 @@ export type AnimalStatus = "disponible" | "reserve" | "adopte";
 export type AnimalRole = "reproducteur" | "jeune" | "autre";
 export type AnimalSex = "male" | "female";
 export type LitterStatus = "a_venir" | "nee" | "cloturee";
+export type ContactStatus = "nouveau" | "lu" | "repondu";
 
 export type AnimalRow = {
   id: string;
@@ -107,6 +108,19 @@ export type GalleryImage = {
   src: string;
   alt: string;
   tag: GalleryTag | null;
+};
+
+export type ContactRequestRow = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string | null;
+  interest: string;
+  animal_id: string | null;
+  message: string;
+  status: ContactStatus;
+  created_at: string;
 };
 
 export type ParentPreview = {

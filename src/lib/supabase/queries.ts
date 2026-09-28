@@ -9,6 +9,7 @@ import type {
   AnimalDetailModel,
   AnimalRow,
   AnimalStatus,
+  ContactRequestRow,
   GalleryImage,
   LitterCardModel,
   LitterRow,
@@ -748,4 +749,27 @@ export async function adminLitterOptions(): Promise<
     .order("title");
   if (error) throw error;
   return data ?? [];
+}
+
+export async function adminListContactRequests(): Promise<ContactRequestRow[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("contact_requests")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []) as ContactRequestRow[];
+}
+
+export async function adminCountNewContactRequests(): Promise<number> {
+  const supabase = await createClient();
+  const { count, error } = await supabase
+    .from("contact_requests")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "nouveau");
+  if (error) {
+    console.error("adminCountNewContactRequests", error.message);
+    return 0;
+  }
+  return count ?? 0;
 }

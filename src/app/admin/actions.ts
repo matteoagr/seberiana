@@ -764,10 +764,15 @@ export async function submitContactAction(
       ? buildActivityMessage(activityKind, formData, baseMessage)
       : baseMessage;
 
-    if (!String(formData.get("firstName") ?? "").trim()) {
+    const firstName = String(formData.get("firstName") ?? "").trim();
+    const lastName = String(formData.get("lastName") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const phone = emptyToNull(formData.get("phone"));
+
+    if (!firstName) {
       return { ok: false, error: "Le prénom est requis." };
     }
-    if (!String(formData.get("email") ?? "").trim()) {
+    if (!email) {
       return { ok: false, error: "L’email est requis." };
     }
     if (!message) {
@@ -775,18 +780,75 @@ export async function submitContactAction(
     }
 
     const { error } = await supabase.from("contact_requests").insert({
-      first_name: String(formData.get("firstName") ?? "").trim(),
-      last_name: String(formData.get("lastName") ?? "").trim(),
-      email: String(formData.get("email") ?? "").trim(),
-      phone: emptyToNull(formData.get("phone")),
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      phone,
       interest,
       message,
     });
     if (error) return { ok: false, error: error.message };
+
+    // Email non bloquant : le message est déjà enregistré pour le BO.
+    const { sendContactNotification } = await import("@/lib/email");
+    await sendContactNotification({
+      firstName,
+      lastName,
+      email,
+      phone,
+      interest,
+      message,
+    });
+
     return { ok: true };
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
   }
+}
+
+export async function updateContactStatusAction(
+  id: string,
+  status: "nouveau" | "lu" | "repondu",
+): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const { error } = await supabase
+      .from("contact_requests")
+      .update({ status })
+      .eq("id", id);
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/messages");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
+export async function updateContactStatusFormAction(formData: FormData): Promise<void> {
+  const id = String(formData.get("id") ?? "").trim();
+  const status = String(formData.get("status") ?? "").trim();
+  if (!id || (status !== "nouveau" && status !== "lu" && status !== "repondu")) {
+    return;
+  }
+  await updateContactStatusAction(id, status);
+}
+
+export async function deleteContactRequestAction(id: string): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const { error } = await supabase.from("contact_requests").delete().eq("id", id);
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/messages");
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
+export async function deleteContactRequestFormAction(formData: FormData): Promise<void> {
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return;
+  await deleteContactRequestAction(id);
 }
 
 function buildActivityMessage(
