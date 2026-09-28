@@ -14,7 +14,7 @@ import {
 export const metadata: Metadata = buildPageMetadata({
   title: "Contact — adoption et renseignements",
   description:
-    "Contactez le Domaine Sibérania pour une adoption de Pomsky, Shiba Inu, Teckel ou Maine Coon, ou pour toute question sur nos portées.",
+    "Contactez le Domaine Sibérania pour une adoption de Pomsky, Teckel ou Maine Coon, ou pour toute question sur nos portées.",
   path: "/contact",
 });
 
@@ -52,7 +52,7 @@ export default function ContactPage() {
             size="section"
           />
           <p className="mt-4 max-w-md text-sm leading-relaxed text-foreground-muted">
-            Précisez l’espèce ou la race qui vous intéresse (Pomsky, Shiba Inu, Teckel,
+            Précisez l’espèce ou la race qui vous intéresse (Pomsky, Teckel,
             Maine Coon) et votre projet de vie — cela nous aide à vous orienter.
           </p>
           <dl className="mt-8 grid gap-5 text-sm sm:grid-cols-2 lg:grid-cols-1">

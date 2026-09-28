@@ -17,7 +17,7 @@ const DOCUMENTS = [
   {
     title: "Certificat chien",
     description:
-      "Pour l’adoption d’un Pomsky, Shiba Inu ou Teckel. À signer au moins 7 jours avant la remise de l’animal.",
+      "Pour l’adoption d’un Pomsky ou d’un Teckel. À signer au moins 7 jours avant la remise de l’animal.",
     href: "/documents/certificat-engagement-chien.pdf",
     fileName: "certificat-engagement-chien-siberiana.pdf",
     species: "Canin",

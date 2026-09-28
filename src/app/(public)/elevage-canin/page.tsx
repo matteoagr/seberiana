@@ -11,20 +11,18 @@ import { getBreeders } from "@/lib/supabase/queries";
 import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Élevage canin Pomsky, Shiba Inu & Teckel",
+  title: "Élevage canin Pomsky & Teckel",
   description:
-    "Élevage canin familial au Domaine Sibérania : Pomsky (race principale), Shiba Inu et Teckel. Socialisation, suivi vétérinaire et nos petits cœurs disponibles.",
+    "Élevage canin familial au Domaine Sibérania : Pomsky (race principale) et Teckel. Socialisation, suivi vétérinaire et nos petits cœurs disponibles.",
   path: "/elevage-canin",
 });
 
 export default async function ElevageCaninPage() {
   const breeders = await getBreeders("canin");
   const pomsky = breeders.filter((d) => d.breed === "Pomsky");
-  const shiba = breeders.filter((d) => d.breed === "Shiba Inu");
   const teckel = breeders.filter((d) => d.breed === "Teckel");
 
   const pomskyBreed = getBreedBySlug("pomsky")!;
-  const shibaBreed = getBreedBySlug("shiba-inu")!;
   const teckelBreed = getBreedBySlug("teckel")!;
 
   return (
@@ -32,8 +30,8 @@ export default async function ElevageCaninPage() {
       <PageHero
         compact
         eyebrow="Domaine Sibérania"
-        title="Pomsky, Shiba & Teckel"
-        description="Au Domaine Sibérania, le Pomsky est notre cœur de métier, complété par le Shiba Inu et le Teckel — élevés ici, au rythme de la famille."
+        title="Pomsky & Teckel"
+        description="Au Domaine Sibérania, le Pomsky est notre cœur de métier, complété par le Teckel — élevés ici, au rythme de la famille."
         image={siteImages.elevageCanin}
         imageAlt="Pomsky du Domaine Sibérania"
       />
@@ -71,7 +69,6 @@ export default async function ElevageCaninPage() {
             <p>
               Nous élevons principalement le{" "}
               <strong className="font-medium text-foreground">Pomsky</strong>, complété par le{" "}
-              <strong className="font-medium text-foreground">Shiba Inu</strong> et le{" "}
               <strong className="font-medium text-foreground">Teckel</strong>. Chaque portée est
               suivie de près : identification, prophylaxie et préparation au départ chez les
               adoptants.
@@ -110,29 +107,11 @@ export default async function ElevageCaninPage() {
       </BreedSectionVisual>
 
       <BreedSectionVisual
-        breed={shibaBreed}
-        title="Une lignée complémentaire"
-        description="Reproducteurs inscrits LOF — même cadre de vie, caractère affirmé et typique."
-        reverse
-        muted
-      >
-        {shiba.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2">
-            {shiba.map((animal) => (
-              <AnimalCard key={animal.id} animal={animal} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-sm text-foreground-muted">
-            Aucun reproducteur Shiba publié pour le moment.
-          </p>
-        )}
-      </BreedSectionVisual>
-
-      <BreedSectionVisual
         breed={teckelBreed}
         title="Une race complémentaire"
         description="Des compagnons attachants, élevés non LOF dans le même cadre familial que le reste du domaine."
+        reverse
+        muted
       >
         {teckel.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2">

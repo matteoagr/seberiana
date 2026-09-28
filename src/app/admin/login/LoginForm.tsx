@@ -19,6 +19,13 @@ export default function LoginForm() {
       <p className="mt-3 text-sm text-foreground-muted">
         Accès réservé à l’équipe du Domaine Sibérania.
       </p>
+      <p className="mt-2 text-sm text-foreground-muted">
+        Email : <span className="text-foreground/90">elevagesiberania@gmail.com</span>
+      </p>
+      <p className="mt-2 text-sm text-foreground-muted">
+        Une fois connecté, le menu <span className="text-foreground/90">Aide</span> explique
+        le fonctionnement étape par étape.
+      </p>
 
       <form action={formAction} className="mt-10 space-y-5">
         <input type="hidden" name="next" value={next} />
@@ -32,6 +39,7 @@ export default function LoginForm() {
             type="email"
             required
             autoComplete="username"
+            defaultValue="elevagesiberania@gmail.com"
             className="mt-2 w-full rounded-lg border border-line bg-background px-4 py-3 text-sm outline-none focus:border-gold/50"
           />
         </div>

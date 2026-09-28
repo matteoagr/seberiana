@@ -10,3 +10,6 @@ L’ancien fichier `20260823_init_schema.sql` est obsolète (breeds / galleries 
 ```bash
 node --env-file=.env.local scripts/create-admin.mjs
 ```
+
+Compte par défaut : `elevagesiberania@gmail.com` / `SiberianaAdmin2026!`  
+(surcharge via `ADMIN_EMAIL` / `ADMIN_PASSWORD`).

@@ -8,6 +8,7 @@ const nav = [
   { href: "/admin/animaux", label: "Animaux" },
   { href: "/admin/reproducteurs", label: "Reproducteurs" },
   { href: "/admin/medias", label: "Galerie" },
+  { href: "/admin/aide", label: "Aide" },
 ] as const;
 
 function isActive(pathname: string, href: string) {

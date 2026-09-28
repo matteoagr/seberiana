@@ -26,7 +26,7 @@ const COMPARE_ROWS = [
   },
   {
     aspect: "Espace",
-    dog: "Sorties et espace selon la race (Pomsky, Shiba, Teckel)",
+    dog: "Sorties et espace selon la race (Pomsky, Teckel)",
     cat: "Appartement adapté avec verticalité (Maine Coon)",
   },
   {
@@ -112,8 +112,8 @@ export default function AdoptionPage() {
               les changements de vie.
             </p>
             <p className="text-foreground-muted">
-              Au Domaine Sibérania, nous accompagnons ce choix pour un Pomsky, un Shiba Inu,
-              un Teckel ou un Maine Coon — avec transparence et sans précipitation.
+              Au Domaine Sibérania, nous accompagnons ce choix pour un Pomsky, un Teckel
+              ou un Maine Coon — avec transparence et sans précipitation.
             </p>
           </div>
         </div>
@@ -158,8 +158,7 @@ export default function AdoptionPage() {
               <h3 className="font-serif text-xl text-foreground">Les chiots</h3>
               <p className="mt-3 text-base leading-relaxed text-foreground-muted">
                 Ils demandent une présence régulière, des sorties, une stimulation et un
-                cadre éducatif dès l’arrivée — surtout pour les races actives comme le Pomsky
-                ou le Shiba.
+                cadre éducatif dès l’arrivée — surtout pour les races actives comme le Pomsky.
               </p>
             </div>
             <div>

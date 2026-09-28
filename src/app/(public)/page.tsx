@@ -16,7 +16,7 @@ import { getAvailableCount, getHomeGalleryImages } from "@/lib/supabase/queries"
 import { PetitsCoeursLabel, PETITS_COEURS } from "@/components/PetitsCoeurs";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: `${SITE_NAME} — Élevage familial Pomsky, Shiba, Teckel & Maine Coon`,
+  title: `${SITE_NAME} — Élevage familial Pomsky, Teckel & Maine Coon`,
   description: SITE_DESCRIPTION,
   path: "/",
   absoluteTitle: true,
@@ -26,7 +26,7 @@ const HOME_FAQ = [
   {
     question: "Quelles races sont élevées au Domaine Sibérania ?",
     answer:
-      "Nous élevons des Pomsky, Shiba Inu et Teckel côté canin, ainsi que des Maine Coon côté félin. Le Pomsky est notre race principale. Les conditions LOF/LOOF varient selon la race : consultez chaque fiche race pour le détail.",
+      "Nous élevons des Pomsky et Teckel côté canin, ainsi que des Maine Coon côté félin. Le Pomsky est notre race principale. Les conditions LOF/LOOF varient selon la race : consultez chaque fiche race pour le détail.",
   },
   {
     question: "Comment savoir si un chiot ou un chaton est disponible ?",
@@ -83,7 +83,7 @@ export default async function HomePage() {
             Domaine Sibérania
           </h1>
           <p className="reveal reveal-delay-2 mt-5 max-w-2xl text-lg leading-relaxed text-foreground/85 sm:text-xl">
-            Au Domaine Sibérania, élevage familial de Pomsky, Shiba Inu, Teckel et Maine Coon —
+            Au Domaine Sibérania, élevage familial de Pomsky, Teckel et Maine Coon —
             des compagnons sélectionnés et élevés avec amour, pour des familles aimantes et
             attentionnées.
           </p>
@@ -134,7 +134,7 @@ export default async function HomePage() {
             <div className="absolute inset-x-0 bottom-0 p-8 sm:p-10">
               <p className="font-serif text-sm text-gold/90">Chiens</p>
               <h2 className="mt-2 font-serif text-3xl text-foreground">
-                Pomsky, Shiba & Teckel
+                Pomsky & Teckel
               </h2>
               <p className="mt-3 max-w-md text-base leading-relaxed text-foreground/80">
                 Nos chiots grandissent ici, entourés de soin et de jeu.
@@ -230,7 +230,6 @@ export default async function HomePage() {
             <div className="mt-8 max-w-xl space-y-5 text-lg leading-relaxed text-foreground/85">
               <p>
                 Nous élevons des <strong className="font-medium text-foreground">Pomsky</strong>,{" "}
-                <strong className="font-medium text-foreground">Shiba Inu</strong>,{" "}
                 <strong className="font-medium text-foreground">Teckel</strong> et{" "}
                 <strong className="font-medium text-foreground">Maine Coon</strong> avec un suivi
                 vétérinaire, une socialisation progressive et une sélection attentive des familles.

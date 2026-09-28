@@ -17,8 +17,9 @@ export default async function AdminMediasPage() {
       <p className="font-serif text-sm text-gold/90">Étape 3</p>
       <h1 className="mt-1 font-serif text-3xl text-foreground">Galerie</h1>
       <p className="mt-3 max-w-xl text-sm text-foreground-muted">
-        Photos de la vie au domaine. Ajoutez, modifiez la légende / catégorie / ordre, ou
-        remplacez une image — le tout se met à jour sur la galerie publique.
+        Photos de la vie au domaine. Glissez-déposez pour organiser l’ordre, puis
+        modifiez légende / catégorie ou remplacez une image — le tout se met à jour sur
+        la galerie publique.
       </p>
       <div className="mt-10">
         <MediaAdmin media={media} animals={animals} litters={litters} />

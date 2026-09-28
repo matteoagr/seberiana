@@ -52,7 +52,6 @@ export const GALLERY_TAGS: GalleryTag[] = [
   "pomsky",
   "teckel",
   "maine-coon",
-  "shiba",
   "domaine",
 ];
 

@@ -57,7 +57,7 @@ Middleware protège `/admin/*` (sauf login). Les écritures passent par l’util
 node --env-file=.env.local scripts/create-admin.mjs
 ```
 
-Par défaut : `admin@siberiana.fr` / `SiberianaAdmin2026!`  
+Par défaut : `elevagesiberania@gmail.com` / `SiberianaAdmin2026!`  
 (surcharge possible via `ADMIN_EMAIL` / `ADMIN_PASSWORD`).
 
 Puis ouvrir [http://localhost:3000/admin/login](http://localhost:3000/admin/login).

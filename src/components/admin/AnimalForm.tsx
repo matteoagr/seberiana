@@ -48,8 +48,7 @@ export function AnimalForm({
   const species = (animal?.species ?? litter?.species ?? "canin") as Species;
   const breed = animal?.breed ?? litter?.breed ?? "";
   const birthDate = animal?.birth_date ?? litter?.birth_date ?? "";
-  const defaultLof =
-    animal?.is_lof ?? (breed === "Shiba Inu" ? true : false);
+  const defaultLof = animal?.is_lof ?? false;
 
   const breedOptions = [...breedsBySpecies.canin, ...breedsBySpecies.felin];
 

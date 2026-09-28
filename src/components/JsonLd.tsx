@@ -31,7 +31,7 @@ export function SiteJsonLd() {
       "@type": "Country",
       name: "France",
     },
-    knowsAbout: ["Pomsky", "Shiba Inu", "Teckel", "Maine Coon", "Élevage canin", "Élevage félin"],
+    knowsAbout: ["Pomsky", "Teckel", "Maine Coon", "Élevage canin", "Élevage félin"],
   };
 
   const website = {

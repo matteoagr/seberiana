@@ -11,7 +11,7 @@ import { getBreeders } from "@/lib/supabase/queries";
 export const metadata: Metadata = buildPageMetadata({
   title: "Nos reproducteurs",
   description:
-    "Reproducteurs du Domaine Sibérania : les parents de nos portées de Pomsky, Shiba Inu, Teckel et Maine Coon.",
+    "Reproducteurs du Domaine Sibérania : les parents de nos portées de Pomsky, Teckel et Maine Coon.",
   path: "/reproducteurs",
 });
 
@@ -55,7 +55,7 @@ export default async function ReproducteursPage() {
             size="section"
             eyebrow="Élevage"
             title="Mieux connaître nos races"
-            description="Pomsky, Shiba Inu, Teckel côté canin — Maine Coon côté félin. Fiches races et pages d’élevage pour aller plus loin."
+            description="Pomsky et Teckel côté canin — Maine Coon côté félin. Fiches races et pages d’élevage pour aller plus loin."
           />
           <div className="flex flex-wrap gap-3">
             <ButtonLink href="/elevage-canin">Nos chiens</ButtonLink>

@@ -9,7 +9,7 @@ export const ADOPTION_PROCESS_INTRO = {
 export const ADOPTION_PROCESS_STEPS = [
   {
     title: "Découvrir nos compagnons",
-    body: "Parcourez nos petits cœurs et les portées pour voir les Pomsky, Shiba Inu, Teckel et Maine Coon disponibles, leurs parents et leur statut.",
+    body: "Parcourez nos petits cœurs et les portées pour voir les Pomsky, Teckel et Maine Coon disponibles, leurs parents et leur statut.",
   },
   {
     title: "Contacter l’élevage",

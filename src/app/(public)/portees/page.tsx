@@ -13,7 +13,7 @@ import { PetitsCoeursLabel } from "@/components/PetitsCoeurs";
 export const metadata: Metadata = buildPageMetadata({
   title: "Portées en cours",
   description:
-    "Portées du Domaine Sibérania : parents, dates de naissance et petits de chaque portée de Pomsky, Shiba Inu, Teckel ou Maine Coon.",
+    "Portées du Domaine Sibérania : parents, dates de naissance et petits de chaque portée de Pomsky, Teckel ou Maine Coon.",
   path: "/portees",
 });
 
@@ -25,7 +25,7 @@ export default async function PorteesPage() {
       <PageHero
         eyebrow="Domaine Sibérania"
         title="Nos portées en cours"
-        description="Suivez les naissances au Domaine Sibérania : parents, dates et petits de chaque portée de Pomsky, Shiba, Teckel ou Maine Coon."
+        description="Suivez les naissances au Domaine Sibérania : parents, dates et petits de chaque portée de Pomsky, Teckel ou Maine Coon."
         image={siteImages.portees}
         imageAlt="Portée de chiots Pomsky du Domaine Sibérania"
       />

@@ -366,10 +366,22 @@ export async function createMediaAction(
       .upload(path, file, { upsert: true, contentType: file.type || undefined });
     if (uploadError) return { ok: false, error: uploadError.message };
 
+    let sortOrder = Number(formData.get("sort_order") ?? 0) || 0;
+    if (galleryKey) {
+      const { data: last } = await supabase
+        .from("media")
+        .select("sort_order")
+        .eq("gallery_key", galleryKey)
+        .order("sort_order", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      sortOrder = (last?.sort_order ?? -1) + 1;
+    }
+
     const { error } = await supabase.from("media").insert({
       storage_path: path,
       alt_text: String(formData.get("alt_text") ?? "").trim(),
-      sort_order: Number(formData.get("sort_order") ?? 0) || 0,
+      sort_order: sortOrder,
       // Couverture = fiches animaux uniquement ; inutile pour la galerie
       is_cover: galleryKey ? false : boolFromForm(formData, "is_cover"),
       animal_id: animalId,
@@ -470,6 +482,46 @@ export async function updateMediaAction(
       revalidatePath(`/annuaire/${existing.animal_id}`);
       revalidatePath("/annuaire");
     }
+    revalidatePublicContent();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Erreur" };
+  }
+}
+
+export async function reorderGalleryMediaAction(
+  orderedIds: string[],
+): Promise<ActionResult> {
+  try {
+    const supabase = await requireUser();
+    const ids = orderedIds.map((id) => String(id).trim()).filter(Boolean);
+    if (ids.length === 0) return { ok: false, error: "Aucune image à réordonner." };
+
+    const { data: rows, error: listError } = await supabase
+      .from("media")
+      .select("id, gallery_key")
+      .in("id", ids);
+    if (listError) return { ok: false, error: listError.message };
+
+    const byId = new Map((rows ?? []).map((row) => [row.id as string, row]));
+    if (byId.size !== ids.length) {
+      return { ok: false, error: "Certaines images sont introuvables." };
+    }
+    if ([...byId.values()].some((row) => !row.gallery_key)) {
+      return { ok: false, error: "Seules les images de galerie peuvent être réordonnées ici." };
+    }
+
+    const updates = await Promise.all(
+      ids.map((id, index) =>
+        supabase.from("media").update({ sort_order: index }).eq("id", id),
+      ),
+    );
+    const failed = updates.find((result) => result.error);
+    if (failed?.error) return { ok: false, error: failed.error.message };
+
+    revalidatePath("/admin/medias");
+    revalidatePath("/galerie");
+    revalidatePath("/");
     revalidatePublicContent();
     return { ok: true };
   } catch (e) {

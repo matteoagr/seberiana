@@ -6,13 +6,13 @@
  *   node --env-file=.env.local scripts/create-admin.mjs
  *
  * Optional env overrides:
- *   ADMIN_EMAIL=admin@siberiana.fr
+ *   ADMIN_EMAIL=elevagesiberania@gmail.com
  *   ADMIN_PASSWORD=change-me-strong
  */
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const email = process.env.ADMIN_EMAIL || "admin@siberiana.fr";
+const email = process.env.ADMIN_EMAIL || "elevagesiberania@gmail.com";
 const password = process.env.ADMIN_PASSWORD || "SiberianaAdmin2026!";
 
 if (!url || !serviceKey) {

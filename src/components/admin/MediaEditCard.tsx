@@ -19,7 +19,27 @@ const fieldClass =
   "mt-1.5 w-full rounded-lg border border-line bg-background px-3 py-2 text-sm outline-none focus:border-gold/50";
 const labelClass = "block text-xs text-gold/90";
 
-export function MediaEditCard({ item }: { item: MediaRow }) {
+export function MediaEditCard({
+  item,
+  hideSortOrder = false,
+  orderBadge,
+  isDragging = false,
+  isDragOver = false,
+  onDragHandleStart,
+  onDragOverCard,
+  onDropCard,
+  onDragEnd,
+}: {
+  item: MediaRow;
+  hideSortOrder?: boolean;
+  orderBadge?: number;
+  isDragging?: boolean;
+  isDragOver?: boolean;
+  onDragHandleStart?: (event: React.DragEvent<HTMLButtonElement>) => void;
+  onDragOverCard?: (event: React.DragEvent<HTMLLIElement>) => void;
+  onDropCard?: (event: React.DragEvent<HTMLLIElement>) => void;
+  onDragEnd?: (event: React.DragEvent<HTMLButtonElement>) => void;
+}) {
   const router = useRouter();
   const [state, formAction, pending] = useActionState<ActionResult | null, FormData>(
     updateMediaAction,
@@ -40,9 +60,20 @@ export function MediaEditCard({ item }: { item: MediaRow }) {
         ? "Portée"
         : "Média";
   const isGalleryItem = Boolean(item.gallery_key);
+  const sortable = Boolean(onDragHandleStart);
 
   return (
-    <li className="overflow-hidden rounded-xl border border-line/60 bg-background-elevated/40">
+    <li
+      className={`overflow-hidden rounded-xl border bg-background-elevated/40 transition-[border-color,opacity,transform] ${
+        isDragging
+          ? "border-gold/50 opacity-55"
+          : isDragOver
+            ? "border-gold/45 ring-1 ring-gold/30"
+            : "border-line/60"
+      }`}
+      onDragOver={onDragOverCard}
+      onDrop={onDropCard}
+    >
       <div className="relative aspect-[4/3]">
         <Image
           src={src}
@@ -51,6 +82,24 @@ export function MediaEditCard({ item }: { item: MediaRow }) {
           className="object-cover"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
+        {sortable ? (
+          <button
+            type="button"
+            draggable
+            aria-label={`Déplacer la photo ${orderBadge ?? ""}`.trim()}
+            title="Glisser pour réordonner"
+            onDragStart={onDragHandleStart}
+            onDragEnd={onDragEnd}
+            className="absolute top-3 left-3 z-10 inline-flex cursor-grab items-center gap-1.5 rounded-md bg-[#14110e]/88 px-2 py-1.5 text-[11px] font-medium tracking-wide text-gold-soft shadow-[0_2px_10px_rgba(0,0,0,0.45)] ring-1 ring-gold/35 backdrop-blur-md active:cursor-grabbing"
+          >
+            <span aria-hidden className="leading-none">
+              ⋮⋮
+            </span>
+            {typeof orderBadge === "number" ? (
+              <span className="tabular-nums">{orderBadge}</span>
+            ) : null}
+          </button>
+        ) : null}
       </div>
 
       <form action={formAction} className="space-y-3 p-4 text-sm">
@@ -122,19 +171,21 @@ export function MediaEditCard({ item }: { item: MediaRow }) {
           </>
         )}
 
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className={labelClass} htmlFor={`sort-${item.id}`}>
-              Ordre
-            </label>
-            <input
-              id={`sort-${item.id}`}
-              name="sort_order"
-              type="number"
-              defaultValue={item.sort_order ?? 0}
-              className={fieldClass}
-            />
-          </div>
+        <div className={`grid gap-3 ${hideSortOrder ? "" : "grid-cols-2"}`}>
+          {hideSortOrder ? null : (
+            <div>
+              <label className={labelClass} htmlFor={`sort-${item.id}`}>
+                Ordre
+              </label>
+              <input
+                id={`sort-${item.id}`}
+                name="sort_order"
+                type="number"
+                defaultValue={item.sort_order ?? 0}
+                className={fieldClass}
+              />
+            </div>
+          )}
           <div>
             <label className={labelClass} htmlFor={`file-${item.id}`}>
               Remplacer

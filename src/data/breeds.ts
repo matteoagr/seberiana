@@ -85,64 +85,6 @@ export const breedProfiles: BreedProfile[] = [
     annuaireHref: "/annuaire?espece=canin&race=Pomsky",
   },
   {
-    slug: "shiba-inu",
-    name: "Shiba Inu",
-    species: "canin",
-    metaTitle: "Shiba Inu — caractère, standards et élevage LOF",
-    metaDescription:
-      "Fiche race Shiba Inu : origine japonaise, caractère, morphologie et élevage LOF au Domaine Sibérania.",
-    heroTitle: "Le Shiba Inu",
-    heroDescription:
-      "Un chien japonais au caractère affirmé, élégant et fidèle — élevé au domaine avec des reproducteurs inscrits LOF.",
-    heroImage:
-      "https://images.unsplash.com/photo-1611250282006-4484dd3fba6f?auto=format&fit=crop&w=2000&q=80",
-    lofAtKennel: "lof",
-    lofLabel: "Reproducteurs inscrits LOF",
-    intro:
-      "Le Shiba Inu est une race spitz japonaise reconnue, réputée pour son indépendance, sa prestance et sa loyauté envers sa famille. Au Domaine Sibérania, nos reproducteurs Shiba sont inscrits au LOF et sélectionnés sur le caractère, la santé et la conformité au standard.",
-    traits: [
-      { label: "Espèce", value: "Chien" },
-      { label: "Origine", value: "Japon" },
-      { label: "Taille adulte", value: "Environ 37 à 42 cm au garrot" },
-      { label: "Poids adulte", value: "Environ 8 à 11 kg" },
-      { label: "Espérance de vie", value: "12 à 15 ans" },
-      { label: "Pelage", value: "Court, dense, avec sous-poil" },
-      { label: "Activité", value: "Modérée à soutenue" },
-      { label: "Au domaine", value: "LOF" },
-    ],
-    sections: [
-      {
-        title: "Tempérament",
-        paragraphs: [
-          "Le Shiba Inu est intelligent, propre et parfois réservé avec les inconnus. Il forme un lien fort avec sa famille et apprécie un cadre stable.",
-          "Son caractère affirmé demande une éducation cohérente, patiente et bienveillante. Socialisé correctement, il devient un compagnon noble et attachant.",
-        ],
-      },
-      {
-        title: "Besoins & entretien",
-        paragraphs: [
-          "Deux à trois sorties par jour, des jeux stimulants et un brossage régulier suffisent en général. Le Shiba mue deux fois par an de façon marquée.",
-          "Il s’épanouit dans un foyer qui respecte son besoin de repères, sans excès de contraintes.",
-        ],
-      },
-      {
-        title: "Notre élevage",
-        paragraphs: [
-          "Nos reproducteurs Shiba Inu sont inscrits au LOF. Nous privilégions des lignées typées, avec un suivi vétérinaire rigoureux et une socialisation adaptée dès la portée.",
-          "Le Shiba complète notre élevage canin aux côtés du Pomsky et du Teckel, dans le même esprit familial et transparent.",
-        ],
-      },
-    ],
-    highlights: [
-      "Race japonaise reconnue LOF",
-      "Caractère loyal et indépendant",
-      "Format moyen, facile à vivre",
-      "Reproducteurs sélectionnés au domaine",
-    ],
-    elevageHref: "/elevage-canin",
-    annuaireHref: "/annuaire?espece=canin&race=Shiba+Inu",
-  },
-  {
     slug: "teckel",
     name: "Teckel",
     species: "canin",

@@ -98,7 +98,7 @@ export function Footer() {
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 text-xs text-foreground-muted sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p>© {new Date().getFullYear()} Domaine Sibérania</p>
           <p className="text-gold/70">
-            Domaine Sibérania · Pomsky · Shiba · Teckel · Maine Coon
+            Domaine Sibérania · Pomsky · Teckel · Maine Coon
           </p>
         </div>
       </div>

@@ -36,7 +36,6 @@ export const metadata: Metadata = {
   category: "Élevage canin et félin",
   keywords: [
     "élevage Pomsky",
-    "élevage Shiba Inu",
     "élevage Teckel",
     "élevage Maine Coon",
     "Domaine Sibérania",

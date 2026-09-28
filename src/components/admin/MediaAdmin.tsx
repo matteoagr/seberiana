@@ -5,6 +5,7 @@ import {
   createMediaAction,
   type ActionResult,
 } from "@/app/admin/actions";
+import { GallerySortableGrid } from "@/components/admin/GallerySortableGrid";
 import { MediaEditCard } from "@/components/admin/MediaEditCard";
 import { galleryKeyLabels, galleryTagLabels } from "@/lib/labels";
 import { GALLERY_TAGS, type AnimalRow, type LitterRow, type MediaRow } from "@/lib/supabase/types";
@@ -26,7 +27,10 @@ export function MediaAdmin({
     null,
   );
 
-  const galleryMedia = media.filter((item) => item.gallery_key);
+  const galleryMedia = media
+    .filter((item) => item.gallery_key)
+    .slice()
+    .sort((a, b) => a.sort_order - b.sort_order || a.created_at.localeCompare(b.created_at));
   const otherMedia = media.filter((item) => !item.gallery_key);
 
   return (
@@ -126,18 +130,6 @@ export function MediaAdmin({
             </select>
           </div>
         </div>
-        <div>
-          <label className="block text-sm text-gold/90" htmlFor="sort_order">
-            Ordre d’affichage
-          </label>
-          <input
-            id="sort_order"
-            name="sort_order"
-            type="number"
-            defaultValue={0}
-            className={`${fieldClass} w-24`}
-          />
-        </div>
         {state && !state.ok ? (
           <p className="text-sm text-red-300">{state.error}</p>
         ) : state?.ok ? (
@@ -155,17 +147,9 @@ export function MediaAdmin({
       <div>
         <h2 className="font-serif text-xl text-foreground">Galerie publique</h2>
         <p className="mt-2 text-sm text-foreground-muted">
-          Modifiez la légende, la catégorie, l’ordre, ou remplacez le fichier image.
+          Réordonnez par glisser-déposer, puis modifiez légende, catégorie ou fichier.
         </p>
-        {galleryMedia.length === 0 ? (
-          <p className="mt-4 text-sm text-foreground-muted">Aucune photo de galerie.</p>
-        ) : (
-          <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {galleryMedia.map((item) => (
-              <MediaEditCard key={item.id} item={item} />
-            ))}
-          </ul>
-        )}
+        <GallerySortableGrid items={galleryMedia} />
       </div>
 
       {otherMedia.length > 0 ? (

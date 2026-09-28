@@ -11,7 +11,7 @@ import { getAnimals, getAvailableCount } from "@/lib/supabase/queries";
 
 export const metadata: Metadata = buildPageMetadata({
   title: `${PETITS_COEURS} — chiots et chatons`,
-  description: `${PETITS_COEURS} du Domaine Sibérania : Pomsky, Shiba Inu, Teckel et Maine Coon disponibles, réservés ou adoptés. Filtrez par espèce, race et statut.`,
+  description: `${PETITS_COEURS} du Domaine Sibérania : Pomsky, Teckel et Maine Coon disponibles, réservés ou adoptés. Filtrez par espèce, race et statut.`,
   path: "/annuaire",
 });
 
@@ -26,7 +26,7 @@ export default async function AnnuairePage() {
       <PageHero
         eyebrow={<PetitsCoeursLabel iconClassName="h-3.5 w-3.5 inline text-gold-soft" />}
         title="Nos chiots et chatons"
-        description="Au Domaine Sibérania : Pomsky, Shiba Inu, Teckel et Maine Coon — les petits disponibles apparaissent en premier. Filtrez par espèce, race ou statut."
+        description="Au Domaine Sibérania : Pomsky, Teckel et Maine Coon — les petits disponibles apparaissent en premier. Filtrez par espèce, race ou statut."
         image={siteImages.annuaire}
         imageAlt="Chiots Pomsky du Domaine Sibérania"
       />

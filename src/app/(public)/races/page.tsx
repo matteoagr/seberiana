@@ -7,9 +7,9 @@ import { breedProfiles } from "@/data/breeds";
 import { siteImages } from "@/data/site-images";
 
 export const metadata: Metadata = buildPageMetadata({
-  title: "Fiches races — Pomsky, Shiba Inu, Teckel, Maine Coon",
+  title: "Fiches races — Pomsky, Teckel, Maine Coon",
   description:
-    "Fiches races du Domaine Sibérania : caractère, entretien, taille et informations LOF/LOOF pour Pomsky, Shiba Inu, Teckel et Maine Coon.",
+    "Fiches races du Domaine Sibérania : caractère, entretien, taille et informations LOF/LOOF pour Pomsky, Teckel et Maine Coon.",
   path: "/races",
 });
 
@@ -40,7 +40,7 @@ export default function RacesIndexPage() {
             size="section"
             eyebrow="Canin"
             title="Nos races de chiens"
-            description="Pomsky (race principale), Shiba Inu et Teckel."
+            description="Pomsky (race principale) et Teckel."
           />
           <ul className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {canin.map((breed, index) => (

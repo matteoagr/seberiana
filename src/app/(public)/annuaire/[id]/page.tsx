@@ -98,11 +98,11 @@ export default async function AnimalDetailPage({ params }: PageProps) {
   const interest =
     animal.breed === "Pomsky"
       ? "pomsky"
-      : animal.breed === "Shiba Inu"
-        ? "shiba"
-        : animal.breed === "Teckel"
-          ? "teckel"
-          : "maine-coon";
+      : animal.breed === "Teckel"
+        ? "teckel"
+        : animal.breed === "Maine Coon"
+          ? "maine-coon"
+          : "annuaire";
 
   const contactHref = `/contact?animal=${encodeURIComponent(animal.name)}&interest=${interest}`;
   const isBreeder = animal.role === "reproducteur";

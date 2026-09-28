@@ -15,7 +15,7 @@ export function ContactForm() {
 
   const defaultInterest =
     interestParam === "pomsky" ||
-    interestParam === "shiba" ||
+    interestParam === "teckel" ||
     interestParam === "maine-coon" ||
     interestParam === "visite" ||
     interestParam === "annuaire" ||
@@ -64,7 +64,6 @@ export function ContactForm() {
           <option value="annuaire">Un de nos petits cœurs</option>
           <option value="portees">Une portée</option>
           <option value="pomsky">Pomsky</option>
-          <option value="shiba">Shiba Inu</option>
           <option value="teckel">Teckel</option>
           <option value="maine-coon">Maine Coon</option>
           <option value="visite">Une visite</option>
