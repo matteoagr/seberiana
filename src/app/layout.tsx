@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Outfit } from "next/font/google";
+import { GoogleTagManager } from "@/components/GoogleTagManager";
 import {
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         className="bg-domaine grain flex min-h-full flex-col antialiased"
         suppressHydrationWarning
       >
+        <GoogleTagManager />
         {children}
       </body>
     </html>
